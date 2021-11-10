@@ -1,0 +1,5 @@
+image: gitpod/workspace-full-vnc:latest
+
+tasks:
+  - name: Python Terminal
+    init: bash
