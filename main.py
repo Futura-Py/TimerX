@@ -10,6 +10,7 @@ import configurator
 app = Tk()
 app.title('TimerX')
 app.geometry('300x200')
+app.iconbitmap(r"assets/logo.ico")
 
 # VARIABLES
 app_on = True
@@ -25,7 +26,7 @@ timer_hours = 0
 
 # FUNCTIONS
 def playBuzzer():
-    playsound('assets/sounds/sound1.wav')
+    playsound('./assets/sounds/sound1.wav')
 
 def startstopButtonPressed():
     global timer_on, timer_paused
@@ -90,7 +91,7 @@ def runTimer():
     #play_button.config(image = play_button_img)
     play_button.config(text = "Pause")
     playBuzzer()
-    
+
 # IMAGES
 # logo_img = PhotoImage(file = 'assets/images/logo.jpeg')
 # app.iconphoto(False, logo_img)
