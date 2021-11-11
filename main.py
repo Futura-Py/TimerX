@@ -10,12 +10,12 @@ import configurator
 app = Tk()
 app.title('TimerX')
 app.geometry('300x200')
-app.iconbitmap(r"assets/logo.ico")
+app.iconbitmap(r"./assets/logo.ico")
 
 # VARIABLES
 app_on = True
 
-default_font = 'assets/fonts/font.ttf'
+default_font = './assets/fonts/font.ttf'
 
 timer_on = False
 timer_paused = True
