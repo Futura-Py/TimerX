@@ -31,10 +31,11 @@ MANIFEST
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
-# We need the SPEC file to aid us in the Pyinstaller build, from the icons to the selections in one file. 
+# We need the SPEC file to aid us in the Pyinstaller build, from the icons to the selections in one file.
 # *.spec
 ./dist
 ./.vscode
+./.__pycache__/*
 
 # Installer logs
 pip-log.txt
