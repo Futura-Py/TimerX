@@ -29,4 +29,5 @@ jobs:
       - name: Create a exe
         run: |
           pip install playsound
+          pip install py2exe
           python setup.py pyinstaller
