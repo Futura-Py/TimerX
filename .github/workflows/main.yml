@@ -30,4 +30,4 @@ jobs:
         run: |
           pip install playsound
           pip install py2exe
-          python setup.py pyinstaller
+          python setup.py py2exe
