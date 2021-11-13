@@ -5,12 +5,21 @@ from tkinter import ttk, Tk, PhotoImage, Frame
 from playsound import playsound
 import threading
 import configurator
+from sys import platform
 
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
 app.geometry('300x200')
 app.iconbitmap(r"./assets/logo.ico")
+
+if platform == "linux" or platform == "linux2":
+    logo_img = PhotoImage(file = 'assets/images/logo.jpeg')
+    app.iconphoto(False, logo_img)
+elif platform == "darwin":
+    app.iconbitmap(r'assets/logo.icns')
+elif platform == "win32":
+    app.iconbitmap(r'assets/logo.ico')
 
 # VARIABLES
 app_on = True
@@ -93,8 +102,7 @@ def runTimer():
     playBuzzer()
 
 # IMAGES
-# logo_img = PhotoImage(file = 'assets/images/logo.jpeg')
-# app.iconphoto(False, logo_img)
+
 
 # play_button_img = PhotoImage(file = 'assets/images/play_arrow.png')
 # pause_button_img = PhotoImage(file = 'assets/images/pause_bars.png')
