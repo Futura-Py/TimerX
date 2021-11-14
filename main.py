@@ -11,7 +11,7 @@ from sys import platform
 app = Tk()
 app.title('TimerX')
 app.geometry('300x200')
-app.iconbitmap(r"./assets/logo.ico")
+# app.iconbitmap(r"./assets/logo.ico")
 
 if platform == "linux" or platform == "linux2":
     logo_img = PhotoImage(file = 'assets/images/logo.jpeg')
