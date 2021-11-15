@@ -5,21 +5,22 @@ from tkinter import ttk, Tk, PhotoImage, Frame
 from playsound import playsound
 import threading
 import configurator
-from sys import platform
+import sys
+import platform
 
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
 app.geometry('300x200')
-# app.iconbitmap(r"./assets/logo.ico")
 
-if platform == "linux" or platform == "linux2":
+print(platform.system())
+if  platform.system() == "Linux":
     logo_img = PhotoImage(file = 'assets/images/logo.jpeg')
     app.iconphoto(False, logo_img)
-elif platform == "darwin":
+elif  platform.system() == "Darwin":
     app.iconbitmap(r'assets/logo.icns')
-elif platform == "win32":
-    app.iconbitmap(r'assets/logo.ico')
+elif  platform.system() == "Windows":
+    app.iconphoto(r'assets/logo.ico')
 
 # VARIABLES
 app_on = True
