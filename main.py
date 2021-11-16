@@ -5,7 +5,6 @@ from tkinter import ttk, Tk, PhotoImage, Frame
 from playsound import playsound
 import threading
 import configurator
-import sys
 import platform
 
 # TKINTER WINDOW
