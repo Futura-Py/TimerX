@@ -100,7 +100,7 @@ def runTimer():
 
 # APP THEME
 app.tk.call("source", "sun-valley.tcl")
-app.tk.call("set_theme", "light")
+app.tk.call("set_theme", "dark")
 
 # WINDOW FRAME
 window = Frame(app)
