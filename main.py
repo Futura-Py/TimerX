@@ -5,6 +5,7 @@ from tkinter import ttk, Tk, PhotoImage, Frame
 from playsound import playsound
 import threading
 import configurator
+import darkdetect
 
 # TKINTER WINDOW
 app = Tk()
@@ -90,17 +91,16 @@ def runTimer():
     #play_button.config(image = play_button_img)
     play_button.config(text = "Pause")
     playBuzzer()
-    
-# IMAGES
-# logo_img = PhotoImage(file = 'assets/images/logo.jpeg')
-# app.iconphoto(False, logo_img)
-
-# play_button_img = PhotoImage(file = 'assets/images/play_arrow.png')
-# pause_button_img = PhotoImage(file = 'assets/images/pause_bars.png')
 
 # APP THEME
+
 app.tk.call("source", "sun-valley.tcl")
-app.tk.call("set_theme", "dark")
+app.tk.call("set_theme", "light")
+
+if  darkdetect.theme() == "Dark":
+    app.tk.call("set_theme", "dark")
+else:
+    app.tk.call("set_theme", "light")
 
 # WINDOW FRAME
 window = Frame(app)
