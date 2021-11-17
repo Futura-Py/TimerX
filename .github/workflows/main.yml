@@ -31,8 +31,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Create a exe
         run: |
-          del build
-          del dist
+          rm -rf build
+          rm -rf dist
           del main.exe
           pip install playsound
           pip install pyinstaller
