@@ -33,7 +33,7 @@ jobs:
         run: |
           rm -rf build
           rm -rf dist
-          del main.exe
+          rm -rf main.exe
           pip install playsound
           pip install pyinstaller
           pyinstaller main.spec --onefile
