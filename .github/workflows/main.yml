@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Create EXE
+name: Create EXE (Build TimerX)
 
 # Controls when the workflow will run
 on:
@@ -17,8 +17,11 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest] # we need builds for each os so that we can run TimerX on all OSes. Credits to GAUDC
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -29,5 +32,5 @@ jobs:
       - name: Create a exe
         run: |
           pip install playsound
-          pip install py2exe
-          python setup.py py2exe
+          pip install pyinstaller
+          pyinstaller main.spec
