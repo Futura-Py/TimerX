@@ -33,4 +33,4 @@ jobs:
         run: |
           pip install playsound
           pip install pyinstaller
-          pyinstaller main.spec
+          pyinstaller main.spec --onefile
