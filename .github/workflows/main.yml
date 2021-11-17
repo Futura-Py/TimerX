@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Create EXE (Build TimerX)
+name: Create Executable (Build TimerX)
 
 # Controls when the workflow will run
 on:
@@ -31,6 +31,9 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Create a exe
         run: |
+          del build
+          del dist
+          del main.exe
           pip install playsound
           pip install pyinstaller
           pyinstaller main.spec --onefile
