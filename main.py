@@ -14,7 +14,7 @@ app.geometry('300x200')
 
 print(platform.system())
 if  platform.system() == "Linux":
-    logo_img = PhotoImage(file = 'assets/images/logo.jpeg')
+    logo_img = PhotoImage(file = 'assets/images/logo.png')
     app.iconphoto(False, logo_img)
 elif  platform.system() == "Darwin":
     app.iconbitmap(r'assets/logo.icns')
