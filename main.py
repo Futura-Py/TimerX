@@ -7,6 +7,7 @@ from playsound import playsound
 import threading
 import configurator
 import darkdetect
+import platform
 
 # TKINTER WINDOW
 app = Tk()
@@ -14,10 +15,19 @@ app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
 
+print(platform.system())
+if  platform.system() == "Linux":
+    logo_img = PhotoImage(file = 'assets/images/logo.png')
+    app.iconphoto(False, logo_img)
+elif  platform.system() == "Darwin":
+    app.iconbitmap(r'assets/logo.icns')
+elif  platform.system() == "Windows":
+    app.iconphoto(r'assets/logo.ico')
+
 # VARIABLES
 app_on = True
 
-default_font = 'assets/fonts/font.ttf'
+default_font = './assets/fonts/font.ttf'
 
 timer_on = False
 timer_paused = True
@@ -28,7 +38,7 @@ timer_hours = 0
 
 # FUNCTIONS
 def playBuzzer():
-    playsound('assets/sounds/sound1.wav')
+    playsound('./assets/sounds/sound1.wav')
 
 def startstopButtonPressed():
     global timer_on, timer_paused
