@@ -59,17 +59,16 @@ def startstopButtonPressed():
     else:
         timer_paused = False
 
-def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_window, manager_app):
+def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window):
     global timer_seconds, timer_minutes, timer_hours
+
     try:
         timer_seconds = int(timer_sec_input.get())
-    except ValueError:
-        time_selected_display.configure(text = "Please enter a number!")
         timer_minutes = int(timer_min_input.get())
         timer_hours = int(timer_hr_input.get())
-        time_selected_display.configure(text = f'Time Selected : {timer_seconds} Seconds')
-        time_display.configure(text = f'{timer_hours} : {timer_seconds} : {timer_seconds}')
-        manager_app.destroy()
+        time_selected_display.configure(text = f'Time Selected : {timer_hours}:{timer_minutes}:{timer_seconds}')
+        time_display.configure(text = f'{timer_hours} : {timer_minutes} : {timer_seconds}')
+        manager_app_window.destroy()
     except ValueError:
         time_selected_display.configure(text = "Please enter a number!")
 
