@@ -16,7 +16,7 @@ app.geometry('300x210')
 app.resizable(False, False)
 
 print(platform.system())
-elif  platform.system() == "darwin":
+if  platform.system() == "darwin":
     app.iconbitmap(r'assets/logo.icns')
 elif  platform.system() == "win":
     app.iconphoto(r'assets/logo.ico')
