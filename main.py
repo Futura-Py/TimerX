@@ -16,13 +16,13 @@ app.geometry('300x210')
 app.resizable(False, False)
 
 print(platform.system())
-if  platform.system() == "Linux":
-    logo_img = PhotoImage(file = 'assets/images/logo.png')
-    app.iconphoto(False, logo_img)
-elif  platform.system() == "Darwin":
+elif  platform.system() == "darwin":
     app.iconbitmap(r'assets/logo.icns')
 elif  platform.system() == "win":
     app.iconphoto(r'assets/logo.ico')
+else:
+    logo_img = PhotoImage(file = 'assets/images/logo.png')
+    app.iconphoto(False, logo_img)
 
 # VARIABLES
 app_on = True
