@@ -21,7 +21,7 @@ if  platform.system() == "Linux":
     app.iconphoto(False, logo_img)
 elif  platform.system() == "Darwin":
     app.iconbitmap(r'assets/logo.icns')
-elif  platform.system() == "Windows":
+elif  platform.system() == "win":
     app.iconphoto(r'assets/logo.ico')
 
 # VARIABLES
