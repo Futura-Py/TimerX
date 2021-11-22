@@ -1,7 +1,7 @@
 # TimerX v1.3.0 by sumeshir26
 # IMPORTS
 from time import sleep
-from tkinter import  Image, ttk, Tk, PhotoImage, Frame
+from tkinter import  Image, TclError, ttk, Tk, PhotoImage, Frame
 from tkinter.constants import  SE, SW
 from playsound import playsound
 import threading
@@ -15,14 +15,20 @@ app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
 
-print(platform.system())
-if  platform.system() == "darwin":
-    app.iconbitmap(r'assets/logo.icns')
-elif  platform.system() == "win":
-    app.iconphoto(r'assets/logo.ico')
-else:
-    logo_img = PhotoImage(file = 'assets/images/logo.png')
-    app.iconphoto(False, logo_img)
+# APP ICON
+print(f'Running on {platform.system}')
+try:
+    if  platform.system() == "darwin":
+        app.iconbitmap(r'assets/logo.icns')
+    elif  platform.system() == "Windows":
+        app.iconphoto(r'assets/logo.ico')
+    elif  platform.system() == "win":
+        app.iconphoto(r'assets/logo.ico')
+    else:
+        logo_img = PhotoImage(file = 'assets/images/logo.png')
+        app.iconphoto(False, logo_img)
+except TclError:
+    pass
 
 # VARIABLES
 app_on = True
