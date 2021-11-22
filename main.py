@@ -1,7 +1,8 @@
 # TimerX v1.3.0 by sumeshir26
 # IMPORTS
 from time import sleep
-from tkinter import ttk, Tk, PhotoImage, Frame
+from tkinter import  Image, ttk, Tk, PhotoImage, Frame
+from tkinter.constants import  SE, SW
 from playsound import playsound
 import threading
 import configurator
@@ -10,7 +11,8 @@ import darkdetect
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
-app.geometry('300x200')
+app.geometry('300x210')
+app.resizable(False, False)
 
 # VARIABLES
 app_on = True
@@ -33,10 +35,8 @@ def startstopButtonPressed():
     if timer_on:
         timer_on = False
         timer_paused = True
-        # play_button.configure(image = play_button_img)
         play_button.configure(text = "Play")
     elif timer_paused == False and timer_on == False:
-        #play_button.configure(image = pause_button_img)
         play_button.configure(text = "Pause")
         timer_thread = threading.Thread(target=runTimer, daemon=True)
         timer_thread.start()
@@ -53,7 +53,6 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_window, 
         timer_hours = int(timer_hr_input.get())
         time_selected_display.configure(text = f'Time Selected : {timer_seconds} Seconds')
         time_display.configure(text = f'{timer_hours} : {timer_seconds} : {timer_seconds}')
-        print('DESTRUCTION MODE')
         manager_app.destroy()
     except ValueError:
         time_selected_display.configure(text = "Please enter a number!")
@@ -88,19 +87,40 @@ def runTimer():
 
     timer_on = False
     time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
-    #play_button.config(image = play_button_img)
     play_button.config(text = "Pause")
     playBuzzer()
 
 # APP THEME
 
 app.tk.call("source", "sun-valley.tcl")
-app.tk.call("set_theme", "light")
+theme = 'light'
 
 if  darkdetect.theme() == "Dark":
     app.tk.call("set_theme", "dark")
+    theme = 'dark'
 else:
     app.tk.call("set_theme", "light")
+
+def switchTheme():
+    global theme, app, info_button, switch_theme_button
+    if  theme == 'light':
+        theme = 'dark'
+        app.tk.call("set_theme", "dark")
+        switch_theme_button.configure(image=switch_theme_image_dark)
+        info_button.configure(image=info_image_dark)
+    else:
+        theme = 'light'
+        app.tk.call("set_theme", "light")
+        info_button.configure(image=info_image_light)
+        switch_theme_button.configure(image=switch_theme_image_light)
+
+# IMAGES
+
+switch_theme_image_light = PhotoImage(file=f"./assets/images/light/dark_theme.png")
+switch_theme_image_dark = PhotoImage(file=f"./assets/images/dark/dark_theme.png")
+
+info_image_light = PhotoImage(file=f"./assets/images/light/info.png")
+info_image_dark = PhotoImage(file=f"./assets/images/dark/info.png")
 
 # WINDOW FRAME
 window = Frame(app)
@@ -113,15 +133,22 @@ time_selected_display.pack()
 time_display = ttk.Label(master = window, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("any", 30))
 time_display.pack(pady = 5)
 
-# play_button = ttk.Button(master = window, image = play_button_img, width = 20, command = startstopButtonPressed, style="Accent.TButton")
 play_button = ttk.Button(master = window, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
 play_button.pack()
 
 manager_button = ttk.Button(master =window, text = 'Edit Timer', command = lambda: configurator.createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
 manager_button.pack(pady = 5)
 
-about_button = ttk.Button(master =window, text = 'About', command = configurator.createAboutWindow, width = 25)
-about_button.pack()
+switch_theme_button = ttk.Button(master=window, image=switch_theme_image_light, command=switchTheme)
+switch_theme_button.pack(anchor=SW, padx=5, pady=(5, 5))
+
+info_button = ttk.Button(master=window, image=switch_theme_image_light, command = configurator.createAboutWindow)
+#info_button.pack(anchor=SE, padx=50)
+
+# THEMED IMAGES
+if  darkdetect.theme() == "Dark":
+    switch_theme_button.configure(image=switch_theme_image_dark)
+    info_button.configure(image=info_image_dark)
 
 # TKINTER MAINLOOP
 window.mainloop()
