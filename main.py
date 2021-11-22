@@ -72,13 +72,16 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_window, 
         manager_app.destroy()
     except ValueError:
         time_selected_display.configure(text = "Please enter a number!")
+
 def runTimer():
     global timer_seconds, timer_minutes, timer_hours, timer_on
+
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
     timer_done = False
     timer_on = True
+
     while timer_done == False:
         if timer_on:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
@@ -92,17 +95,19 @@ def runTimer():
             else:
                 seconds_left -= 1
             sleep(1)
+
         elif timer_paused == False:
             seconds_left = timer_seconds
             minutes_left = timer_minutes
             hours_left = timer_hours
             time_display.configure(text = f'{timer_hours} : {timer_minutes} : {timer_seconds}')
+
         else:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
 
     timer_on = False
     time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
-    play_button.config(text = "Pause")
+    play_button.config(text = "Play")
     playBuzzer()
 
 # APP THEME
