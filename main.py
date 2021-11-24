@@ -1,28 +1,31 @@
 # TimerX v1.3.0 by sumeshir26
 # IMPORTS
 from time import sleep
-from tkinter import  Image, TclError, ttk, Tk, PhotoImage, Frame
+from tkinter import  TclError, ttk, Tk, PhotoImage, Frame
 from tkinter.constants import  SE, SW
 from playsound import playsound
-import threading
+from threading import  Thread
 import configurator
 import darkdetect
-import platform
+from platform import system
 
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
+# app.attributes('-topmost', False)
+# app.update()
+# app.attributes('-alpha', 0.75)
 
 # APP ICON
-print(f'Running on {platform.system}')
+print(f'Running on {system}')
 try:
-    if  platform.system() == "darwin":
+    if  system() == "darwin":
         app.iconbitmap(r'assets/logo.icns')
-    elif  platform.system() == "Windows":
+    elif  system() == "Windows":
         app.iconphoto(r'assets/logo.ico')
-    elif  platform.system() == "win":
+    elif  system() == "win":
         app.iconphoto(r'assets/logo.ico')
     else:
         logo_img = PhotoImage(file = 'assets/images/logo.png')
@@ -54,7 +57,7 @@ def startstopButtonPressed():
         play_button.configure(text = "Play")
     elif timer_paused == False and timer_on == False:
         play_button.configure(text = "Pause")
-        timer_thread = threading.Thread(target=runTimer, daemon=True)
+        timer_thread = Thread(target=runTimer, daemon=True)
         timer_thread.start()
     else:
         timer_paused = False
