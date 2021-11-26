@@ -5,9 +5,9 @@ from tkinter import  TclError, ttk, Tk, PhotoImage, Frame
 from tkinter.constants import  LEFT, RIGHT, SE, SW
 from playsound import playsound
 from threading import  Thread
+from platform import system
 import configurator
 import darkdetect
-from platform import system
 
 # TKINTER WINDOW
 app = Tk()
@@ -82,13 +82,15 @@ def runTimer():
     timer_on = True
 
     while timer_done == False:
-        if timer_on:
+        if  timer_on:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
             if seconds_left == 0 and minutes_left != 0:
                 minutes_left -= 1
                 seconds_left = 59
             elif seconds_left == 0 and minutes_left == 0 and hours_left != 0:
                 hours_left -= 1
+                minutes_left = 59
+                seconds_left = 59
             elif seconds_left == 0 and timer_minutes == 0 and hours_left == 0:
                 timer_done = True
             else:
