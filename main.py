@@ -14,9 +14,6 @@ app = Tk()
 app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
-# app.attributes('-topmost', True)
-# app.update()
-# app.attributes('-alpha', 0.75)
 
 # APP ICON
 print(f'Running on {system}')
@@ -27,7 +24,6 @@ try:
         app.iconphoto(r'assets/logo.ico')
     elif  system() == "win":
         app.iconphoto(r'assets/logo.ico')
-        app.overrideredirect(True)
     else:
         logo_img = PhotoImage(file = 'assets/images/logo.png')
         app.iconphoto(False, logo_img)
