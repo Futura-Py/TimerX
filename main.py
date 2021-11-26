@@ -1,28 +1,37 @@
 # TimerX v1.3.0 by sumeshir26
 # IMPORTS
 from time import sleep
-from tkinter import  Image, ttk, Tk, PhotoImage, Frame
+from tkinter import  TclError, ttk, Tk, PhotoImage, Frame
 from tkinter.constants import  SE, SW
 from playsound import playsound
-import threading
+from threading import  Thread
 import configurator
 import darkdetect
-import platform
+from platform import system
 
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
+# app.attributes('-topmost', False)
+# app.update()
+# app.attributes('-alpha', 0.75)
 
-print(platform.system())
-if  platform.system() == "darwin":
-    app.iconbitmap(r'assets/logo.icns')
-elif  platform.system() == "win":
-    app.iconphoto(r'assets/logo.ico')
-else:
-    logo_img = PhotoImage(file = 'assets/images/logo.png')
-    app.iconphoto(False, logo_img)
+# APP ICON
+print(f'Running on {system}')
+try:
+    if  system() == "darwin":
+        app.iconbitmap(r'assets/logo.icns')
+    elif  system() == "Windows":
+        app.iconphoto(r'assets/logo.ico')
+    elif  system() == "win":
+        app.iconphoto(r'assets/logo.ico')
+    else:
+        logo_img = PhotoImage(file = 'assets/images/logo.png')
+        app.iconphoto(False, logo_img)
+except TclError:
+    pass
 
 # VARIABLES
 app_on = True
@@ -48,35 +57,35 @@ def startstopButtonPressed():
         play_button.configure(text = "Play")
     elif timer_paused == False and timer_on == False:
         play_button.configure(text = "Pause")
-        timer_thread = threading.Thread(target=runTimer, daemon=True)
+        timer_thread = Thread(target=runTimer, daemon=True)
         timer_thread.start()
     else:
         timer_paused = False
 
-def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_window, manager_app):
+def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window):
     global timer_seconds, timer_minutes, timer_hours
+
     try:
         timer_seconds = int(timer_sec_input.get())
-    except ValueError:
-        time_selected_display.configure(text = "Please enter a number!")
         timer_minutes = int(timer_min_input.get())
         timer_hours = int(timer_hr_input.get())
-        time_selected_display.configure(text = f'Time Selected : {timer_seconds} Seconds')
-        time_display.configure(text = f'{timer_hours} : {timer_seconds} : {timer_seconds}')
-        manager_app.destroy()
+        time_selected_display.configure(text = f'Time Selected : {timer_hours}:{timer_minutes}:{timer_seconds}')
+        time_display.configure(text = f'{timer_hours} : {timer_minutes} : {timer_seconds}')
+        manager_app_window.destroy()
     except ValueError:
         time_selected_display.configure(text = "Please enter a number!")
+
 def runTimer():
     global timer_seconds, timer_minutes, timer_hours, timer_on
+
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
     timer_done = False
     timer_on = True
+
     while timer_done == False:
         if timer_on:
-            sleep(1)
-            #execution_start_time = time.time()
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
             if seconds_left == 0 and minutes_left != 0:
                 minutes_left -= 1
@@ -86,18 +95,21 @@ def runTimer():
             elif seconds_left == 0 and timer_minutes == 0 and hours_left == 0:
                 timer_done = True
             else:
-                seconds_left -= 1 #(time.time() - execution_start_time)
+                seconds_left -= 1
+            sleep(1)
+
         elif timer_paused == False:
             seconds_left = timer_seconds
             minutes_left = timer_minutes
             hours_left = timer_hours
             time_display.configure(text = f'{timer_hours} : {timer_minutes} : {timer_seconds}')
+
         else:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
 
     timer_on = False
     time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
-    play_button.config(text = "Pause")
+    play_button.config(text = "Play")
     playBuzzer()
 
 # APP THEME

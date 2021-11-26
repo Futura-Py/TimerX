@@ -33,6 +33,7 @@ MANIFEST
 *.manifest
 ./.vscode
 ./.__pycache__/*
+./__pycache__/*
 
 # Installer logs
 pip-log.txt

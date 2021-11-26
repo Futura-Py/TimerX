@@ -32,7 +32,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     timer_sec_input.grid(row = 3, column = 2, pady = 5)
     timer_sec_input.insert(1, current_secs)
 
-    ok_button = ttk.Button(manager_window, text = 'Ok!', command = lambda:saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_window, manager_app_window))
+    ok_button = ttk.Button(manager_window, text = 'Ok!', command = lambda:saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window))
     ok_button.grid(row = 4, column = 2, pady = 5)
 
 def createAboutWindow():
