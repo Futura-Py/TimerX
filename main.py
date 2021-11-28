@@ -141,19 +141,23 @@ theme = 'light'
 if  darkdetect.theme() == "Dark":
     app.tk.call("set_theme", "dark")
     theme = 'dark'
+    app.attributes('-alpha', '0.85')
 else:
     app.tk.call("set_theme", "light")
+    app.attributes('-alpha', '0.95')
 
 def switchTheme():
     global theme, app, pin_button, switch_theme_button
     if  theme == 'light':
         theme = 'dark'
         app.tk.call("set_theme", "dark")
+        app.attributes('-alpha', '0.85')
         switch_theme_button.configure(image=switch_theme_image_dark)
         pin_button.configure(image=pin_image_dark)
     else:
         theme = 'light'
         app.tk.call("set_theme", "light")
+        app.attributes('-alpha', '0.95')
         pin_button.configure(image=pin_image_light)
         switch_theme_button.configure(image=switch_theme_image_light)
 
