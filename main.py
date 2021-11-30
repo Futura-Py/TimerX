@@ -6,6 +6,8 @@ from tkinter.constants import  LEFT, RIGHT, SE, SW
 from playsound import playsound
 from threading import  Thread
 from platform import system
+from BlurWindow.blurWindow import GlobalBlur, blur
+import ctypes
 import configurator
 import darkdetect
 
@@ -14,7 +16,13 @@ app = Tk()
 app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
+app.config(bg='green')
+app.wm_attributes("-transparent", 'green')
+app.update()
 
+HWND = ctypes.windll.user32.GetForegroundWindow()
+GlobalBlur(HWND)
+blur(HWND, hexColor='#12121240')
 # APP ICON
 print(f'Running on {system}')
 try:
@@ -141,23 +149,23 @@ theme = 'light'
 if  darkdetect.theme() == "Dark":
     app.tk.call("set_theme", "dark")
     theme = 'dark'
-    app.attributes('-alpha', '0.85')
+    # app.attributes('-alpha', '0.85')
 else:
     app.tk.call("set_theme", "light")
-    app.attributes('-alpha', '0.95')
+    # app.attributes('-alpha', '0.95')
 
 def switchTheme():
     global theme, app, pin_button, switch_theme_button
     if  theme == 'light':
         theme = 'dark'
         app.tk.call("set_theme", "dark")
-        app.attributes('-alpha', '0.85')
+        # app.attributes('-alpha', '0.85')
         switch_theme_button.configure(image=switch_theme_image_dark)
         pin_button.configure(image=pin_image_dark)
     else:
         theme = 'light'
         app.tk.call("set_theme", "light")
-        app.attributes('-alpha', '0.95')
+        # app.attributes('-alpha', '0.95')
         pin_button.configure(image=pin_image_light)
         switch_theme_button.configure(image=switch_theme_image_light)
 
@@ -201,4 +209,4 @@ if  darkdetect.theme() == "Dark":
     pin_button.configure(image=pin_image_dark)
 
 # TKINTER MAINLOOP
-window.mainloop()
+app.mainloop()
