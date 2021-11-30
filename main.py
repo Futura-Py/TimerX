@@ -192,7 +192,7 @@ manager_button.pack(pady = 5)
 switch_theme_button = ttk.Button(master=window, image=switch_theme_image_light, command=switchTheme, style="Toolbutton")
 switch_theme_button.pack(side=LEFT, padx=5, pady=(5, 5))
 
-pin_button = ttk.Button(master=window, image=switch_theme_image_light, command = lambda:toggleAlwaysOnTop(app), style="Toolbutton")
+pin_button = ttk.Button(master=window, image=pin_image_light, command = lambda:toggleAlwaysOnTop(app), style="Toolbutton")
 pin_button.pack(side=RIGHT, padx=(0, 5), pady=(5, 5))
 
 # THEMED IMAGES
