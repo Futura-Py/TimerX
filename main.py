@@ -169,6 +169,9 @@ def switchTheme():
         pin_button.configure(image=pin_image_light)
         switch_theme_button.configure(image=switch_theme_image_light)
 
+#KEYBIMDS
+app.bind('Space', startStopButtonPressed)
+
 # IMAGES
 
 switch_theme_image_light = PhotoImage(file=f"./assets/images/light/dark_theme.png")
