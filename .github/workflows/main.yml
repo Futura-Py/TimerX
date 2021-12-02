@@ -1,13 +1,11 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Create Executable (Build TimerX)
+name: Create Executable (Build TimerX - Windows)
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -17,11 +15,8 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest] # we need builds for each os so that we can run TimerX on all OSes. Credits to GAUDC
     # The type of runner that the job will run on
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -31,9 +26,9 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Create a exe
         run: |
-          rm -rf build
-          rm -rf dist
-          rm -rf main.exe
-          pip install playsound
+          del build
+          del dist
+          del main.exe
           pip install pyinstaller
+          pip install requirements.txt
           pyinstaller main.spec --onefile
