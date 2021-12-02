@@ -8,7 +8,6 @@ from playsound import playsound
 from threading import  Thread
 from platform import system
 from BlurWindow.blurWindow import GlobalBlur, blur
-from win10toast_click import ToastNotifier 
 import ctypes
 import configurator
 import darkdetect
@@ -31,7 +30,8 @@ try:
     if  system() == "darwin":
         app.iconbitmap(r'assets/logo.icns')
     elif  system() == "Windows":
-        app.iconphoto(r'assets/logo.ico')
+        app.iconbitmap(r'assets/logo.ico')
+        from win10toast_click import ToastNotifier 
     elif  system() == "win":
         app.iconphoto(r'assets/logo.ico')
     else:
