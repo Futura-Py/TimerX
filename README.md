@@ -11,10 +11,10 @@
 </p>
 
 # 🎯TODO before v1.0
-- 🔝~~Add Always on Top option~~ _Added(PR)!_
+- 🔝~~Add Always on Top option~~ _Added in codebase!_
 - 🌑~~Dark Mode~~ _Added in codebase!_
-- ⌨️Hotkeys to Play/Pause
-- 🔔Notifications
+- ⌨️~~Keybinds to Play/Pause~~ _Added in codebase!_
+- 🔔~~Notifications~~ _Added in codebase!(Windows Only)_
 # Features coming after v1.0(No promises!)
 - ⚙️Add settings and about page
 -  Dynamicalay resize elements & theme

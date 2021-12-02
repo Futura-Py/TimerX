@@ -1,5 +1,6 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
+import platform
 from time import sleep
 from tkinter import  TclError, ttk, Tk, PhotoImage, Frame
 from tkinter.constants import  LEFT, RIGHT, SE, SW
@@ -7,6 +8,7 @@ from playsound import playsound
 from threading import  Thread
 from platform import system
 from BlurWindow.blurWindow import GlobalBlur, blur
+from win10toast_click import ToastNotifier 
 import ctypes
 import configurator
 import darkdetect
@@ -81,7 +83,7 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_wind
         time_selected_display.configure(text = "Please enter a number!")
 
 def runTimer():
-    global timer_seconds, timer_minutes, timer_hours, timer_on
+    global timer_seconds, timer_minutes, timer_hours, timer_on, app
 
     seconds_left = timer_seconds
     minutes_left = timer_minutes
@@ -116,6 +118,18 @@ def runTimer():
     timer_on = False
     time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
     play_button.config(text = "Play")
+
+    if  system() == "Windows":
+        notification = ToastNotifier()
+        notification.show_toast(
+        "TimerX", 
+        "Timer done!", 
+        icon_path='./assets/logo.ico', 
+        duration='None', 
+        threaded=True,
+        callback_on_click= app.focus_force() 
+        )
+
     playBuzzer()
 
 def toggleAlwaysOnTop(app):
