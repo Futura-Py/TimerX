@@ -26,7 +26,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Create a exe
         run: |
-          del ./build/
           del ./dist/
           del ./main.exe
           pip install pyinstaller
