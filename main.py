@@ -1,4 +1,4 @@
-# TimerX v1.3.0 by sumeshir26
+# TimerX v0.2 by sumeshir26
 # IMPORTS
 from time import sleep
 from tkinter import  TclError, ttk, Tk, PhotoImage, Frame
@@ -86,7 +86,6 @@ def runTimer():
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
-    # timer_done = False
     timer_on = True
 
     while True:
@@ -149,28 +148,24 @@ theme = 'light'
 if  darkdetect.theme() == "Dark":
     app.tk.call("set_theme", "dark")
     theme = 'dark'
-    # app.attributes('-alpha', '0.85')
 else:
     app.tk.call("set_theme", "light")
-    # app.attributes('-alpha', '0.95')
 
 def switchTheme():
     global theme, app, pin_button, switch_theme_button
     if  theme == 'light':
         theme = 'dark'
         app.tk.call("set_theme", "dark")
-        # app.attributes('-alpha', '0.85')
         switch_theme_button.configure(image=switch_theme_image_dark)
         pin_button.configure(image=pin_image_dark)
     else:
         theme = 'light'
         app.tk.call("set_theme", "light")
-        # app.attributes('-alpha', '0.95')
         pin_button.configure(image=pin_image_light)
         switch_theme_button.configure(image=switch_theme_image_light)
 
 #KEYBIMDS
-app.bind('Space', startStopButtonPressed)
+app.bind('key-space', startstopButtonPressed)
 
 # IMAGES
 
