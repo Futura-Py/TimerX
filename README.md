@@ -10,8 +10,17 @@
     <img src="./assets/readme/dark.png"></img>
 </p>
 
-# TODO before v1.0
-- Add settings and about page
-- Fix button clicking through [main.py](main.py) and [configurator.py](configurator.py)
-- Add Always on Top option
-- Dynamicalay resize elements & theme
+# 🎯TODO before v1.0
+- 🔝~~Add Always on Top option~~ _Added in codebase!_
+- 🌑~~Dark Mode~~ _Added in codebase!_
+- ⌨️~~Keybinds to Play/Pause~~ _Added in codebase!_
+- 🔔~~Notifications~~ _Added in codebase!(Windows Only)_
+# Features coming after v1.0(No promises!)
+- ⚙️Add settings and about page
+-  Dynamicalay resize elements & theme
+- Dark Titlebar
+
+# Supported Platforms
+- ✔️Windows: Tested on Windows 7,10, and 11
+- ❔Linux: Tested on Ubuntu based systems(Raspbian and ZorinOS). Not tested on Red Hat based systems(Help Wanted)
+- ❌ MacOS: GitHub Actions build **fails**, Help wanted to debug.

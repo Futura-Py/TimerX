@@ -1,23 +1,30 @@
-# TimerX v1.3.0 by sumeshir26
+# TimerX v0.2 by sumeshir26
 # IMPORTS
+import platform
 from time import sleep
 from tkinter import  TclError, ttk, Tk, PhotoImage, Frame
-from tkinter.constants import  SE, SW
+from tkinter.constants import  LEFT, RIGHT, SE, SW
 from playsound import playsound
 from threading import  Thread
+from platform import system
+from BlurWindow.blurWindow import GlobalBlur, blur
+from win10toast_click import ToastNotifier 
+import ctypes
 import configurator
 import darkdetect
-from platform import system
 
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
-# app.attributes('-topmost', False)
-# app.update()
-# app.attributes('-alpha', 0.75)
+app.config(bg='green')
+app.wm_attributes("-transparent", 'green')
+app.update()
 
+HWND = ctypes.windll.user32.GetForegroundWindow()
+GlobalBlur(HWND)
+blur(HWND, hexColor='#12121240')
 # APP ICON
 print(f'Running on {system}')
 try:
@@ -36,14 +43,14 @@ except TclError:
 # VARIABLES
 app_on = True
 
-default_font = './assets/fonts/font.ttf'
-
 timer_on = False
 timer_paused = True
 
 timer_seconds = 5
 timer_minutes = 0
 timer_hours = 0
+
+ontop = False
 
 # FUNCTIONS
 def playBuzzer():
@@ -76,24 +83,25 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_wind
         time_selected_display.configure(text = "Please enter a number!")
 
 def runTimer():
-    global timer_seconds, timer_minutes, timer_hours, timer_on
+    global timer_seconds, timer_minutes, timer_hours, timer_on, app
 
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
-    timer_done = False
     timer_on = True
 
-    while timer_done == False:
-        if timer_on:
+    while True:
+        if  timer_on:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
             if seconds_left == 0 and minutes_left != 0:
                 minutes_left -= 1
                 seconds_left = 59
             elif seconds_left == 0 and minutes_left == 0 and hours_left != 0:
                 hours_left -= 1
+                minutes_left = 59
+                seconds_left = 59
             elif seconds_left == 0 and timer_minutes == 0 and hours_left == 0:
-                timer_done = True
+                break
             else:
                 seconds_left -= 1
             sleep(1)
@@ -110,7 +118,41 @@ def runTimer():
     timer_on = False
     time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
     play_button.config(text = "Play")
+
+    if  system() == "Windows":
+        notification = ToastNotifier()
+        notification.show_toast(
+        "TimerX", 
+        "Timer done!", 
+        icon_path='./assets/logo.ico', 
+        duration='None', 
+        threaded=True,
+        callback_on_click= app.focus_force() 
+        )
+
     playBuzzer()
+
+def toggleAlwaysOnTop(app):
+    global ontop, pin_button, theme
+    if  ontop == False:
+        app.attributes('-topmost', True)
+        ontop = True
+        if  theme == 'dark':
+            global unpin_image_dark
+            pin_button.configure(image=unpin_image_dark)
+        else:
+            global unpin_image_light
+            pin_button.configure(image=unpin_image_light)
+        return
+    else:
+        app.attributes('-topmost', False)
+        if  theme == 'dark':
+            global pin_image_dark
+            pin_button.configure(image=pin_image_dark)
+        else:
+            global pin_image_light
+            pin_button.configure(image=pin_image_light)
+        ontop = False
 
 # APP THEME
 
@@ -124,25 +166,31 @@ else:
     app.tk.call("set_theme", "light")
 
 def switchTheme():
-    global theme, app, info_button, switch_theme_button
+    global theme, app, pin_button, switch_theme_button
     if  theme == 'light':
         theme = 'dark'
         app.tk.call("set_theme", "dark")
         switch_theme_button.configure(image=switch_theme_image_dark)
-        info_button.configure(image=info_image_dark)
+        pin_button.configure(image=pin_image_dark)
     else:
         theme = 'light'
         app.tk.call("set_theme", "light")
-        info_button.configure(image=info_image_light)
+        pin_button.configure(image=pin_image_light)
         switch_theme_button.configure(image=switch_theme_image_light)
+
+#KEYBIMDS
+app.bind('key-space', startstopButtonPressed)
 
 # IMAGES
 
 switch_theme_image_light = PhotoImage(file=f"./assets/images/light/dark_theme.png")
 switch_theme_image_dark = PhotoImage(file=f"./assets/images/dark/dark_theme.png")
 
-info_image_light = PhotoImage(file=f"./assets/images/light/info.png")
-info_image_dark = PhotoImage(file=f"./assets/images/dark/info.png")
+pin_image_light = PhotoImage(file=f"./assets/images/light/pin.png")
+pin_image_dark = PhotoImage(file=f"./assets/images/dark/pin.png")
+
+unpin_image_light = PhotoImage(file=f"./assets/images/light/unpin.png")
+unpin_image_dark = PhotoImage(file=f"./assets/images/dark/unpin.png")
 
 # WINDOW FRAME
 window = Frame(app)
@@ -161,16 +209,16 @@ play_button.pack()
 manager_button = ttk.Button(master =window, text = 'Edit Timer', command = lambda: configurator.createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
 manager_button.pack(pady = 5)
 
-switch_theme_button = ttk.Button(master=window, image=switch_theme_image_light, command=switchTheme)
-switch_theme_button.pack(anchor=SW, padx=5, pady=(5, 5))
+switch_theme_button = ttk.Button(master=window, image=switch_theme_image_light, command=switchTheme, style="Toolbutton")
+switch_theme_button.pack(side=LEFT, padx=5, pady=(5, 5))
 
-info_button = ttk.Button(master=window, image=switch_theme_image_light, command = configurator.createAboutWindow)
-#info_button.pack(anchor=SE, padx=50)
+pin_button = ttk.Button(master=window, image=pin_image_light, command = lambda:toggleAlwaysOnTop(app), style="Toolbutton")
+pin_button.pack(side=RIGHT, padx=(0, 5), pady=(5, 5))
 
 # THEMED IMAGES
 if  darkdetect.theme() == "Dark":
     switch_theme_button.configure(image=switch_theme_image_dark)
-    info_button.configure(image=info_image_dark)
+    pin_button.configure(image=pin_image_dark)
 
 # TKINTER MAINLOOP
-window.mainloop()
+app.mainloop()
