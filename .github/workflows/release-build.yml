@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'Version number(semver)'
+        description: 'Version(semver)'
         required: true
-        default: "Input semver(remove this)"
+        default: 'vX.X.X'
         
 
 jobs:
@@ -40,10 +40,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.name }}
-          release_name: ${{ github.event.inputs.name }}
+          release_name: 'Release ${{ github.event.inputs.name }}'
           overwrite: true
           body: |
-            Release ${{ github.event.inputs.name }} (Add your content here and then publish this.
+            Release ${{ github.event.inputs.name }} (Add your content here and then publish this.)
           draft: true
           prerelease: false
       - name: Upload Release Asset
