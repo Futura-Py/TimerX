@@ -6,6 +6,7 @@ on:
       name:
         description: 'Version number(semver)'
         required: true
+        default: "Input semver(remove this)"
         
 
 jobs:
