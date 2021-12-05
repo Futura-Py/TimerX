@@ -56,3 +56,4 @@ jobs:
           asset_path: dist/TimerX.exe
           asset_name: TimerX.exe
           asset_content_type: application/zip
+          
