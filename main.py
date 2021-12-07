@@ -96,7 +96,7 @@ def runTimer():
     timer_on = True
 
     while True:
-        if  timer_on:
+        if  timer_on and timer_paused == False:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
             if seconds_left == 0 and minutes_left != 0:
                 minutes_left -= 1
@@ -110,12 +110,6 @@ def runTimer():
             else:
                 seconds_left -= 1
             sleep(1)
-
-        elif timer_paused == False:
-            seconds_left = timer_seconds
-            minutes_left = timer_minutes
-            hours_left = timer_hours
-            time_display.configure(text = f'{timer_hours} : {timer_minutes} : {timer_seconds}')
 
         else:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
