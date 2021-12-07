@@ -24,6 +24,7 @@ app.update()
 HWND = ctypes.windll.user32.GetForegroundWindow()
 GlobalBlur(HWND)
 blur(HWND, hexColor='#12121240')
+
 # APP ICON
 print(f'Running on {system}')
 try:
@@ -39,6 +40,10 @@ try:
         app.iconphoto(False, logo_img)
 except TclError:
     pass
+    try:
+        app.iconphoto(r'assets/logo.ico')
+    except TclError:
+        pass
 
 # VARIABLES
 app_on = True
