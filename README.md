@@ -2,7 +2,7 @@
     <img src="./assets/readme/banner.png"></img>
 </p>
 
-# TimerX
+# 🕦TimerX
 
 ### A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's [Sun Valley TTk Theme](https://github.com/rdbende/Sun-Valley-TTk-Theme)
 
@@ -19,6 +19,7 @@
 - ⚙️Add settings and about page
 -  Dynamicalay resize elements & theme
 - Dark Titlebar
+- ⏱️Stopwatch Mode
 
 # Supported Platforms
 - ✔️Windows: Tested on Windows 7,10, and 11
