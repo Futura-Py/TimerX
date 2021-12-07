@@ -8,7 +8,6 @@ from playsound import playsound
 from threading import  Thread
 from platform import system
 from BlurWindow.blurWindow import GlobalBlur, blur
-from win10toast_click import ToastNotifier 
 import ctypes
 import configurator
 import darkdetect
@@ -25,13 +24,15 @@ app.update()
 HWND = ctypes.windll.user32.GetForegroundWindow()
 GlobalBlur(HWND)
 blur(HWND, hexColor='#12121240')
+
 # APP ICON
 print(f'Running on {system}')
 try:
     if  system() == "darwin":
         app.iconbitmap(r'assets/logo.icns')
     elif  system() == "Windows":
-        app.iconphoto(r'assets/logo.ico')
+        app.iconbitmap(r'assets/logo.ico')
+        from win10toast_click import ToastNotifier 
     elif  system() == "win":
         app.iconphoto(r'assets/logo.ico')
     else:
@@ -39,6 +40,10 @@ try:
         app.iconphoto(False, logo_img)
 except TclError:
     pass
+    try:
+        app.iconphoto(r'assets/logo.ico')
+    except TclError:
+        pass
 
 # VARIABLES
 app_on = True
@@ -91,7 +96,7 @@ def runTimer():
     timer_on = True
 
     while True:
-        if  timer_on:
+        if  timer_on and timer_paused == False:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
             if seconds_left == 0 and minutes_left != 0:
                 minutes_left -= 1
@@ -105,12 +110,6 @@ def runTimer():
             else:
                 seconds_left -= 1
             sleep(1)
-
-        elif timer_paused == False:
-            seconds_left = timer_seconds
-            minutes_left = timer_minutes
-            hours_left = timer_hours
-            time_display.configure(text = f'{timer_hours} : {timer_minutes} : {timer_seconds}')
 
         else:
             time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
