@@ -3,7 +3,7 @@ name: Release Build
 on:
   workflow_dispatch:
     inputs:
-      name:
+      version:
         description: 'Version(semver)'
         required: true
         default: 'vX.X.X'
@@ -12,10 +12,8 @@ on:
 jobs:
   
   build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+  
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -43,11 +41,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.name }}
-          release_name: 'Release ${{ github.event.inputs.name }}'
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: 'Release ${{ github.event.inputs.version }}'
           overwrite: true
           body: |
-            Release ${{ github.event.inputs.name }} (Add your content here and then publish this.)
+            Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
           draft: true
           prerelease: false
       - name: Upload Release Asset
