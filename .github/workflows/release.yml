@@ -10,8 +10,12 @@ on:
         
 
 jobs:
-  build-windows:
-    runs-on: windows-2019
+  
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v1

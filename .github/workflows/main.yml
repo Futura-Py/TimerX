@@ -25,4 +25,46 @@ jobs:
           pip install pyinstaller
           pip install -r requirements.txt
           pyinstaller main.spec
-  
+          
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+      - name: Run PyInstaller
+        run: |
+          pip install pyinstaller
+          pip install -r requirements.txt        
+          pyinstaller main.spec
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      - name: Install requirements
+        run: |
+          sudo apt update
+          sudo apt install python3-dev -y
+          pip3 install -r requirements.txt
+      - name: Run PyInstaller
+        run: |
+          sudo apt update
+          sudo apt install python3-dev -y
+          pip3 install pyinstaller
+          pip3 install -r requirements.txt
+          pyinstaller main.spec
+
+

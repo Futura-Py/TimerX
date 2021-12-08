@@ -7,7 +7,10 @@ from tkinter.constants import  LEFT, RIGHT, SE, SW
 from playsound import playsound
 from threading import  Thread
 from platform import system
+"""
+# Disabled by default due to module unavailability on Linux
 from BlurWindow.blurWindow import GlobalBlur, blur
+"""
 import ctypes
 import configurator
 import darkdetect
@@ -20,11 +23,12 @@ app.resizable(False, False)
 app.config(bg='green')
 app.wm_attributes("-transparent", 'green')
 app.update()
-
+"""
+# Disabled by default
 HWND = ctypes.windll.user32.GetForegroundWindow()
 GlobalBlur(HWND)
 blur(HWND, hexColor='#12121240')
-
+"""
 # APP ICON
 print(f'Running on {system}')
 try:
