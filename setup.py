@@ -12,8 +12,8 @@ If sys.platform == “darwin”:
 executables = [Executable("main.py", base=base, icon=icon)]
 
 setup(
-    name="simple_Tkinter",
+    name="TimerX",
     version="0.1",
-    description="Sample cx_Freeze Tkinter script",
+    description="Timer application based on Python + rdbende's Sun Valley theme",
     executables=executables,
 )
