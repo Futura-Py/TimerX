@@ -25,7 +25,8 @@ else:
 #     ],
 # }
 import uuid
-uid = str(uuid.uuid3(uuid.NAMESPACE_DNS, 'appname.orgname.org')).upper()
+uid = str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper()
+# print(str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper())
 
 executables = [Executable("main.py", base=base, icon=icon, shortcutName="TimerX", shortcutDir="TimerX")]
 
@@ -35,10 +36,9 @@ build_exe_options = {"include_msvcr": True}
 bdist_msi_options = {
     "add_to_path":False,
     "install_icon":"assets/logo.ico",
-    "upgrade_code":uid,
+    "upgrade_code":f'{uid}',
     "target_name":"TimerX"
 }
-
 bdist_mac_options = {
     "bundle_name": "TimerX",
 }
