@@ -46,6 +46,10 @@ bdist_mac_options = {
 bdist_dmg_options = {
     "volume_label": "TimerX",
 }
+bdist_rpm_options = {
+    "target_name":"TimerX"
+    "install_icon":"assets/logo.png"
+}
 
 setup(
     name="TimerX",
@@ -57,5 +61,6 @@ setup(
         "bdist_mac": bdist_mac_options,
         "bdist_dmg": bdist_dmg_options,
         "bdist_msi": bdist_msi_options,
+        "bdist_rpm": bdist_rpm_options,
     },
 )
