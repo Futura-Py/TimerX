@@ -25,22 +25,26 @@ else:
 #     ],
 # }
 import uuid
-uid = str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper()
+upgradeid = str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper()
 # print(str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper())
 
-executables = [Executable("main.py", base=base, icon=icon, shortcutName="TimerX", shortcutDir="TimerX")]
+executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", shortcut_dir="TimerX")]
 
 # build_exe_options = {"includes": ["tkinter, platform, threading"], "include_msvcr": True}
-build_exe_options = {"include_msvcr": True}
+build_exe_options = {
+    "include_msvcr": True,
+    "include_files":("sun-valley.tcl", "./theme", "./assets", "configurator.py"),
+}
 
 bdist_msi_options = {
     "add_to_path":False,
     "install_icon":"assets/logo.ico",
-    "upgrade_code":f'{uid}',
+    #"upgrade_code":upgradeid,
     "target_name":"TimerX"
 }
 bdist_mac_options = {
     "bundle_name": "TimerX",
+    "iconfile":"./assets/logo.icns"
 }
 
 bdist_dmg_options = {
