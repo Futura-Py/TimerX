@@ -41,11 +41,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: 'Release ${{ github.event.inputs.version }}'
+          tag_name: ${{ github.event.inputs.version-macos }}
+          release_name: 'Release ${{ github.event.inputs.version-macos }}'
           overwrite: true
           body: |
-            Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
+            Release ${{ github.event.inputs.version-macos }} (Add your content here and then publish this.)
           draft: true
           prerelease: false
       - name: Upload Release Asset
