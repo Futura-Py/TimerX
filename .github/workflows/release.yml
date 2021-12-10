@@ -55,7 +55,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: TimerX
-          path: dist/TimerX-mac64.dmg
+          path: build/TimerX.dmg
           
 #RELEASE
       - name: create release
