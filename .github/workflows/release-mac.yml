@@ -12,7 +12,7 @@ on:
 jobs:
 
 # WINDOWS BUILD
-  build-windows:
+  build-macos:
   
     runs-on: macos-latest
     steps:
