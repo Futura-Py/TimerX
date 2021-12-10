@@ -10,8 +10,9 @@ on:
         
 
 jobs:
-  
-  build:
+
+# WINDOWS BUILD
+  build-windows:
   
     runs-on: windows-latest
     steps:
@@ -32,7 +33,31 @@ jobs:
         with:
           name: TimerX
           path: dist/TimerX-win64.msi
-
+          
+#MACOS
+  build-macos:
+  
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+      - name: Install requirements
+        run: |
+          pip install -r packager-requirements.txt
+      - name: Run PyInstaller
+        run: |
+          python setup.py bdist_dmg
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TimerX
+          path: dist/TimerX-mac64.dmg
+          
+#RELEASE
       - name: create release
         id: create_release
         uses: actions/create-release@v1
@@ -56,4 +81,8 @@ jobs:
           asset_path: dist/TimerX-win64.msi
           asset_name: TimerX-win64.msi
           asset_content_type: application/zip
+          id: upload-release-asset
+          asset_path-2: dist/TimerX-macos64.dmg
+          asset_name-2: TimerX-mac64.dmg
+          asset_content-2_type: application/zip
           
