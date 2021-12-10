@@ -3,7 +3,7 @@ name: Release Build for MacOS X
 on:
   workflow_dispatch:
     inputs:
-      version:
+      version-macos:
         description: 'Version(semver)'
         required: true
         default: 'vX.X.X'

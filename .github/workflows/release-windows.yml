@@ -3,7 +3,7 @@ name: Release Build for Windows
 on:
   workflow_dispatch:
     inputs:
-      version:
+      version-win:
         description: 'Version(semver)'
         required: true
         default: 'vX.X.X'
