@@ -82,7 +82,7 @@ jobs:
           asset_name: TimerX-win64.msi
           asset_content_type: application/zip
           id: upload-release-asset
-          asset_path-2: dist/TimerX-macos64.dmg
+          asset_path-2: dist/TimerX.dmg
           asset_name-2: TimerX-mac64.dmg
           asset_content-2_type: application/zip
           
