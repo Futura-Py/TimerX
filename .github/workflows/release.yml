@@ -1,5 +1,5 @@
 # No choice
-name: Release Build
+name: Release Build for Windows(EXE)
 
 on:
   workflow_dispatch:
