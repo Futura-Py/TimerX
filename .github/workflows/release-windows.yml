@@ -1,0 +1,60 @@
+name: Release Build for Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      version-win:
+        description: 'Version(semver)'
+        required: true
+        default: 'vX.X.X'
+        
+
+jobs:
+
+# WINDOWS BUILD
+  build-windows:
+  
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+      - name: Install requirements
+        run: |
+          pip install -r packager-requirements.txt
+      - name: Run PyInstaller
+        run: |
+          python setup.py bdist_msi
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TimerX
+          path: dist/TimerX-win64.msi
+          
+#RELEASE
+      - name: create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version-win }}
+          release_name: 'Release ${{ github.event.inputs.version-win }}'
+          overwrite: true
+          body: |
+            Release ${{ github.event.inputs.version-win }} (Add your content here and then publish this.)
+          draft: true
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: dist/TimerX-win64.msi
+          asset_name: TimerX-win64.msi
+          asset_content_type: application/zip          

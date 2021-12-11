@@ -1,0 +1,3 @@
+pyinstaller
+py2app
+cx_Freeze

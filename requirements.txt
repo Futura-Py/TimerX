@@ -1,4 +1,2 @@
-pyinstaller
 playsound
-BlurWindow
 win10toast_click
