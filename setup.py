@@ -35,7 +35,7 @@ executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX
 # build_exe_options = {"includes": ["tkinter, platform, threading"], "include_msvcr": True}
 build_exe_options = {
     "include_msvcr": True,
-    "include_files":("sun-valley.tcl", "./theme", "./assets", "configurator.py"),
+    "include_files":("./sun-valley.tcl", "./theme", "./assets", "./configurator.py"),
 }
 
 bdist_msi_options = {
