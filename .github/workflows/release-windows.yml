@@ -26,6 +26,7 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
+          pip install -r windows-requirements.txt
           pip install -r packager-requirements.txt
       - name: Run cx_freeze
         run: |
