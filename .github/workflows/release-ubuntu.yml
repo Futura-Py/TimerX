@@ -12,7 +12,7 @@ on:
 jobs:
 
 # UBUNTU BUILD
-  build-ubuntu:  
+  build-ubuntu:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,11 +28,11 @@ jobs:
           pip install -r packager-requirements.txt
       - name: Run cx_freeze
         run: |
-          python setup.py bdist_rpm --version ${{ github.event.inputs.version-ubuntu }}
+          python setup.py bdist_rpm
           sudo apt install alein
       - uses: actions/upload-artifact@v2
         with:
-          name: TimerX-${{ github.event.inputs.version-win }}.tar.gz
+          name: TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
           path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
           
 #RELEASE UBUNTU
