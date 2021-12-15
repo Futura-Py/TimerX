@@ -13,7 +13,6 @@ jobs:
 
 # WINDOWS BUILD
   build-windows:
-  
     runs-on: windows-latest
     steps:
       - name: Checkout
@@ -30,7 +29,7 @@ jobs:
           pip install -r packager-requirements.txt
       - name: Run cx_freeze
         run: |
-          python setup.py bdist_msi --version ${{ github.event.inputs.version-win }}
+          python setup.py bdist_msi
       - uses: actions/upload-artifact@v2
         with:
           name: TimerX
