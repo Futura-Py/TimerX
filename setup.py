@@ -53,11 +53,8 @@ bdist_dmg_options = {
     "volume_label": "TimerX",
 }
 
-version = "1.0"
-
 setup(
     name="TimerX",
-    version=version,
     description="A cross-platform simple and modern timer app",
     executables=executables,
     options={

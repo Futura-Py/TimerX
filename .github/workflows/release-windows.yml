@@ -29,7 +29,7 @@ jobs:
           pip install -r packager-requirements.txt
       - name: Run cx_freeze
         run: |
-          python setup.py bdist_msi
+          python setup.py bdist_msi --version ${{ github.event.inputs.version-win }}
       - uses: actions/upload-artifact@v2
         with:
           name: TimerX
