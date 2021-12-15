@@ -1,9 +1,9 @@
-name: Release Build for Ubuntu
+name: Release Build for MacOS X
 
 on:
   workflow_dispatch:
     inputs:
-      version-ubuntu:
+      version-macos:
         description: 'Version(semver)'
         required: true
         default: 'X.X'
@@ -11,9 +11,9 @@ on:
 
 jobs:
 
-# UBUNTU BUILD
-  build-ubuntu:
-    runs-on: ubuntu-latest
+# MACOS BUILD
+  build-macos:
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -28,25 +28,24 @@ jobs:
           pip install -r packager-requirements.txt
       - name: Run cx_freeze
         run: |
-          python setup.py bdist_rpm
-          sudo apt install alein
+          python setup.py bdist_dmg
       - uses: actions/upload-artifact@v2
         with:
-          name: TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
-          path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
+          name: TimerX
+          path: build/TimerX.dmg
           
-#RELEASE UBUNTU
+#RELEASE
       - name: create release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.version-ubuntu }}
-          release_name: 'Release ${{ github.event.inputs.version-ubuntu }}'
+          tag_name: ${{ github.event.inputs.version-macos }}
+          release_name: 'Release ${{ github.event.inputs.version-macos }}'
           overwrite: true
           body: |
-            Release ${{ github.event.inputs.version-ubuntu }} (Add your content here and then publish this.)
+            Release ${{ github.event.inputs.version-macos }} (Add your content here and then publish this.)
           draft: true
           prerelease: false
       - name: Upload Release Asset
@@ -56,6 +55,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
-          asset_name: TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
+          asset_path: build/TimerX.dmg
+          asset_name: TimerX.dmg
           asset_content_type: application/zip          
