@@ -38,6 +38,10 @@ build_exe_options = {
     "include_files":("./sun-valley.tcl", "./theme", "./assets", "./configurator.py"),
 }
 
+build_rpm_options = {
+    "include_files":("./sun-valley.tcl", "./theme", "./assets", "./configurator.py"),
+}
+
 bdist_msi_options = {
     "add_to_path":False,
     "install_icon":"assets/logo.ico",
@@ -57,7 +61,7 @@ version = "1.0"
 
 setup(
     name="TimerX",
-    version=version,
+
     description="A cross-platform simple and modern timer app",
     executables=executables,
     options={

@@ -11,9 +11,8 @@ on:
 
 jobs:
 
-# WINDOWS BUILD
-  build-ubuntu:
-  
+# UBUNTU BUILD
+  build-ubuntu:  
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,14 +28,14 @@ jobs:
           pip install -r packager-requirements.txt
       - name: Run cx_freeze
         run: |
-          python setup.py bdist_rpm
+          python setup.py bdist_rpm --version ${{ github.event.inputs.version-ubuntu }}
           sudo apt install alein
       - uses: actions/upload-artifact@v2
         with:
-          name: TimerX-tar.gz
+          name: TimerX-${{ github.event.inputs.version-win }}.tar.gz
           path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
           
-#RELEASE
+#RELEASE UBUNTU
       - name: create release
         id: create_release
         uses: actions/create-release@v1
@@ -57,6 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: dist/dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
-          asset_name: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
+          asset_path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
+          asset_name: TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
           asset_content_type: application/zip          
