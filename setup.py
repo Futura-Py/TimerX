@@ -38,7 +38,7 @@ build_exe_options = {
     "include_files":(r"./sun-valley.tcl", r"./theme", r"./assets", r"./configurator.py"),
 }
 
-build_rpm_options = {
+bdist_rpm_options = {
     "include_files":("r./sun-valley.tcl", "r./theme", "r./assets", "r./configurator.py"),
 }
 
@@ -69,6 +69,6 @@ setup(
         "bdist_mac": bdist_mac_options,
         "bdist_dmg": bdist_dmg_options,
         "bdist_msi": bdist_msi_options,
-        "bdist_rpm": build_rpm_options.
-    }
+        "bdist_rpm": bdist_rpm_options,
+    },
 )
