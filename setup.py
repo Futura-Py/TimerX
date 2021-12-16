@@ -70,5 +70,5 @@ setup(
         "bdist_dmg": bdist_dmg_options,
         "bdist_msi": bdist_msi_options,
         "bdist_rpm": build_rpm_options.
-    },
+    }
 )
