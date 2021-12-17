@@ -26,7 +26,9 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r packager-requirements.txt
+
       - name: Run cx_freeze 
+        continue-on-error: true
         run: |
           python setup.py bdist_rpm
           sudo apt install alein
