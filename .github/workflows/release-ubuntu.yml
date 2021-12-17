@@ -30,6 +30,10 @@ jobs:
         run: |
           python setup.py bdist_rpm
           sudo apt install alein
+
+      - name: Run alein
+        continue-on-error: true
+        run: |
           cd dist
           alein -d TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
       - uses: actions/upload-artifact@v2
