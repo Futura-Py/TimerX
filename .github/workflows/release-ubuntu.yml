@@ -13,8 +13,6 @@ jobs:
 
 # UBUNTU BUILD
   build-ubuntu:
-    container:
-      options: --user root
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,7 +37,7 @@ jobs:
         run: |
           cd dist
           sudo apt install alien
-          alien -d TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
+          sudo alien -d TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
       - uses: actions/upload-artifact@v2
         with:
           name: TimerX-${{ github.event.inputs.version-ubuntu }}.deb
