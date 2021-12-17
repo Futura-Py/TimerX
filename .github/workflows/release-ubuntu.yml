@@ -37,6 +37,7 @@ jobs:
         run: |
           cd dist
           sudo apt install alien
+          su
           alien -d TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
       - uses: actions/upload-artifact@v2
         with:
