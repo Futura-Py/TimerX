@@ -6,7 +6,7 @@ on:
       version-ubuntu:
         description: 'Version(semver)'
         required: true
-        default: 'X.X'
+        default: '1.0'
         
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.8'
+          python-version: '3.7'
           architecture: 'x64'
       - name: Install requirements
         run: |
