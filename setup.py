@@ -39,7 +39,7 @@ build_exe_options = {
 }
 
 bdist_rpm_options = {
-    "include_files":("r./sun-valley.tcl", "r./theme", "r./assets", "r./configurator.py"),
+    "icon":icon
 }
 
 bdist_msi_options = {
@@ -55,13 +55,14 @@ bdist_mac_options = {
 
 bdist_dmg_options = {
     "volume_label": "TimerX",
+    "applications_shortcut":True,
 }
 
 version = "1.0"
 
 setup(
     name="TimerX",
-
+    version=version,
     description="A cross-platform simple and modern timer app",
     executables=executables,
     options={
