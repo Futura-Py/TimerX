@@ -26,14 +26,16 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r packager-requirements.txt
-      - name: Run cx_freeze
+      - name: Run cx_freeze 
         run: |
           python setup.py bdist_rpm
           sudo apt install alein
+          cd dist
+          alein -d TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
       - uses: actions/upload-artifact@v2
         with:
-          name: TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
-          path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
+          name: TimerX-${{ github.event.inputs.version-ubuntu }}.deb
+          path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.deb
           
 #RELEASE UBUNTU
       - name: create release
@@ -56,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
-          asset_name: TimerX-${{ github.event.inputs.version-ubuntu }}.tar.gz
+          asset_path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}.deb
+          asset_name: TimerX-${{ github.event.inputs.version-ubuntu }}.deb
           asset_content_type: application/zip          

@@ -29,7 +29,7 @@ upgradeid = str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper()
 # print(str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper())
 
 # executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", shortcut_dir="TimerX")]
-executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX")]
+executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX")]
 
 
 # build_exe_options = {"includes": ["tkinter, platform, threading"], "include_msvcr": True}
