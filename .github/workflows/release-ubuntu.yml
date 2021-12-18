@@ -46,10 +46,10 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: TimerX-rpm
-          path: dist/timerx_${{ github.event.inputs.version-ubuntu }}-2_all.rpm
+          path: dist/TimerX_${{ github.event.inputs.version-ubuntu }}-2.noarch.rpm
           
 #RELEASE UBUNTU
-      - name: create release
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -62,7 +62,7 @@ jobs:
             Release ${{ github.event.inputs.version-ubuntu }} (Add your content here and then publish this.)
           draft: true
           prerelease: false
-      - name: Upload Release Asset(Deb)
+      - name: Upload Release Asset(DEB)
         id: upload-release-asset-deb
         uses: actions/upload-release-asset@v1
         env:
@@ -73,13 +73,13 @@ jobs:
           asset_name: TimerX-deb
           asset_content_type: application/zip          
 
-      - name: Upload Release Asset(Rpm)
+      - name: Upload Release Asset(RPM)
         id: upload-release-asset-rpm
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: dist/timerx_${{ github.event.inputs.version-ubuntu }}-2_all.rpm
+          asset_path: dist/TimerX_${{ github.event.inputs.version-ubuntu }}-2.noarch.rpm
           asset_name: TimerX-rpm
           asset_content_type: application/zip         
