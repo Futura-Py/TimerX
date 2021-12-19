@@ -41,12 +41,59 @@ jobs:
           sudo alien -r TimerX-${{ github.event.inputs.version }}.tar.gz
       - uses: actions/upload-artifact@v2
         with:
-          name: TimerX-deb
+          name: TimerX.deb
           path: dist/timerx_${{ github.event.inputs.version }}-2_all.deb
       - uses: actions/upload-artifact@v2
         with:
-          name: TimerX-rpm
+          name: TimerX.rpm
           path: dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
+
+# WINDOWS BUILD
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+          pip install -r windows-requirements.txt
+          pip install -r packager-requirements.txt
+      - name: Run cx_freeze
+        run: |
+          python setup.py bdist_msi
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TimerX-setup.msi
+          path: dist/TimerX-win64.msi
+
+# MACOS BUILD
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.10'
+          architecture: 'x64'
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+          pip install -r packager-requirements.txt
+      - name: Run cx_freeze
+        run: |
+          python setup.py bdist_dmg
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TimerX-setup.dmg
+          path: build/TimerX.dmg
           
 #RELEASE
       - name: Create Release
@@ -62,6 +109,7 @@ jobs:
             Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
           draft: true
           prerelease: false
+
       - name: Upload Release Asset(DEB)
         id: upload-release-asset-deb
         uses: actions/upload-release-asset@v1
@@ -70,7 +118,7 @@ jobs:
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: dist/timerx_${{ github.event.inputs.version }}-2_all.deb
-          asset_name: TimerX-deb
+          asset_name: TimerX.deb
           asset_content_type: application/zip          
 
       - name: Upload Release Asset(RPM)
@@ -81,5 +129,27 @@ jobs:
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
-          asset_name: TimerX-rpm
-          asset_content_type: application/zip         
+          asset_name: TimerX.rpm
+          asset_content_type: application/zip       
+
+      - name: Upload Release Asset(EXE)
+        id: upload-release-asset-rpm
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: dist/TimerX-win64.msi
+          asset_name: TimerX-setup.msi
+          asset_content_type: application/zip 
+
+      - name: Upload Release Asset(DMG)
+        id: upload-release-asset-rpm
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: build/TimerX.dmg
+          asset_name: TimerX-setup.dmg
+          asset_content_type: application/zip     
