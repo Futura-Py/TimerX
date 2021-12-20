@@ -5,10 +5,13 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"
     icon="./assets/logo.ico"
+    executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe", shortcutDir="%appdata%\Microsoft\Windows\Start Menu\Programs\TimerX")]
 elif sys.platform == "darwin":
     icon="./assets/logo.icns"
+    executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe")]
 else:
     icon="./assets/logo.png"
+    executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe")]
 
 # directory_table = [
 #     ("ProgramMenuFolder", "TARGETDIR", "."),
@@ -27,10 +30,6 @@ else:
 import uuid
 upgradeid = str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper()
 # print(str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper())
-
-# executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", shortcut_dir="TimerX")]
-executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX")]
-
 
 # build_exe_options = {"includes": ["tkinter, platform, threading"], "include_msvcr": True}
 build_exe_options = {
