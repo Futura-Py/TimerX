@@ -20,8 +20,6 @@ app = Tk()
 app.title('TimerX')
 app.geometry('300x210')
 app.resizable(False, False)
-app.config(bg='green')
-app.wm_attributes("-transparent", 'green')
 app.update()
 """
 # Disabled by default
@@ -29,11 +27,13 @@ HWND = ctypes.windll.user32.GetForegroundWindow()
 GlobalBlur(HWND)
 blur(HWND, hexColor='#12121240')
 """
-# APP ICON
+# SYSTEM CODE
 print(f'Running on {system}')
 try:
     if  system() == "darwin":
         app.iconbitmap(r'assets/logo.icns')
+        app.wm_attributes("-transparent", True)
+        app.config(bg="systemTransparent")
     elif  system() == "Windows":
         app.iconbitmap(r'assets/logo.ico')
         from win10toast_click import ToastNotifier 
