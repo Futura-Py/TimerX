@@ -99,17 +99,6 @@ jobs:
           name: TimerX-setup.dmg
           path: build/TimerX.dmg
 
-      - name: Upload Release Asset(DMG)
-        id: upload-release-asset-dmg
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: build/TimerX.dmg
-          asset_name: TimerX-setup.dmg
-          asset_content_type: application/zip
-
       - uses: actions/download-artifact@v2
         with:
           name: TimerX-setup.msi
@@ -182,4 +171,15 @@ jobs:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: ./dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
           asset_name: TimerX.rpm
+          asset_content_type: application/zip
+
+      - name: Upload Release Asset(DMG)
+        id: upload-release-asset-dmg
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: build/TimerX.dmg
+          asset_name: TimerX-setup.dmg
           asset_content_type: application/zip
