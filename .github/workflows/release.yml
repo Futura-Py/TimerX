@@ -10,7 +10,24 @@ on:
         
 
 jobs:     
-
+# RELEASE
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: 'Release ${{ github.event.inputs.version }}'
+          overwrite: true
+          body: |
+            Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
+          draft: true
+          prerelease: false 
+    
 # UBUNTU BUILD
   build-ubuntu:
     runs-on: ubuntu-latest
@@ -58,7 +75,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
+          upload_url: ${{jobs.release.create_release.upload_url}}
           asset_path: ./dist/timerx_${{ github.event.inputs.version }}-2_all.deb
           asset_name: TimerX.deb
           asset_content_type: application/zip
@@ -69,7 +86,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
+          upload_url: ${{jobs.release.create_release.upload_url}}
           asset_path: ./dist/TimerX-${{ github.event.inputs.version }}.tar.gz
           asset_name: TimerX.tar.gz
           asset_content_type: application/zip
@@ -80,7 +97,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
+          upload_url: ${{jobs.release.create_release.upload_url}}
           asset_path: ./dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
           asset_name: TimerX.rpm
           asset_content_type: application/zip
@@ -115,7 +132,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
+          upload_url: ${{jobs.release.create_release.upload_url}}
           asset_path: dist/TimerX-win64.msi
           asset_name: TimerX-setup.msi
           asset_content_type: application/zip
@@ -149,21 +166,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
+          upload_url: ${{jobs.release.create_release.upload_url}}
           asset_path: build/TimerX.dmg
           asset_name: TimerX-setup.dmg
           asset_content_type: application/zip     
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: 'Release ${{ github.event.inputs.version }}'
-          overwrite: true
-          body: |
-            Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
-          draft: true
-          prerelease: false 
