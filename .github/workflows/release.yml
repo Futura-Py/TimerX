@@ -37,8 +37,8 @@ jobs:
         run: |
           cd dist
           sudo apt install alien
-          sudo alien -d TimerX-${{ github.event.inputs.version }}.tar.gz --version=1.0
-          sudo alien -r TimerX-${{ github.event.inputs.version }}.tar.gz --version=1.0
+          sudo alien -d TimerX-${{ github.event.inputs.version }}.tar.gz --version=${{ github.event.inputs.version }}
+          sudo alien -r TimerX-${{ github.event.inputs.version }}.tar.gz --version=${{ github.event.inputs.version }}
       - uses: actions/upload-artifact@v2
         with:
           name: TimerX.deb
