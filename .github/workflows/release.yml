@@ -10,24 +10,7 @@ on:
         
 
 jobs:     
-# RELEASE
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: 'Release ${{ github.event.inputs.version }}'
-          overwrite: true
-          body: |
-            Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
-          draft: true
-          prerelease: false 
-    
+
 # UBUNTU BUILD
   build-ubuntu:
     runs-on: ubuntu-latest
@@ -68,39 +51,6 @@ jobs:
         with:
           name: TimerX.tar.gz
           path: dist/TimerX-${{ github.event.inputs.version }}.tar.gz
-          
-      - name: Upload Release Asset(DEB)
-        id: upload-release-asset-deb
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{release.steps.create_release.upload_url}}
-          asset_path: ./dist/timerx_${{ github.event.inputs.version }}-2_all.deb
-          asset_name: TimerX.deb
-          asset_content_type: application/zip
-
-      - name: Upload Release Asset(Tarball)
-        id: upload-release-asset-tar
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{release.steps.create_release.upload_url}}
-          asset_path: ./dist/TimerX-${{ github.event.inputs.version }}.tar.gz
-          asset_name: TimerX.tar.gz
-          asset_content_type: application/zip
-      
-      - name: Upload Release Asset(RPM)
-        id: upload-release-asset-rpm
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{release.steps.create_release.upload_url}}
-          asset_path: ./dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
-          asset_name: TimerX.rpm
-          asset_content_type: application/zip
 
 # WINDOWS BUILD
   build-windows:
@@ -125,17 +75,6 @@ jobs:
         with:
           name: TimerX-setup.msi
           path: dist/TimerX-win64.msi
-
-      - name: Upload Release Asset(MSI)
-        id: upload-release-asset-msi
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{release.steps.create_release.upload_url}}
-          asset_path: dist/TimerX-win64.msi
-          asset_name: TimerX-setup.msi
-          asset_content_type: application/zip
 
 # MACOS BUILD
   build-macos:
@@ -166,7 +105,81 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{release.steps.create_release.upload_url}}
+          upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: build/TimerX.dmg
           asset_name: TimerX-setup.dmg
-          asset_content_type: application/zip     
+          asset_content_type: application/zip
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: TimerX-setup.msi
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: TimerX.rpm
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: TimerX.deb
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: TimerX.tar.gz
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: 'Release ${{ github.event.inputs.version }}'
+          overwrite: true
+          body: |
+            Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
+          draft: true
+          prerelease: false 
+
+      - name: Upload Release Asset(MSI)
+        id: upload-release-asset-msi
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: dist/TimerX-win64.msi
+          asset_name: TimerX-setup.msi
+          asset_content_type: application/zip
+
+      - name: Upload Release Asset(DEB)
+        id: upload-release-asset-deb
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: ./dist/timerx_${{ github.event.inputs.version }}-2_all.deb
+          asset_name: TimerX.deb
+          asset_content_type: application/zip
+
+      - name: Upload Release Asset(Tarball)
+        id: upload-release-asset-tar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: ./dist/TimerX-${{ github.event.inputs.version }}.tar.gz
+          asset_name: TimerX.tar.gz
+          asset_content_type: application/zip
+      
+      - name: Upload Release Asset(RPM)
+        id: upload-release-asset-rpm
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: ./dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
+          asset_name: TimerX.rpm
+          asset_content_type: application/zip
