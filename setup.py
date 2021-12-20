@@ -5,7 +5,7 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"
     icon="./assets/logo.ico"
-    executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe", shortcutDir=ProgramMenuFolder)]
+    executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe", shortcutDir="ProgramMenuFolder")]
 elif sys.platform == "darwin":
     icon="./assets/logo.icns"
     executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe")]
