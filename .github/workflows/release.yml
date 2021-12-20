@@ -94,24 +94,29 @@ jobs:
       - name: Run cx_freeze
         run: |
           python setup.py bdist_dmg
+
       - uses: actions/upload-artifact@v2
         with:
           name: TimerX-setup.dmg
           path: build/TimerX.dmg
 
       - uses: actions/download-artifact@v2
+        name: Upload MSI
         with:
           name: TimerX-setup.msi
 
       - uses: actions/download-artifact@v2
+        name: Upload RPM
         with:
           name: TimerX.rpm
 
       - uses: actions/download-artifact@v2
+        name: Upload DEB
         with:
           name: TimerX.deb
 
       - uses: actions/download-artifact@v2
+        name: Upload Tarball
         with:
           name: TimerX.tar.gz
 
@@ -136,7 +141,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: dist/TimerX-win64.msi
+          asset_path: TimerX-win64.msi
           asset_name: TimerX-setup.msi
           asset_content_type: application/zip
 
@@ -147,7 +152,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: ./dist/timerx_${{ github.event.inputs.version }}-2_all.deb
+          asset_path: timerx_${{ github.event.inputs.version }}-2_all.deb
           asset_name: TimerX.deb
           asset_content_type: application/zip
 
@@ -158,7 +163,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: ./dist/TimerX-${{ github.event.inputs.version }}.tar.gz
+          asset_path: TimerX-${{ github.event.inputs.version }}.tar.gz
           asset_name: TimerX.tar.gz
           asset_content_type: application/zip
       
@@ -169,7 +174,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: ./dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
+          asset_path: TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
           asset_name: TimerX.rpm
           asset_content_type: application/zip
 
