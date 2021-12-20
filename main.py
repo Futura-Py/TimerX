@@ -53,7 +53,7 @@ except TclError:
 app_on = True
 
 timer_on = False
-timer_paused = True
+timer_paused = False
 
 timer_seconds = 5
 timer_minutes = 0
