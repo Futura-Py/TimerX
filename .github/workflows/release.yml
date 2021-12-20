@@ -47,6 +47,10 @@ jobs:
         with:
           name: TimerX.rpm
           path: dist/TimerX-${{ github.event.inputs.version }}-2.noarch.rpm
+      - uses: actions/upload-artifact@v2
+        with:
+          name: TimerX.tar.gz
+          path: dist/TimerX-${{ github.event.inputs.version }}.tar.gz
 
 # WINDOWS BUILD
   build-windows:
@@ -119,8 +123,19 @@ jobs:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: dist/timerx_${{ github.event.inputs.version }}-2_all.deb
           asset_name: TimerX.deb
-          asset_content_type: application/zip          
+          asset_content_type: application/zip
 
+      - name: Upload Release Asset(Tarball)
+        id: upload-release-asset-tar
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: dist/TimerX-${{ github.event.inputs.version }}.tar.gz
+          asset_name: TimerX.tar.gz
+          asset_content_type: application/zip
+      
       - name: Upload Release Asset(RPM)
         id: upload-release-asset-rpm
         uses: actions/upload-release-asset@v1
