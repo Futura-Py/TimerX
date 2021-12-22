@@ -1,5 +1,5 @@
 <p style="text-align: center;">
-    <img src="./assets/readme/banner.png"></img>
+    <img src="./assets/readme/banner_new.png"></img>
 </p>
 
 # 🕦TimerX
