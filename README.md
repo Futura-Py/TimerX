@@ -13,15 +13,15 @@
 # 🎯TODO before v1.0
 - 🔝~~Add Always on Top option~~ _Added in codebase!_
 - 🌑~~Dark Mode~~ _Added in codebase!_
-- ⌨️~~Keybinds to Play/Pause~~ _Added in codebase!_
+- ⌨️~~Keybindings to Play/Pause~~ _Added in codebase!_
 - 🔔~~Notifications~~ _Added in codebase!(Windows Only)_
 # Features coming after v1.0(No promises!)
-- ⚙️Add settings and about page
--  Dynamicalay resize elements & theme
+- ⚙️ Add settings and about page
+- Dynamically resize elements & theme
 - Dark Titlebar
-- ⏱️Stopwatch Mode
+- ⏱️ Stopwatch Mode
 
 # Supported Platforms
-- ✔️Windows: Tested on Windows 7,10, and 11
-- ❔Linux: Tested on Ubuntu based systems(Raspbian and ZorinOS). Not tested on Red Hat based systems(Help Wanted)
-- ❌ MacOS: GitHub Actions build **fails**, Help wanted to debug.
+- ✔️ Windows: Tested on Windows 7,10, and 11
+- ❔Linux: Tested on Debian-based systems(Raspbian<!-- and ZorinOS-->). Not tested on Red Hat based systems(Help Wanted)
+- ❌ MacOS: GitHub Actions build **fails**, Help wanted to debug.-->
