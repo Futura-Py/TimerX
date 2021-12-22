@@ -3,6 +3,7 @@
 </p>
 
 # 🕦TimerX
+<!--# <img alt="TimerX icon" width="32px" src="https://raw.githubusercontent.com/sumeshir26/TimerX/master/assets/logo_new.png"> TimerX-->
 
 ### A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's [Sun Valley TTk Theme](https://github.com/rdbende/Sun-Valley-TTk-Theme)
 
