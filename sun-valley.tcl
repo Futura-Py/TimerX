@@ -24,7 +24,7 @@ proc set_theme {mode} {
             -focuscolor $colors(-selectbg) \
             -selectbackground $colors(-selectbg) \
             -selectforeground $colors(-selectfg) \
-            -insertwidth 1 \
+            -insertwidth 0 \
             -insertcolor $colors(-fg) \
             -fieldbackground $colors(-selectbg) \
             -font {"Segoe Ui" 10} \
