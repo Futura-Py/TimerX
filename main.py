@@ -2,18 +2,27 @@
 # IMPORTS
 import platform
 from time import sleep
-from tkinter import  TclError, ttk, Tk, PhotoImage, Frame
+from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar
+import tkinter
 from tkinter.constants import  LEFT, RIGHT, SE, SW
 from playsound import playsound
 from threading import  Thread
 from platform import system
+import os
 """
 # Disabled by default due to module unavailability on Linux
 from BlurWindow.blurWindow import GlobalBlur, blur
 """
 import ctypes
-import configurator
+#from configurator import createManagerWindow, createSettingsWindow 
 import darkdetect
+
+global theme
+
+if darkdetect.theme() == "Dark":
+    theme = "dark"
+else:
+    theme = "light"
 
 # TKINTER WINDOW
 app = Tk()
@@ -31,16 +40,16 @@ blur(HWND, hexColor='#12121240')
 print(f'Running on {system}')
 try:
     if  system() == "darwin":
-        app.iconbitmap(r'assets/logo.icns')
+        app.iconbitmap(r'assets/logo_new.icns')
         app.wm_attributes("-transparent", True)
         app.config(bg="systemTransparent")
     elif  system() == "Windows":
-        app.iconbitmap(r'assets/logo.ico')
+        app.iconbitmap(r'assets/logo_new.ico')
         from win10toast_click import ToastNotifier 
     elif  system() == "win":
-        app.iconphoto(r'assets/logo.ico')
+        app.iconphoto(r'assets/logo_new.ico')
     else:
-        logo_img = PhotoImage(file = 'assets/images/logo.png')
+        logo_img = PhotoImage(file = 'assets/images/logo_new.png')
         app.iconphoto(False, logo_img)
 except TclError:
     pass
@@ -157,16 +166,199 @@ def toggleAlwaysOnTop(app):
             pin_button.configure(image=pin_image_light)
         ontop = False
 
+
+################################################################################################
+
+################################################################################################
+
+
+#WINDOWS
+
+def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
+    global manager_app_window
+    manager_app_window = tkinter.Tk()
+    manager_app_window.geometry('250x170')
+    manager_app_window.title('Edit Timer')
+
+    manager_app_window.resizable(False, False)
+
+    # APP THEME
+
+    manager_app_window.tk.call("source", "sun-valley.tcl")
+
+    if os.path.isfile("./config/theme.txt"):
+        read_theme_cfg = open("./config/theme.txt", "r")
+
+        theme_cfg = read_theme_cfg.read()
+
+        if theme_cfg == "Dark":
+            manager_app_window.tk.call("set_theme", "dark")
+        elif theme_cfg == "Light":
+            manager_app_window.tk.call("set_theme", "light")
+        elif theme_cfg == "System":
+            manager_app_window.tk.call("set_theme", f"{theme}")
+    else:
+        manager_app_window.tk.call("set_theme", f"{theme}")
+
+    read_theme_cfg.close()
+
+    try:
+        if system() == "darwin":
+            manager_app_window.iconbitmap(r'assets/logo_new.icns')
+            manager_app_window.wm_attributes("-transparent", True)
+            manager_app_window.config(bg="systemTransparent")
+        elif  system() == "Windows":
+            manager_app_window.iconbitmap(r'assets/logo_new.ico')
+            from win10toast_click import ToastNotifier 
+        elif  system() == "win":
+            manager_app_window.iconphoto(r'assets/logo_new.ico')
+        else:
+            logo_img = PhotoImage(file = 'assets/images/logo.png')
+            manager_app_window.iconphoto(False, logo_img)
+    except TclError:
+        pass
+
+    # WINDOW FRAME
+    manager_window = ttk.Frame(manager_app_window)
+    manager_window.pack(fill="both", expand=True)
+
+    timer_hr_label = ttk.Label(manager_window, text = 'Hours: ')
+    timer_hr_label.place(x=17, y=17)
+    timer_hr_input = ttk.Entry(manager_window)
+    timer_hr_input.place(x=65, y=10)
+    timer_hr_input.insert(1, current_hrs)
+
+    timer_min_label = ttk.Label(manager_window, text = 'Minutes: ')
+    timer_min_label.place(x=13, y=57)
+    timer_min_input = ttk.Entry(manager_window)
+    timer_min_input.place(x=65, y=50)
+    timer_min_input.insert(1, current_mins)
+
+    timer_sec_label = ttk.Label(manager_window, text = 'Seconds: ')
+    timer_sec_label.place(x=12, y=97)
+    timer_sec_input = ttk.Entry(manager_window)
+    timer_sec_input.place(x=65, y=90)
+    timer_sec_input.insert(1, current_secs)
+
+    ok_button = ttk.Button(manager_window, text = 'Ok!', command = lambda:saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window))
+    ok_button.place(x=95, y=126)
+
+def createSettingsWindow():
+    settings_window = tkinter.Tk()
+    settings_window.geometry('300x200')
+    settings_window.title('Settings')
+
+    settings_window.tk.call("source", "sun-valley.tcl")
+
+    if os.path.isfile("./config/theme.txt"):
+        read_theme_cfg = open("./config/theme.txt", "r")
+
+        theme_cfg = read_theme_cfg.read()
+
+        if theme_cfg == "Dark":
+            settings_window.tk.call("set_theme", "dark")
+        elif theme_cfg == "Light":
+            settings_window.tk.call("set_theme", "light")
+        elif theme_cfg == "System":
+            settings_window.tk.call("set_theme", f"{theme}")
+    else:
+        settings_window.tk.call("set_theme", f"{theme}")
+
+    read_theme_cfg.close()
+
+    try:
+        if system() == "darwin":
+            settings_window.iconbitmap(r'assets/logo_new.icns')
+            settings_window.wm_attributes("-transparent", True)
+            settings_window.config(bg="systemTransparent")
+        elif  system() == "Windows":
+            settings_window.iconbitmap(r'assets/logo_new.ico')
+            from win10toast_click import ToastNotifier 
+        elif  system() == "win":
+            settings_window.iconphoto(r'assets/logo_new.ico')
+        else:
+            logo_img = PhotoImage(file = 'assets/images/logo_new.png')
+            settings_window.iconphoto(False, logo_img)
+    except TclError:
+        pass
+
+    box_current_value= StringVar(settings_window)
+    box_current_value.set("System")
+
+    if os.path.isfile("./config/theme.txt"):
+        read_theme_cfg = open("./config/theme.txt", "r")
+        theme_cfg = read_theme_cfg.read()
+
+        if theme_cfg == "Dark":
+            box_current_value.set("Dark")
+        elif theme_cfg == "Light":
+            box_current_value.set("Light")
+        elif theme_cfg == "System":
+            box_current_value.set("System")
+
+    read_theme_cfg.close()
+
+    combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_current_value)
+    combobox.pack()
+
+    def ApplyChanges():
+        new_theme = combobox.get()
+
+        if os.path.isfile("./config/theme.txt"):
+            os.remove("./config/theme.txt")
+
+        if not os.path.isdir("./config"):
+            os.makedirs("./config")
+        
+        savethemecfg = open("./config/theme.txt", "w+")
+        savethemecfg.write(new_theme)
+        savethemecfg.close
+
+        if new_theme == "Dark":
+            #settings_window.tk.call("set_theme", "dark")
+            app.tk.call("set_theme", "dark")
+        elif new_theme == "Light":
+            #settings_window.tk.call("set_theme", "light")
+            app.tk.call("set_theme", "light")
+        elif new_theme == "System":
+            #settings_window.tk.call("set_theme", f"{theme}")
+            app.tk.call("set_theme", f"{theme}")
+        
+        settings_window.destroy()
+
+
+
+    okbtn = ttk.Button(settings_window, text="Apply Changes", command=lambda:ApplyChanges())
+    okbtn.pack()   
+
+    settings_window.mainloop() 
+
+
+######################################################################################################
+
+##################################################################################################
+
+
+
 # APP THEME
 
 app.tk.call("source", "sun-valley.tcl")
-theme = 'light'
 
-if  darkdetect.theme() == "Dark":
-    app.tk.call("set_theme", "dark")
-    theme = 'dark'
+if os.path.isfile("./config/theme.txt"):
+    read_theme_cfg = open("./config/theme.txt", "r")
+
+    theme_cfg = read_theme_cfg.read()
+
+    if theme_cfg == "Dark":
+        app.tk.call("set_theme", "dark")
+    elif theme_cfg == "Light":
+        app.tk.call("set_theme", "light")
+    elif theme_cfg == "System":
+        app.tk.call("set_theme", f"{theme}")
 else:
-    app.tk.call("set_theme", "light")
+    app.tk.call("set_theme", f"{theme}")
+
+read_theme_cfg.close()
 
 def switchTheme():
     global theme, app, pin_button, switch_theme_button
@@ -195,6 +387,9 @@ pin_image_dark = PhotoImage(file=f"./assets/images/dark/pin.png")
 unpin_image_light = PhotoImage(file=f"./assets/images/light/unpin.png")
 unpin_image_dark = PhotoImage(file=f"./assets/images/dark/unpin.png")
 
+settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
+settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
+
 # WINDOW FRAME
 window = Frame(app)
 window.pack(fill="both", expand=True)
@@ -209,7 +404,7 @@ time_display.pack(pady = 5)
 play_button = ttk.Button(master = window, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
 play_button.pack()
 
-manager_button = ttk.Button(master =window, text = 'Edit Timer', command = lambda: configurator.createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
+manager_button = ttk.Button(master =window, text = 'Edit Timer', command = lambda: createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
 manager_button.pack(pady = 5)
 
 switch_theme_button = ttk.Button(master=window, image=switch_theme_image_light, command=switchTheme, style="Toolbutton")
@@ -217,6 +412,9 @@ switch_theme_button.pack(side=LEFT, padx=5, pady=(5, 5))
 
 pin_button = ttk.Button(master=window, image=pin_image_light, command = lambda:toggleAlwaysOnTop(app), style="Toolbutton")
 pin_button.pack(side=RIGHT, padx=(0, 5), pady=(5, 5))
+
+settings_btn = ttk.Button(master=window, image=settings_image_dark, command=lambda:createSettingsWindow(), style="Toolbutton")
+settings_btn.place(x=0, y=0)
 
 # THEMED IMAGES
 if  darkdetect.theme() == "Dark":
