@@ -132,3 +132,8 @@ dmypy.json
 
 # Website modules
 website/.codedoc/node_modules/*
+website/*.html
+website/docs/*.html
+website/docs/assets/*.js
+website/docs/assets/*.json
+website/docs/assets/*.css
