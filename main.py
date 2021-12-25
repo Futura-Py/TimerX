@@ -245,8 +245,9 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
 
 def createSettingsWindow():
     settings_window = tkinter.Tk()
-    settings_window.geometry('300x200')
+    settings_window.geometry('300x210')
     settings_window.title('Settings')
+    settings_window.resizable(False, False)
 
     settings_window.tk.call("source", "sun-valley.tcl")
 
@@ -317,19 +318,25 @@ def createSettingsWindow():
         if new_theme == "Dark":
             #settings_window.tk.call("set_theme", "dark")
             app.tk.call("set_theme", "dark")
+            pin_button.configure(image=pin_image_dark)
         elif new_theme == "Light":
             #settings_window.tk.call("set_theme", "light")
             app.tk.call("set_theme", "light")
+            pin_button.configure(image=pin_image_light)
         elif new_theme == "System":
             #settings_window.tk.call("set_theme", f"{theme}")
             app.tk.call("set_theme", f"{theme}")
         
         settings_window.destroy()
 
-
+    def CancelSettings():
+        settings_window.destroy()
 
     okbtn = ttk.Button(settings_window, text="Apply Changes", command=lambda:ApplyChanges())
-    okbtn.pack()   
+    okbtn.place(x=150, y=150)
+
+    cancelbtn = ttk.Button(settings_window, text="Cancel", command=lambda:CancelSettings()) 
+    cancelbtn.place(x=25, y=150)
 
     settings_window.mainloop() 
 
@@ -365,13 +372,11 @@ def switchTheme():
     if  theme == 'light':
         theme = 'dark'
         app.tk.call("set_theme", "dark")
-        switch_theme_button.configure(image=switch_theme_image_dark)
         pin_button.configure(image=pin_image_dark)
     else:
         theme = 'light'
         app.tk.call("set_theme", "light")
         pin_button.configure(image=pin_image_light)
-        switch_theme_button.configure(image=switch_theme_image_light)
 
 #KEYBIMDS
 app.bind('key-space', startstopButtonPressed)
@@ -407,19 +412,30 @@ play_button.pack()
 manager_button = ttk.Button(master =window, text = 'Edit Timer', command = lambda: createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
 manager_button.pack(pady = 5)
 
-switch_theme_button = ttk.Button(master=window, image=switch_theme_image_light, command=switchTheme, style="Toolbutton")
-switch_theme_button.pack(side=LEFT, padx=5, pady=(5, 5))
-
 pin_button = ttk.Button(master=window, image=pin_image_light, command = lambda:toggleAlwaysOnTop(app), style="Toolbutton")
 pin_button.pack(side=RIGHT, padx=(0, 5), pady=(5, 5))
 
 settings_btn = ttk.Button(master=window, image=settings_image_dark, command=lambda:createSettingsWindow(), style="Toolbutton")
-settings_btn.place(x=0, y=0)
+settings_btn.place(x=5, y=163)
 
 # THEMED IMAGES
-if  darkdetect.theme() == "Dark":
-    switch_theme_button.configure(image=switch_theme_image_dark)
-    pin_button.configure(image=pin_image_dark)
+
+if os.path.isfile("./config/theme.txt"):
+    read_theme_cfg = open("./config/theme.txt", "r")
+
+    theme_cfg = read_theme_cfg.read()
+
+    if theme_cfg == "Dark":
+        pin_button.configure(image=pin_image_dark)
+    elif theme_cfg == "Light":
+        pin_button.configure(image=pin_image_light)
+else:
+    if  darkdetect.theme() == "Dark":
+        pin_button.configure(image=pin_image_dark)
+    else:
+        pin_button.configure(image=pin_image_light)   
+
+read_theme_cfg.close()
 
 # TKINTER MAINLOOP
 app.mainloop()
