@@ -313,17 +313,21 @@ def createSettingsWindow():
     box_current_value= StringVar(settings_window)
 
     try:
-        box_current_value.set(f"{new_theme}")
+        if new_theme == "Dark" or "Light" or "System":
+            box_current_value.set(f"{new_theme}")
     except:
-        box_current_value.set(f"{theme}")
+        if theme == "dark":
+            box_current_value.set("Dark")
+        elif theme == "light":
+            box_current_value.set("Light")
 
-    combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_current_value)
-    combobox.pack()
+    theme_combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_current_value)
+    theme_combobox.pack()
 
     def ApplyChanges():
         global theme, lc_theme, new_theme, lc_new_theme
 
-        new_theme = combobox.get()
+        new_theme = theme_combobox.get()
 
         cfg[0] = f"{new_theme}"
         
