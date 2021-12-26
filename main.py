@@ -17,12 +17,37 @@ import ctypes
 #from configurator import createManagerWindow, createSettingsWindow 
 import darkdetect
 
-global theme
+
+
+#Detect System theme & theme config
+
+global systheme
 
 if darkdetect.theme() == "Dark":
-    theme = "dark"
+    systheme = "dark"
 else:
-    theme = "light"
+    systheme = "light"
+
+theme = f"{systheme}"
+
+
+if os.path.isfile("./config/theme.txt"):
+    read_theme_cfg = open("./config/theme.txt", "r")
+    theme = read_theme_cfg.read()
+    read_theme_cfg.close()
+
+    if theme == "System":
+        if systheme == "dark":
+            theme = "Dark"
+        elif systheme == "light":
+            theme = "Light"
+
+if theme == "Dark":
+    lc_theme = "dark"
+elif theme == "Light":
+    lc_theme = "light"
+elif theme == f"{systheme}":
+    lc_theme = f"{systheme}"
 
 # TKINTER WINDOW
 app = Tk()
@@ -185,22 +210,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     # APP THEME
 
     manager_app_window.tk.call("source", "sun-valley.tcl")
-
-    if os.path.isfile("./config/theme.txt"):
-        read_theme_cfg = open("./config/theme.txt", "r")
-
-        theme_cfg = read_theme_cfg.read()
-
-        if theme_cfg == "Dark":
-            manager_app_window.tk.call("set_theme", "dark")
-        elif theme_cfg == "Light":
-            manager_app_window.tk.call("set_theme", "light")
-        elif theme_cfg == "System":
-            manager_app_window.tk.call("set_theme", f"{theme}")
-    else:
-        manager_app_window.tk.call("set_theme", f"{theme}")
-
-    read_theme_cfg.close()
+    manager_app_window.tk.call("set_theme", f"{lc_theme}")
 
     try:
         if system() == "darwin":
@@ -244,6 +254,8 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     ok_button.place(x=95, y=126)
 
 def createSettingsWindow():
+    global lc_theme, theme
+
     settings_window = tkinter.Tk()
     settings_window.geometry('300x210')
     settings_window.title('Settings')
@@ -251,21 +263,10 @@ def createSettingsWindow():
 
     settings_window.tk.call("source", "sun-valley.tcl")
 
-    if os.path.isfile("./config/theme.txt"):
-        read_theme_cfg = open("./config/theme.txt", "r")
-
-        theme_cfg = read_theme_cfg.read()
-
-        if theme_cfg == "Dark":
-            settings_window.tk.call("set_theme", "dark")
-        elif theme_cfg == "Light":
-            settings_window.tk.call("set_theme", "light")
-        elif theme_cfg == "System":
-            settings_window.tk.call("set_theme", f"{theme}")
-    else:
-        settings_window.tk.call("set_theme", f"{theme}")
-
-    read_theme_cfg.close()
+    try:
+        settings_window.tk.call("set_theme", f"{lc_new_theme}")
+    except:
+        settings_window.tk.call("set_theme", f"{lc_theme}")
 
     try:
         if system() == "darwin":
@@ -284,18 +285,11 @@ def createSettingsWindow():
         pass
 
     box_current_value= StringVar(settings_window)
-    box_current_value.set("System")
 
-    if os.path.isfile("./config/theme.txt"):
-        read_theme_cfg = open("./config/theme.txt", "r")
-        theme_cfg = read_theme_cfg.read()
-
-        if theme_cfg == "Dark":
-            box_current_value.set("Dark")
-        elif theme_cfg == "Light":
-            box_current_value.set("Light")
-        elif theme_cfg == "System":
-            box_current_value.set("System")
+    try:
+        box_current_value.set(f"{new_theme}")
+    except:
+        box_current_value.set(f"{theme}")
 
     read_theme_cfg.close()
 
@@ -303,6 +297,8 @@ def createSettingsWindow():
     combobox.pack()
 
     def ApplyChanges():
+        global theme, lc_theme, new_theme, lc_new_theme
+
         new_theme = combobox.get()
 
         if os.path.isfile("./config/theme.txt"):
@@ -316,17 +312,29 @@ def createSettingsWindow():
         savethemecfg.close
 
         if new_theme == "Dark":
-            #settings_window.tk.call("set_theme", "dark")
+            lc_new_theme = "dark"
+        elif new_theme == "Light":
+            lc_new_theme = "light"
+        elif new_theme == "System":
+            lc_new_theme = f"{systheme}"
+
+        if new_theme == "Dark":
             app.tk.call("set_theme", "dark")
             pin_button.configure(image=pin_image_dark)
+            settings_btn.configure(image=settings_image_dark)
         elif new_theme == "Light":
-            #settings_window.tk.call("set_theme", "light")
             app.tk.call("set_theme", "light")
             pin_button.configure(image=pin_image_light)
+            settings_btn.configure(image=settings_image_light)
         elif new_theme == "System":
-            #settings_window.tk.call("set_theme", f"{theme}")
-            app.tk.call("set_theme", f"{theme}")
-        
+            app.tk.call("set_theme", f"{systheme}")
+            if systheme == "dark":
+                pin_button.configure(image=pin_image_dark)
+                settings_btn.configure(image=settings_image_dark)
+            elif systheme == "light":
+                pin_button.configure(image=pin_image_light)
+                settings_btn.configure(image=settings_image_light)
+       
         settings_window.destroy()
 
     def CancelSettings():
@@ -350,33 +358,9 @@ def createSettingsWindow():
 # APP THEME
 
 app.tk.call("source", "sun-valley.tcl")
-
-if os.path.isfile("./config/theme.txt"):
-    read_theme_cfg = open("./config/theme.txt", "r")
-
-    theme_cfg = read_theme_cfg.read()
-
-    if theme_cfg == "Dark":
-        app.tk.call("set_theme", "dark")
-    elif theme_cfg == "Light":
-        app.tk.call("set_theme", "light")
-    elif theme_cfg == "System":
-        app.tk.call("set_theme", f"{theme}")
-else:
-    app.tk.call("set_theme", f"{theme}")
+app.tk.call("set_theme", f"{lc_theme}")
 
 read_theme_cfg.close()
-
-def switchTheme():
-    global theme, app, pin_button, switch_theme_button
-    if  theme == 'light':
-        theme = 'dark'
-        app.tk.call("set_theme", "dark")
-        pin_button.configure(image=pin_image_dark)
-    else:
-        theme = 'light'
-        app.tk.call("set_theme", "light")
-        pin_button.configure(image=pin_image_light)
 
 #KEYBIMDS
 app.bind('key-space', startstopButtonPressed)
@@ -420,20 +404,12 @@ settings_btn.place(x=5, y=163)
 
 # THEMED IMAGES
 
-if os.path.isfile("./config/theme.txt"):
-    read_theme_cfg = open("./config/theme.txt", "r")
-
-    theme_cfg = read_theme_cfg.read()
-
-    if theme_cfg == "Dark":
-        pin_button.configure(image=pin_image_dark)
-    elif theme_cfg == "Light":
-        pin_button.configure(image=pin_image_light)
-else:
-    if  darkdetect.theme() == "Dark":
-        pin_button.configure(image=pin_image_dark)
-    else:
-        pin_button.configure(image=pin_image_light)   
+if lc_theme == "dark":
+    pin_button.configure(image=pin_image_dark)
+    settings_btn.configure(image=settings_image_dark)
+elif lc_theme == "light":
+    pin_button.configure(image=pin_image_light)
+    settings_btn.configure(image=settings_image_light)   
 
 read_theme_cfg.close()
 
