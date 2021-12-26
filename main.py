@@ -21,7 +21,15 @@ import darkdetect
 
 #Detect System theme & theme config
 
-global systheme
+###############################################################
+# Config:
+#
+# config[0] = theme
+# 
+#
+###############################################################
+
+global systheme, cfg
 
 if darkdetect.theme() == "Dark":
     systheme = "dark"
@@ -30,17 +38,35 @@ else:
 
 theme = f"{systheme}"
 
-
-if os.path.isfile("./config/theme.txt"):
-    read_theme_cfg = open("./config/theme.txt", "r")
-    theme = read_theme_cfg.read()
-    read_theme_cfg.close()
+if os.path.isfile("./config/config.txt"):
+    read_cfg = open("./config/config.txt", "r")
+    cfg = read_cfg.readlines()
+    theme = cfg[0]
+    theme = theme.rstrip("\n")
+    print(theme)
+    read_cfg.close()
 
     if theme == "System":
         if systheme == "dark":
             theme = "Dark"
         elif systheme == "light":
             theme = "Light"
+    elif theme == "noconfig":
+        theme = f"{systheme}"
+else:
+    if not os.path.isdir("./config"):
+        os.makedirs("./config")
+
+    make_cfg = open ("./config/config.txt", "w+")
+    make_cfg.write("noconfig\n") # add another "noconfig\n" for every new setting
+    make_cfg.close()
+
+    read_cfg = open("./config/config.txt", "r")
+    cfg = read_cfg.readlines()
+    read_cfg.close()
+
+    
+    
 
 if theme == "Dark":
     lc_theme = "dark"
@@ -254,7 +280,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     ok_button.place(x=95, y=126)
 
 def createSettingsWindow():
-    global lc_theme, theme
+    global lc_theme, theme, cfg
 
     settings_window = tkinter.Tk()
     settings_window.geometry('300x210')
@@ -291,8 +317,6 @@ def createSettingsWindow():
     except:
         box_current_value.set(f"{theme}")
 
-    read_theme_cfg.close()
-
     combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_current_value)
     combobox.pack()
 
@@ -301,14 +325,10 @@ def createSettingsWindow():
 
         new_theme = combobox.get()
 
-        if os.path.isfile("./config/theme.txt"):
-            os.remove("./config/theme.txt")
-
-        if not os.path.isdir("./config"):
-            os.makedirs("./config")
+        cfg[0] = f"{new_theme}"
         
-        savethemecfg = open("./config/theme.txt", "w+")
-        savethemecfg.write(new_theme)
+        savethemecfg = open("./config/config.txt", "w+")
+        savethemecfg.writelines(cfg[0])
         savethemecfg.close
 
         if new_theme == "Dark":
@@ -360,8 +380,6 @@ def createSettingsWindow():
 app.tk.call("source", "sun-valley.tcl")
 app.tk.call("set_theme", f"{lc_theme}")
 
-read_theme_cfg.close()
-
 #KEYBIMDS
 app.bind('key-space', startstopButtonPressed)
 
@@ -410,8 +428,6 @@ if lc_theme == "dark":
 elif lc_theme == "light":
     pin_button.configure(image=pin_image_light)
     settings_btn.configure(image=settings_image_light)   
-
-read_theme_cfg.close()
 
 # TKINTER MAINLOOP
 app.mainloop()
