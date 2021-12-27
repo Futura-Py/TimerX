@@ -33,7 +33,9 @@ const config = {
       }),
     ],
   ],
-
+  customFields: {
+    throwIfNamespace: false,
+  },
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
