@@ -2,7 +2,7 @@
 # IMPORTS
 import platform
 from time import sleep
-from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar
+from tkinter import  Scale, TclError, ttk, Tk, PhotoImage, Frame, StringVar
 import tkinter
 from tkinter.constants import  LEFT, RIGHT, SE, SW
 from playsound import playsound
@@ -24,7 +24,7 @@ import darkdetect
 ###############################################################
 # Config:
 #
-# config[0] = theme
+# cfg[0] = theme
 # 
 #
 ###############################################################
@@ -38,12 +38,15 @@ else:
 
 theme = f"{systheme}"
 
+use_sys_theme = 0
+
 if os.path.isfile("./config/config.txt"):
     read_cfg = open("./config/config.txt", "r")
     cfg = read_cfg.readlines()
+
     theme = cfg[0]
     theme = theme.rstrip("\n")
-    print(theme)
+
     read_cfg.close()
 
     if theme == "System":
@@ -51,6 +54,7 @@ if os.path.isfile("./config/config.txt"):
             theme = "Dark"
         elif systheme == "light":
             theme = "Light"
+        use_sys_theme = 1
     elif theme == "noconfig":
         theme = f"{systheme}"
 else:
@@ -236,7 +240,11 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     # APP THEME
 
     manager_app_window.tk.call("source", "sun-valley.tcl")
-    manager_app_window.tk.call("set_theme", f"{lc_theme}")
+
+    try:
+        manager_app_window.tk.call("set_theme", f"{lc_new_theme}")
+    except:
+        manager_app_window.tk.call("set_theme", f"{lc_theme}")
 
     try:
         if system() == "darwin":
@@ -280,7 +288,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     ok_button.place(x=95, y=126)
 
 def createSettingsWindow():
-    global lc_theme, theme, cfg
+    global lc_theme, theme, cfg, value_label
 
     settings_window = tkinter.Tk()
     settings_window.geometry('300x210')
@@ -312,17 +320,27 @@ def createSettingsWindow():
 
     box_current_value= StringVar(settings_window)
 
+    print(use_sys_theme)
+
     try:
         if new_theme == "Dark" or "Light" or "System":
             box_current_value.set(f"{new_theme}")
     except:
-        if theme == "dark":
+        if use_sys_theme == 1:
+            box_current_value.set("System")
+        elif theme == "Dark":
             box_current_value.set("Dark")
-        elif theme == "light":
+        elif theme == "Light":
             box_current_value.set("Light")
 
     theme_combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_current_value)
     theme_combobox.pack()
+
+    ###
+
+
+
+    ###
 
     def ApplyChanges():
         global theme, lc_theme, new_theme, lc_new_theme
