@@ -25,6 +25,7 @@ import darkdetect
 # Config:
 #
 # cfg[0] = theme
+# cfg[1] = transparency_value
 # 
 #
 ###############################################################
@@ -47,30 +48,46 @@ if os.path.isfile("./config/config.txt"):
     theme = cfg[0]
     theme = theme.rstrip("\n")
 
+    transparency_value = cfg[1]
+    transparency_value = transparency_value.rstrip("\n")
+
+    print(transparency_value)
+
     read_cfg.close()
 
-    if theme == "System":
-        if systheme == "dark":
-            theme = "Dark"
-        elif systheme == "light":
-            theme = "Light"
-        use_sys_theme = 1
-    elif theme == "noconfig":
-        theme = f"{systheme}"
 else:
     if not os.path.isdir("./config"):
         os.makedirs("./config")
 
     make_cfg = open ("./config/config.txt", "w+")
-    make_cfg.write("noconfig\n") # add another "noconfig\n" for every new setting
+    make_cfg.write("noconfig\nnoconfig\n") # add another "noconfig\n" for every new setting
     make_cfg.close()
 
     read_cfg = open("./config/config.txt", "r")
     cfg = read_cfg.readlines()
+
+    theme = cfg[0]
+    theme = theme.rstrip("\n")
+
+    transparency_value = cfg[1]
+    transparency_value = transparency_value.rstrip("\n")
+
     read_cfg.close()
 
-    
-    
+if theme == "System":
+    if systheme == "dark":
+        theme = "Dark"
+    elif systheme == "light":
+        theme = "Light"
+    use_sys_theme = 1
+elif theme == "noconfig":
+    theme = f"{systheme}"
+    use_sys_theme = 1
+
+if theme == "dark":
+    theme = "Dark"
+if theme == "light":
+    theme = "Light"
 
 if theme == "Dark":
     lc_theme = "dark"
@@ -78,6 +95,10 @@ elif theme == "Light":
     lc_theme = "light"
 elif theme == f"{systheme}":
     lc_theme = f"{systheme}"
+
+
+if transparency_value == "noconfig":
+    transparency_value = ".99"
 
 # TKINTER WINDOW
 app = Tk()
@@ -234,6 +255,10 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     manager_app_window = tkinter.Tk()
     manager_app_window.geometry('250x170')
     manager_app_window.title('Edit Timer')
+    try:
+        manager_app_window.attributes("-alpha", new_transparency_value)
+    except:
+        manager_app_window.attributes("-alpha", transparency_value)
 
     manager_app_window.resizable(False, False)
 
@@ -294,6 +319,10 @@ def createSettingsWindow():
     settings_window.geometry('300x210')
     settings_window.title('Settings')
     settings_window.resizable(False, False)
+    try:
+        settings_window.attributes("-alpha", new_transparency_value)
+    except:
+        settings_window.attributes("-alpha", transparency_value)
 
     settings_window.tk.call("source", "sun-valley.tcl")
 
@@ -320,8 +349,6 @@ def createSettingsWindow():
 
     box_current_value= StringVar(settings_window)
 
-    print(use_sys_theme)
-
     try:
         if new_theme == "Dark" or "Light" or "System":
             box_current_value.set(f"{new_theme}")
@@ -338,19 +365,47 @@ def createSettingsWindow():
 
     ###
 
+    current_value = tkinter.DoubleVar()
 
+    didsliderload = 0
+
+    def get_current_value():
+        return ".{:.0f}".format(slider.get())
+
+    def slider_changed(event):
+        if didsliderload == 1:
+            settings_window.attributes("-alpha", get_current_value())
+            app.attributes("-alpha", get_current_value())
+
+    slider = ttk.Scale(settings_window, from_=25, to=99, orient="horizontal", command=slider_changed, variable=current_value)
+
+    transparency_value_nodot = transparency_value.lstrip(".")
+    transparency_value_nodot = int(transparency_value_nodot)
+
+    try:
+        new_transparency_value_nodot = new_transparency_value.lstrip(".")
+        slider.set(new_transparency_value_nodot)
+    except:
+        slider.set(transparency_value_nodot)
+        
+    slider.pack()
+
+    didsliderload = 1
 
     ###
 
     def ApplyChanges():
-        global theme, lc_theme, new_theme, lc_new_theme
+        global theme, lc_theme, new_theme, lc_new_theme, new_transparency_value
 
         new_theme = theme_combobox.get()
+        new_transparency_value = get_current_value()
 
-        cfg[0] = f"{new_theme}"
+        cfg[0] = f"{new_theme}\n"
+        cfg[1] = f"{new_transparency_value}\n"
         
         savethemecfg = open("./config/config.txt", "w+")
         savethemecfg.writelines(cfg[0])
+        savethemecfg.writelines(cfg[1])
         savethemecfg.close
 
         if new_theme == "Dark":
@@ -398,6 +453,11 @@ def createSettingsWindow():
 
 
 # APP THEME
+
+try:
+    app.attributes("-alpha", new_transparency_value)
+except:
+    app.attributes("-alpha", transparency_value)
 
 app.tk.call("source", "sun-valley.tcl")
 app.tk.call("set_theme", f"{lc_theme}")
