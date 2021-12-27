@@ -18,7 +18,7 @@ const FeatureList = [
     Svg: require('../../static/img/icons8-python.svg').default,
     description: (
       <>
-        TimerX is built on top of Python and uses Tkinter TTk for the GUI
+        TimerX is built on top of Python and uses Tkinter TTk for the GUI.
       </>
     ),
   },
@@ -27,7 +27,7 @@ const FeatureList = [
     Svg: require('../../static/img/icons8-open-source.svg').default,
     description: (
       <>
-        TimerX is open-source, meaning the code is available for everyone to see at the <Link to="https://github.com/sumeshir26/TimerX">GitHub repo</Link> and also modify it.
+        TimerX is open-source, meaning the code is available for everyone to see <i>and</i> modify at the <Link to="https://github.com/sumeshir26/TimerX">GitHub repo</Link>.
       </>
     ),
   },
