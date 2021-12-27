@@ -49,13 +49,8 @@ const config = {
           src: 'img/logo.svg',
         },
         items: [
-          {
-            type: 'doc',
-            docId: 'intro',
-            position: 'left',
-            label: 'Tutorial',
-          },
-          {to: '/docs', label: 'Documentation', position: 'left'},
+          {to: '/docs/intro', label: 'Documentation', position: 'left'},
+          {to: 'https://github.com/sumeshir26/TimerX/releases', label: "Download TimerX", position: 'left'},
           {
             href: 'https://github.com/sumeshir26/TimerX',
             label: 'GitHub',
