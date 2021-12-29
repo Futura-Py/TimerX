@@ -1,8 +1,8 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
 import platform
-from time import sleep
-from tkinter import  Scale, TclError, ttk, Tk, PhotoImage, Frame, StringVar
+from time import sleep, time
+from tkinter import  Scale, TclError, TkVersion, ttk, Tk, PhotoImage, Frame, StringVar
 import tkinter
 from tkinter.constants import  LEFT, RIGHT, SE, SW
 from playsound import playsound
@@ -17,7 +17,7 @@ import ctypes
 #from configurator import createManagerWindow, createSettingsWindow 
 import darkdetect
 
-
+from tkinter.messagebox import showinfo
 
 #Detect System theme & theme config
 
@@ -51,7 +51,8 @@ if os.path.isfile("./config/config.txt"):
     transparency_value = cfg[1]
     transparency_value = transparency_value.rstrip("\n")
 
-    print(transparency_value)
+    Play_Buzzer_Setting = cfg[2]
+    Play_Buzzer_Setting = Play_Buzzer_Setting.rstrip("\n")
 
     read_cfg.close()
 
@@ -60,7 +61,7 @@ else:
         os.makedirs("./config")
 
     make_cfg = open ("./config/config.txt", "w+")
-    make_cfg.write("noconfig\nnoconfig\n") # add another "noconfig\n" for every new setting
+    make_cfg.write("noconfig\nnoconfig\nnoconfig\n") # add another "noconfig\n" for every new setting
     make_cfg.close()
 
     read_cfg = open("./config/config.txt", "r")
@@ -71,6 +72,9 @@ else:
 
     transparency_value = cfg[1]
     transparency_value = transparency_value.rstrip("\n")
+
+    Play_Buzzer_Setting = cfg[2]
+    Play_Buzzer_Setting = Play_Buzzer_Setting.rstrip("\n")
 
     read_cfg.close()
 
@@ -99,6 +103,13 @@ elif theme == f"{systheme}":
 
 if transparency_value == "noconfig":
     transparency_value = ".99"
+
+if Play_Buzzer_Setting == "noconfig":
+    Play_Buzzer_Setting = True
+elif Play_Buzzer_Setting == "True":
+    Play_Buzzer_Setting = True
+elif Play_Buzzer_Setting == "False":
+    Play_Buzzer_Setting = False
 
 # TKINTER WINDOW
 app = Tk()
@@ -148,7 +159,7 @@ ontop = False
 
 # FUNCTIONS
 def playBuzzer():
-    playsound('./assets/sounds/sound1.wav')
+    playsound("./assets/sounds/sound1.wav")
 
 def startstopButtonPressed():
     global timer_on, timer_paused
@@ -218,7 +229,12 @@ def runTimer():
         callback_on_click= app.focus_force() 
         )
 
-    playBuzzer()
+    try:
+        if new_play_buzzer_setting == True:
+            playBuzzer()
+    except:
+        if Play_Buzzer_Setting == True:
+            playBuzzer()
 
 def toggleAlwaysOnTop(app):
     global ontop, pin_button, theme
@@ -313,7 +329,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     ok_button.place(x=95, y=126)
 
 def createSettingsWindow():
-    global lc_theme, theme, cfg, value_label
+    global lc_theme, theme, cfg, value_label, New_Play_Buzzer_Setting
 
     settings_window = tkinter.Tk()
     settings_window.geometry('300x210')
@@ -394,19 +410,38 @@ def createSettingsWindow():
 
     ###
 
+    btn1 = ttk.Checkbutton(settings_window)
+    try:
+        if new_play_buzzer_setting == True:
+            btn1.state(['!alternate', 'selected'])
+        elif new_play_buzzer_setting == False:
+            btn1.state(['!alternate'])
+    except:
+        if Play_Buzzer_Setting == True:
+            btn1.state(['!alternate', 'selected'])
+        elif Play_Buzzer_Setting == False:
+            btn1.state(['!alternate'])
+    btn1.pack()
+
+    ###
+
     def ApplyChanges():
-        global theme, lc_theme, new_theme, lc_new_theme, new_transparency_value
+        global theme, lc_theme, new_theme, lc_new_theme, new_transparency_value, new_play_buzzer_setting
 
         new_theme = theme_combobox.get()
         new_transparency_value = get_current_value()
+        new_play_buzzer_setting = btn1.instate(['selected'])
 
         cfg[0] = f"{new_theme}\n"
         cfg[1] = f"{new_transparency_value}\n"
+        cfg[2] = f"{new_play_buzzer_setting}\n"
         
         savethemecfg = open("./config/config.txt", "w+")
         savethemecfg.writelines(cfg[0])
         savethemecfg.writelines(cfg[1])
+        savethemecfg.writelines(cfg[2])
         savethemecfg.close
+
 
         if new_theme == "Dark":
             lc_new_theme = "dark"
