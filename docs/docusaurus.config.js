@@ -63,7 +63,7 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
+                label: 'Under work',
                 to: '/docs/intro',
               },
             ],
@@ -109,6 +109,14 @@ const config = {
             marginLeft: '1px',
           },
         },
+      },
+      announcementBar: {
+        id: 'under_development',
+        content:
+          'TimerX is under heavy development. If you would like to contribute, please visit the <a href="https://github.com/sumeshir26/TimerX">GitHub repo</a>.',
+        backgroundColor: '#fafbfc',
+        textColor: '#091E42',
+        isCloseable: true,
       },
     }),
 };
