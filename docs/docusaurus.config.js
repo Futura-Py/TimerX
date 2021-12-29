@@ -45,6 +45,7 @@ const config = {
           alt: 'TimerX Logo',
           src: 'img/logo.svg',
         },
+        
         items: [
           {to: '/docs/intro', label: 'Documentation', position: 'left'},
           {to: 'https://github.com/sumeshir26/TimerX/releases', label: "Download TimerX", position: 'left'},
@@ -67,23 +68,7 @@ const config = {
               },
             ],
           },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
-              },
-            ],
-          },
+          
           {
             title: 'More',
             items: [
@@ -103,6 +88,27 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+      },
+      colorMode: {
+        defaultMode: 'light',
+        disableSwitch: false,
+        respectPrefersColorScheme: false,
+        switchConfig: {
+          darkIcon: '\u263e',
+          darkIconStyle: {
+            marginLeft: '2px',
+          },
+          /*
+          Unicode icons such as '\u2600' will work
+          Unicode with 5 chars require brackets: '\u{1F602}'
+          but I don't get the point of unicodes when we have GitHub emojis, right?
+          // this is old. lightIcon: '\u{1F602}',
+          */
+          lightIcon: '\u{1F4A1}',
+          lightIconStyle: {
+            marginLeft: '1px',
+          },
+        },
       },
     }),
 };
