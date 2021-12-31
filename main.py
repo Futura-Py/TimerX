@@ -1,10 +1,10 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
 import platform
-from time import sleep, time
-from tkinter import  Scale, TclError, TkVersion, ttk, Tk, PhotoImage, Frame, StringVar
+from time import sleep
+from tkinter import  Label, TclError, ttk, Tk, PhotoImage, Frame, StringVar
 import tkinter
-from tkinter.constants import  LEFT, RIGHT, SE, SW
+from tkinter.constants import  LEFT, RIGHT, Y
 from playsound import playsound
 from threading import  Thread
 from platform import system
@@ -54,6 +54,12 @@ if os.path.isfile("./config/config.txt"):
     Play_Buzzer_Setting = cfg[2]
     Play_Buzzer_Setting = Play_Buzzer_Setting.rstrip("\n")
 
+    Show_Notification_Setting = cfg[3]
+    Show_Notification_Setting = Show_Notification_Setting.rstrip("\n")
+
+    ontop = cfg[4]
+    ontop = ontop.rstrip("\n")
+
     read_cfg.close()
 
 else:
@@ -61,7 +67,7 @@ else:
         os.makedirs("./config")
 
     make_cfg = open ("./config/config.txt", "w+")
-    make_cfg.write("noconfig\nnoconfig\nnoconfig\n") # add another "noconfig\n" for every new setting
+    make_cfg.write("noconfig\nnoconfig\nnoconfig\nnoconfig\nnoconfig\n") # add another "noconfig\n" for every new setting
     make_cfg.close()
 
     read_cfg = open("./config/config.txt", "r")
@@ -75,6 +81,12 @@ else:
 
     Play_Buzzer_Setting = cfg[2]
     Play_Buzzer_Setting = Play_Buzzer_Setting.rstrip("\n")
+
+    Show_Notification_Setting = cfg[3]
+    Show_Notification_Setting = Show_Notification_Setting.rstrip("\n")
+
+    ontop = cfg[4]
+    ontop = ontop.rstrip("\n")
 
     read_cfg.close()
 
@@ -110,6 +122,22 @@ elif Play_Buzzer_Setting == "True":
     Play_Buzzer_Setting = True
 elif Play_Buzzer_Setting == "False":
     Play_Buzzer_Setting = False
+
+if Show_Notification_Setting == "noconfig":
+    Show_Notification_Setting = True
+elif Show_Notification_Setting == "True":
+    Show_Notification_Setting = True
+elif Show_Notification_Setting == "False":
+    Show_Notification_Setting = False
+
+print(ontop)
+
+if ontop == "noconfig":
+    ontop = False
+elif ontop == "True":
+    ontop = True
+elif ontop == "False":
+    ontop = False
 
 # TKINTER WINDOW
 app = Tk()
@@ -155,11 +183,9 @@ timer_seconds = 5
 timer_minutes = 0
 timer_hours = 0
 
-ontop = False
-
 # FUNCTIONS
 def playBuzzer():
-    playsound("./assets/sounds/sound1.wav")
+    playsound(r".\assets\sounds\sound1.wav")
 
 def startstopButtonPressed():
     global timer_on, timer_paused
@@ -218,16 +244,24 @@ def runTimer():
     time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
     play_button.config(text = "Play")
 
-    if  system() == "Windows":
-        notification = ToastNotifier()
-        notification.show_toast(
-        "TimerX", 
-        "Timer done!", 
-        icon_path='./assets/logo.ico', 
-        duration='None', 
-        threaded=True,
-        callback_on_click= app.focus_force() 
-        )
+    def shownotif():
+        if  system() == "Windows":
+            notification = ToastNotifier()
+            notification.show_toast(
+            "TimerX", 
+            "Timer done!", 
+            icon_path='./assets/logo.ico', 
+            duration='None', 
+            threaded=True,
+            callback_on_click= app.focus_force() 
+            )
+
+    try:
+        if new_show_notification_setting == True:
+            shownotif()
+    except:
+        if Show_Notification_Setting == True:
+            shownotif()
 
     try:
         if new_play_buzzer_setting == True:
@@ -238,26 +272,13 @@ def runTimer():
 
 def toggleAlwaysOnTop(app):
     global ontop, pin_button, theme
-    if  ontop == False:
+    if  ontop == True:
         app.attributes('-topmost', True)
-        ontop = True
-        if  theme == 'dark':
-            global unpin_image_dark
-            pin_button.configure(image=unpin_image_dark)
-        else:
-            global unpin_image_light
-            pin_button.configure(image=unpin_image_light)
         return
     else:
         app.attributes('-topmost', False)
-        if  theme == 'dark':
-            global pin_image_dark
-            pin_button.configure(image=pin_image_dark)
-        else:
-            global pin_image_light
-            pin_button.configure(image=pin_image_light)
-        ontop = False
 
+toggleAlwaysOnTop(app)
 
 ################################################################################################
 
@@ -331,8 +352,8 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
 def createSettingsWindow():
     global lc_theme, theme, cfg, value_label, New_Play_Buzzer_Setting
 
-    settings_window = tkinter.Tk()
-    settings_window.geometry('300x210')
+    settings_window = tkinter.Toplevel()
+    settings_window.geometry('500x320')
     settings_window.title('Settings')
     settings_window.resizable(False, False)
     try:
@@ -340,7 +361,7 @@ def createSettingsWindow():
     except:
         settings_window.attributes("-alpha", transparency_value)
 
-    settings_window.tk.call("source", "sun-valley.tcl")
+    #settings_window.tk.call("source", "sun-valley.tcl")
 
     try:
         settings_window.tk.call("set_theme", f"{lc_new_theme}")
@@ -363,6 +384,71 @@ def createSettingsWindow():
     except TclError:
         pass
 
+    ###
+
+    theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
+    theme_light = PhotoImage(file="./assets/images/light/dark_theme.png")
+
+    transparency_dark = PhotoImage(file="./assets/images/dark/transparency.png")
+    transparency_light = PhotoImage(file="./assets/images/light/transparency.png")
+
+    speaker_dark = PhotoImage(file="./assets/images/dark/speaker.png")
+    speaker_light = PhotoImage(file="./assets/images/light/speaker.png")
+
+    bell_dark = PhotoImage(file="./assets/images/dark/bell.png")
+    bell_light = PhotoImage(file="./assets/images/light/bell.png")
+
+    pin_dark = PhotoImage(file="./assets/images/dark/pin.png")
+    pin_light = PhotoImage(file="./assets/images/light/pin.png")
+
+
+    theme_label = ttk.Label(settings_window, text="  Change theme of the app", image=theme_dark, compound=LEFT)
+    theme_label.place(x=23, y=23)
+
+    transparency_label = ttk.Label(settings_window, text="  Adjust Transparency of the app", image=transparency_dark, compound=LEFT)
+    transparency_label.place(x=23, y=73)
+
+    speaker_label = ttk.Label(settings_window, text="  Play sound when timer ends", image=speaker_dark, compound=LEFT)
+    speaker_label.place(x=23, y=123)
+
+    bell_label = ttk.Label(settings_window, text="  Show notification when timer ends", image=bell_dark, compound=LEFT)
+    bell_label.place(x=23, y=173)
+
+    pin_label = ttk.Label(settings_window, text="  Keep app always on top", image=pin_dark, compound=LEFT)
+    pin_label.place(x=23, y=223)
+
+
+    ###
+
+    try:
+        if lc_new_theme == "dark":
+            theme_label.configure(image=theme_dark)
+            transparency_label.configure(image=transparency_dark)
+            speaker_label.configure(image=speaker_dark)
+            bell_label.configure(image=bell_dark)
+            pin_label.configure(image=pin_dark)
+        elif lc_new_theme == "light":
+            theme_label.configure(image=theme_light)
+            transparency_label.configure(image=transparency_light)
+            speaker_label.configure(image=speaker_light)
+            bell_label.configure(image=bell_light)
+            pin_label.configure(image=pin_light)
+    except:
+        if lc_theme == "dark":
+            theme_label.configure(image=theme_dark)
+            transparency_label.configure(image=transparency_dark)
+            speaker_label.configure(image=speaker_dark)
+            bell_label.configure(image=bell_dark)
+            pin_label.configure(image=pin_dark)
+        elif lc_theme == "light":
+            theme_label.configure(image=theme_light)
+            transparency_label.configure(image=transparency_light)
+            speaker_label.configure(image=speaker_light)
+            bell_label.configure(image=bell_light)
+            pin_label.configure(image=pin_light)
+
+    ###
+
     box_current_value= StringVar(settings_window)
 
     try:
@@ -377,7 +463,7 @@ def createSettingsWindow():
             box_current_value.set("Light")
 
     theme_combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_current_value)
-    theme_combobox.pack()
+    theme_combobox.place(x=275, y=20)
 
     ###
 
@@ -404,7 +490,7 @@ def createSettingsWindow():
     except:
         slider.set(transparency_value_nodot)
         
-    slider.pack()
+    slider.place(x=325, y=75)
 
     didsliderload = 1
 
@@ -421,25 +507,54 @@ def createSettingsWindow():
             btn1.state(['!alternate', 'selected'])
         elif Play_Buzzer_Setting == False:
             btn1.state(['!alternate'])
-    btn1.pack()
+    btn1.place(x=360, y=125)
 
     ###
 
+    btn2 = ttk.Checkbutton(settings_window)
+    try:
+        if new_show_notification_setting == True:
+            btn2.state(['!alternate', 'selected'])
+        elif new_show_notification_setting == False:
+            btn2.state(['!alternate'])
+    except:
+        if Show_Notification_Setting == True:
+            btn2.state(['!alternate', 'selected'])
+        elif Show_Notification_Setting == False:
+            btn2.state(['!alternate'])
+    btn2.place(x=360, y=175)
+
+    ###
+
+    btn3 = ttk.Checkbutton(settings_window)
+    if ontop == True:
+        btn3.state(['!alternate', 'selected'])
+    elif ontop == False:
+        btn3.state(['!alternate'])
+    btn3.place(x=360, y=215)
+
     def ApplyChanges():
-        global theme, lc_theme, new_theme, lc_new_theme, new_transparency_value, new_play_buzzer_setting
+        global theme, lc_theme, new_theme, lc_new_theme, new_transparency_value, new_play_buzzer_setting, new_show_notification_setting, ontop
 
         new_theme = theme_combobox.get()
         new_transparency_value = get_current_value()
         new_play_buzzer_setting = btn1.instate(['selected'])
+        new_show_notification_setting = btn2.instate(["selected"])
+        ontop = btn3.instate(["selected"])
+        toggleAlwaysOnTop(app)
 
         cfg[0] = f"{new_theme}\n"
         cfg[1] = f"{new_transparency_value}\n"
         cfg[2] = f"{new_play_buzzer_setting}\n"
+        cfg[3] = f"{new_show_notification_setting}\n"
+        cfg[4] = f"{ontop}\n"
         
         savethemecfg = open("./config/config.txt", "w+")
         savethemecfg.writelines(cfg[0])
         savethemecfg.writelines(cfg[1])
         savethemecfg.writelines(cfg[2])
+        savethemecfg.writelines(cfg[3])
+        savethemecfg.writelines(cfg[4])
         savethemecfg.close
 
 
@@ -452,19 +567,15 @@ def createSettingsWindow():
 
         if new_theme == "Dark":
             app.tk.call("set_theme", "dark")
-            pin_button.configure(image=pin_image_dark)
             settings_btn.configure(image=settings_image_dark)
         elif new_theme == "Light":
             app.tk.call("set_theme", "light")
-            pin_button.configure(image=pin_image_light)
             settings_btn.configure(image=settings_image_light)
         elif new_theme == "System":
             app.tk.call("set_theme", f"{systheme}")
             if systheme == "dark":
-                pin_button.configure(image=pin_image_dark)
                 settings_btn.configure(image=settings_image_dark)
             elif systheme == "light":
-                pin_button.configure(image=pin_image_light)
                 settings_btn.configure(image=settings_image_light)
        
         settings_window.destroy()
@@ -473,10 +584,10 @@ def createSettingsWindow():
         settings_window.destroy()
 
     okbtn = ttk.Button(settings_window, text="Apply Changes", command=lambda:ApplyChanges())
-    okbtn.place(x=150, y=150)
+    okbtn.place(x=250, y=270)
 
     cancelbtn = ttk.Button(settings_window, text="Cancel", command=lambda:CancelSettings()) 
-    cancelbtn.place(x=25, y=150)
+    cancelbtn.place(x=125, y=270)
 
     settings_window.mainloop() 
 
@@ -502,15 +613,6 @@ app.bind('key-space', startstopButtonPressed)
 
 # IMAGES
 
-switch_theme_image_light = PhotoImage(file=f"./assets/images/light/dark_theme.png")
-switch_theme_image_dark = PhotoImage(file=f"./assets/images/dark/dark_theme.png")
-
-pin_image_light = PhotoImage(file=f"./assets/images/light/pin.png")
-pin_image_dark = PhotoImage(file=f"./assets/images/dark/pin.png")
-
-unpin_image_light = PhotoImage(file=f"./assets/images/light/unpin.png")
-unpin_image_dark = PhotoImage(file=f"./assets/images/dark/unpin.png")
-
 settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
 settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 
@@ -531,19 +633,14 @@ play_button.pack()
 manager_button = ttk.Button(master =window, text = 'Edit Timer', command = lambda: createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
 manager_button.pack(pady = 5)
 
-pin_button = ttk.Button(master=window, image=pin_image_light, command = lambda:toggleAlwaysOnTop(app), style="Toolbutton")
-pin_button.pack(side=RIGHT, padx=(0, 5), pady=(5, 5))
-
 settings_btn = ttk.Button(master=window, image=settings_image_dark, command=lambda:createSettingsWindow(), style="Toolbutton")
 settings_btn.place(x=5, y=163)
 
 # THEMED IMAGES
 
 if lc_theme == "dark":
-    pin_button.configure(image=pin_image_dark)
     settings_btn.configure(image=settings_image_dark)
 elif lc_theme == "light":
-    pin_button.configure(image=pin_image_light)
     settings_btn.configure(image=settings_image_light)   
 
 # TKINTER MAINLOOP
