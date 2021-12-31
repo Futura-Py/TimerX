@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/gitpod/workspace-python-tk-vnc # Python with Tk and VNC
-FROM gitpod/workspace-python-tk-vnc
+FROM gitpod/workspace-python-tk-vnc:branch-tk-dev
 
 RUN echo "Installing Node.js for Docusaurus"
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
