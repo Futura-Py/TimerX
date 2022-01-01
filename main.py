@@ -337,7 +337,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     timer_sec_input.place(x=65, y=90)
     timer_sec_input.insert(1, current_secs)
 
-    ok_button = ttk.Button(manager_window, text = 'Ok!', command = lambda:saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window))
+    ok_button = ttk.Button(manager_window, text = 'Ok!', command = lambda:saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window), style="Accent.TButton")
     ok_button.place(x=95, y=126)
 
 def createSettingsWindow():
@@ -567,7 +567,7 @@ def createSettingsWindow():
     def CancelSettings():
         settings_window.destroy()
 
-    okbtn = ttk.Button(settings_window, text="Apply Changes", command=lambda:ApplyChanges())
+    okbtn = ttk.Button(settings_window, text="Apply Changes", command=lambda:ApplyChanges(), style="Accent.TButton")
     okbtn.place(x=250, y=270)
 
     cancelbtn = ttk.Button(settings_window, text="Cancel", command=lambda:CancelSettings()) 
@@ -592,7 +592,7 @@ except:
 app.tk.call("source", "sun-valley.tcl")
 app.tk.call("set_theme", f"{lc_theme}")
 
-#KEYBIMDS
+#KEYBINDS
 app.bind('key-space', startstopButtonPressed)
 
 # IMAGES
