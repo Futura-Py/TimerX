@@ -1,3 +1,24 @@
+image: 
+  file: .gitpod.Dockerfile
+
 tasks:
-  - init: pip install -r requirements.txt
+  - name: TimerX
+    init: pip install -r requirements.txt
     command: python main.py
+# PS: App doesn't work here since "_tkinter" is unavailable
+
+  - name: Website
+    before: cd docs
+    init: yarn install
+    command: yarn start
+
+ports:
+  - port: 3000
+    onOpen: ignore
+  - port: 4000
+    onOpen: ignore
+
+vscode:
+  extensions:
+    - ms-python.python
+    - silvenon.mdx
