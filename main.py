@@ -289,7 +289,7 @@ toggleAlwaysOnTop(app)
 
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     global manager_app_window
-    manager_app_window = tkinter.Tk()
+    manager_app_window = tkinter.Toplevel()
     manager_app_window.geometry('250x170')
     manager_app_window.title('Edit Timer')
     try:
@@ -298,15 +298,6 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
         manager_app_window.attributes("-alpha", transparency_value)
 
     manager_app_window.resizable(False, False)
-
-    # APP THEME
-
-    manager_app_window.tk.call("source", "sun-valley.tcl")
-
-    try:
-        manager_app_window.tk.call("set_theme", f"{lc_new_theme}")
-    except:
-        manager_app_window.tk.call("set_theme", f"{lc_theme}")
 
     try:
         if system() == "darwin":
@@ -360,13 +351,6 @@ def createSettingsWindow():
         settings_window.attributes("-alpha", new_transparency_value)
     except:
         settings_window.attributes("-alpha", transparency_value)
-
-    #settings_window.tk.call("source", "sun-valley.tcl")
-
-    try:
-        settings_window.tk.call("set_theme", f"{lc_new_theme}")
-    except:
-        settings_window.tk.call("set_theme", f"{lc_theme}")
 
     try:
         if system() == "darwin":
