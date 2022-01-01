@@ -34,7 +34,7 @@ upgradeid = str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper()
 # build_exe_options = {"includes": ["tkinter, platform, threading"], "include_msvcr": True}
 build_exe_options = {
     "include_msvcr": True,
-    "include_files":(r"./sun-valley.tcl", r"./theme", r"./assets", r"./configurator.py"),
+    "include_files":(r"./sun-valley.tcl", r"./theme", r"./assets"),
 }
 
 bdist_rpm_options = {
