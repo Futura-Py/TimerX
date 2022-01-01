@@ -496,7 +496,7 @@ def createSettingsWindow():
 
     ###
 
-    btn1 = ttk.Checkbutton(settings_window)
+    btn1 = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
     try:
         if new_play_buzzer_setting == True:
             btn1.state(['!alternate', 'selected'])
@@ -511,7 +511,7 @@ def createSettingsWindow():
 
     ###
 
-    btn2 = ttk.Checkbutton(settings_window)
+    btn2 = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
     try:
         if new_show_notification_setting == True:
             btn2.state(['!alternate', 'selected'])
@@ -526,7 +526,7 @@ def createSettingsWindow():
 
     ###
 
-    btn3 = ttk.Checkbutton(settings_window)
+    btn3 = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
     if ontop == True:
         btn3.state(['!alternate', 'selected'])
     elif ontop == False:
