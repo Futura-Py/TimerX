@@ -1,14 +1,17 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
+ver = 0.9
+
 import platform
 from time import sleep
-from tkinter import  Label, TclError, ttk, Tk, PhotoImage, Frame, StringVar
+from tkinter import  Label, TclError, font, ttk, Tk, PhotoImage, Frame, StringVar
 import tkinter
 from tkinter.constants import  LEFT, RIGHT, Y
 from playsound import playsound
 from threading import  Thread
 from platform import system
 import os
+import webbrowser
 """
 # Disabled by default due to module unavailability on Linux
 from BlurWindow.blurWindow import GlobalBlur, blur
@@ -340,8 +343,71 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     ok_button = ttk.Button(manager_window, text = 'Ok!', command = lambda:saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window), style="Accent.TButton")
     ok_button.place(x=95, y=126)
 
+def createAboutWindow():
+    settings_window.destroy()
+
+    about_window = tkinter.Toplevel()
+    about_window.geometry("420x300")
+    about_window.resizable(False, False)
+
+    try:
+        if system() == "darwin":
+            about_window.iconbitmap(r'assets/logo_new.icns')
+            about_window.wm_attributes("-transparent", True)
+            about_window.config(bg="systemTransparent")
+        elif  system() == "Windows":
+            about_window.iconbitmap(r'assets/logo_new.ico')
+            from win10toast_click import ToastNotifier 
+        elif  system() == "win":
+            about_window.iconphoto(r'assets/logo_new.ico')
+        else:
+            logo_img = PhotoImage(file = 'assets/images/logo.png')
+            about_window.iconphoto(False, logo_img)
+    except TclError:
+        pass
+
+    def openGithub():
+        webbrowser.open("https://github.com/sumeshir26/TimerX")
+
+    logo = PhotoImage(file="./assets/logo_new_150x150.png")
+    logo_label = ttk.Label(about_window, image=logo)
+    logo_label.place(x=10, y=10)
+
+    github_logo_dark = PhotoImage(file="./assets/images/dark/github.png")
+    github_logo_light = PhotoImage(file="./assets/images/light/github.png")
+
+    globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
+    globe_light = PhotoImage(file="./assets/images/light/globe.png")
+
+    TimerX_Label = ttk.Label(about_window, text="TimerX", font=("Arial Rounded MT Bold", 50))
+    TimerX_Label.place(x=170, y=20)
+
+    Version_Label = ttk.Label(about_window, text=f"Version: {ver}", font="Arial 20")
+    Version_Label.place(x=180, y=100)
+
+    github_btn = ttk.Button(about_window, text="  Github Repository", image=github_logo_dark, compound=LEFT, command=lambda:openGithub())
+    github_btn.place(x=10, y=200)
+
+    website_btn = ttk.Button(about_window, text="  Website", image=globe_dark, compound=LEFT)
+    website_btn.place(x=200, y=200)
+
+
+    try:
+        if lc_new_theme == "dark":
+            github_btn.configure(image=github_logo_dark)
+        elif lc_new_theme == "light":
+            github_btn.configure(image=github_logo_light)
+    except:
+        if lc_theme == "dark":
+            github_btn.configure(image=github_logo_dark)
+        elif lc_theme == "light":
+            github_btn.configure(image=github_logo_light)
+
+
+    about_window.mainloop()
+
 def createSettingsWindow():
-    global lc_theme, theme, cfg, value_label, New_Play_Buzzer_Setting
+    global lc_theme, theme, cfg, value_label, New_Play_Buzzer_Setting, settings_window
 
     settings_window = tkinter.Toplevel()
     settings_window.geometry('500x320')
@@ -385,6 +451,9 @@ def createSettingsWindow():
     pin_dark = PhotoImage(file="./assets/images/dark/pin.png")
     pin_light = PhotoImage(file="./assets/images/light/pin.png")
 
+    info_dark = PhotoImage(file="./assets/images/dark/info.png")
+    info_light = PhotoImage(file="./assets/images/light/info.png")
+
 
     theme_label = ttk.Label(settings_window, text="  Change theme of the app", image=theme_dark, compound=LEFT)
     theme_label.place(x=23, y=23)
@@ -401,6 +470,9 @@ def createSettingsWindow():
     pin_label = ttk.Label(settings_window, text="  Keep app always on top", image=pin_dark, compound=LEFT)
     pin_label.place(x=23, y=223)
 
+    about_btn = ttk.Button(master=settings_window, image=info_dark, command=lambda:createAboutWindow(), style="Toolbutton")
+    about_btn.place(x=5, y=275)
+
 
     ###
 
@@ -411,12 +483,14 @@ def createSettingsWindow():
             speaker_label.configure(image=speaker_dark)
             bell_label.configure(image=bell_dark)
             pin_label.configure(image=pin_dark)
+            about_btn.configure(image=info_dark)
         elif lc_new_theme == "light":
             theme_label.configure(image=theme_light)
             transparency_label.configure(image=transparency_light)
             speaker_label.configure(image=speaker_light)
             bell_label.configure(image=bell_light)
             pin_label.configure(image=pin_light)
+            about_btn.configure(image=info_light)
     except:
         if lc_theme == "dark":
             theme_label.configure(image=theme_dark)
@@ -424,12 +498,14 @@ def createSettingsWindow():
             speaker_label.configure(image=speaker_dark)
             bell_label.configure(image=bell_dark)
             pin_label.configure(image=pin_dark)
+            about_btn.configure(image=info_dark)
         elif lc_theme == "light":
             theme_label.configure(image=theme_light)
             transparency_label.configure(image=transparency_light)
             speaker_label.configure(image=speaker_light)
             bell_label.configure(image=bell_light)
             pin_label.configure(image=pin_light)
+            about_btn.configure(image=info_light)
 
     ###
 
