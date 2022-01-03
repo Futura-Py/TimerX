@@ -252,7 +252,7 @@ def runTimer():
             notification = ToastNotifier()
             notification.show_toast(
             "TimerX", 
-            "Timer done!", 
+            "Time's up!", 
             icon_path='./assets/logo.ico', 
             duration='None', 
             threaded=True,
