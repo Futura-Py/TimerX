@@ -9,7 +9,7 @@
 <p style="text-align: center;">
     <img src="./assets/readme/dark.png"></img>
 </p>
-| {{📢Version 0.9 is Out! Get it [here](https://github.com/sumeshir26/TimerX/releases)!🎉}}
+| 📢Version 0.9 is Out! Get it [here](https://github.com/sumeshir26/TimerX/releases)!🎉
 | ---
 
 # 🎯TODO before v1.0
