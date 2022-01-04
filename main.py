@@ -1,143 +1,43 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
-import platform
 from time import sleep
-from tkinter import  Label, TclError, ttk, Tk, PhotoImage, Frame, StringVar
+from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar
 import tkinter
-from tkinter.constants import  LEFT, RIGHT, Y
+from tkinter.constants import  LEFT
 from playsound import playsound
 from threading import  Thread
 from platform import system
 import os
+from utils import *
 """
 # Disabled by default due to module unavailability on Linux
 from BlurWindow.blurWindow import GlobalBlur, blur
 """
-import ctypes
-#from configurator import createManagerWindow, createSettingsWindow 
 import darkdetect
 
 from tkinter.messagebox import showinfo
 
-#Detect System theme & theme config
+# CONFIG
 
-###############################################################
-# Config:
-#
-# cfg[0] = theme
-# cfg[1] = transparency_value
-# 
-#
-###############################################################
+theme = f"{darkdetect.theme()}"
 
-global systheme, cfg
-
-if darkdetect.theme() == "Dark":
-    systheme = "dark"
-else:
-    systheme = "light"
-
-theme = f"{systheme}"
-
-use_sys_theme = 0
-
-if os.path.isfile("./config/config.txt"):
-    read_cfg = open("./config/config.txt", "r")
-    cfg = read_cfg.readlines()
-
-    theme = cfg[0]
-    theme = theme.rstrip("\n")
-
-    transparency_value = cfg[1]
-    transparency_value = transparency_value.rstrip("\n")
-
-    Play_Buzzer_Setting = cfg[2]
-    Play_Buzzer_Setting = Play_Buzzer_Setting.rstrip("\n")
-
-    Show_Notification_Setting = cfg[3]
-    Show_Notification_Setting = Show_Notification_Setting.rstrip("\n")
-
-    ontop = cfg[4]
-    ontop = ontop.rstrip("\n")
-
-    read_cfg.close()
+if not os.path.isfile("./config.json"):
+    from utils import *
+    createConfig()
+    config = loadConfig()
 
 else:
-    if not os.path.isdir("./config"):
-        os.makedirs("./config")
+    config = loadConfig()
 
-    make_cfg = open ("./config/config.txt", "w+")
-    make_cfg.write("noconfig\nnoconfig\nnoconfig\nnoconfig\nnoconfig\n") # add another "noconfig\n" for every new setting
-    make_cfg.close()
-
-    read_cfg = open("./config/config.txt", "r")
-    cfg = read_cfg.readlines()
-
-    theme = cfg[0]
-    theme = theme.rstrip("\n")
-
-    transparency_value = cfg[1]
-    transparency_value = transparency_value.rstrip("\n")
-
-    Play_Buzzer_Setting = cfg[2]
-    Play_Buzzer_Setting = Play_Buzzer_Setting.rstrip("\n")
-
-    Show_Notification_Setting = cfg[3]
-    Show_Notification_Setting = Show_Notification_Setting.rstrip("\n")
-
-    ontop = cfg[4]
-    ontop = ontop.rstrip("\n")
-
-    read_cfg.close()
-
-if theme == "System":
-    if systheme == "dark":
+if config['theme'] == "System":
+    if darkdetect.theme() == "dark":
         theme = "Dark"
-    elif systheme == "light":
+    elif darkdetect.theme() == "light":
         theme = "Light"
-    use_sys_theme = 1
-elif theme == "noconfig":
-    theme = f"{systheme}"
-    use_sys_theme = 1
-
-if theme == "dark":
+elif config['theme'] == "Dark":
     theme = "Dark"
-if theme == "light":
+else:
     theme = "Light"
-
-if theme == "Dark":
-    lc_theme = "dark"
-elif theme == "Light":
-    lc_theme = "light"
-elif theme == f"{systheme}":
-    lc_theme = f"{systheme}"
-
-
-if transparency_value == "noconfig":
-    transparency_value = ".99"
-
-if Play_Buzzer_Setting == "noconfig":
-    Play_Buzzer_Setting = True
-elif Play_Buzzer_Setting == "True":
-    Play_Buzzer_Setting = True
-elif Play_Buzzer_Setting == "False":
-    Play_Buzzer_Setting = False
-
-if Show_Notification_Setting == "noconfig":
-    Show_Notification_Setting = True
-elif Show_Notification_Setting == "True":
-    Show_Notification_Setting = True
-elif Show_Notification_Setting == "False":
-    Show_Notification_Setting = False
-
-print(ontop)
-
-if ontop == "noconfig":
-    ontop = False
-elif ontop == "True":
-    ontop = True
-elif ontop == "False":
-    ontop = False
 
 # TKINTER WINDOW
 app = Tk()
@@ -213,8 +113,21 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_wind
     except ValueError:
         time_selected_display.configure(text = "Please enter a number!")
 
+def showNotification():
+    if  system() == "Windows":
+        notification = ToastNotifier()
+        notification.show_toast(
+        "TimerX", 
+        "Time's up!", 
+        icon_path='./assets/logo.ico', 
+        duration='None', 
+        threaded=True,
+        callback_on_click= app.focus_force(),
+        title='TimerX'
+        )
+
 def runTimer():
-    global timer_seconds, timer_minutes, timer_hours, timer_on, app
+    global timer_seconds, timer_minutes, timer_hours, timer_on, app, config
 
     seconds_left = timer_seconds
     minutes_left = timer_minutes
@@ -244,58 +157,28 @@ def runTimer():
     time_display.configure(text = f'{hours_left} : {minutes_left} : {seconds_left}')
     play_button.config(text = "Play")
 
-    def shownotif():
-        if  system() == "Windows":
-            notification = ToastNotifier()
-            notification.show_toast(
-            "TimerX", 
-            "Time's up!", 
-            icon_path='./assets/logo.ico', 
-            duration='None', 
-            threaded=True,
-            callback_on_click= app.focus_force() 
-            )
+    if config['notify']:
+        showNotification()
+    if config['sound']:
+        playBuzzer()
 
-    try:
-        if new_show_notification_setting == True:
-            shownotif()
-    except:
-        if Show_Notification_Setting == True:
-            shownotif()
-
-    try:
-        if new_play_buzzer_setting == True:
-            playBuzzer()
-    except:
-        if Play_Buzzer_Setting == True:
-            playBuzzer()
-
-def toggleAlwaysOnTop(app):
-    global ontop, pin_button, theme
-    if  ontop == True:
+def setAlwaysOnTop(app):
+    global config
+    if  config['ontop'] == True:
         app.attributes('-topmost', True)
-        return
     else:
         app.attributes('-topmost', False)
 
-toggleAlwaysOnTop(app)
-
-################################################################################################
-
-################################################################################################
-
+setAlwaysOnTop(app)
 
 #WINDOWS
 
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
-    global manager_app_window
+    global manager_app_window, config
     manager_app_window = tkinter.Toplevel()
     manager_app_window.geometry('250x170')
     manager_app_window.title('Edit Timer')
-    try:
-        manager_app_window.attributes("-alpha", new_transparency_value)
-    except:
-        manager_app_window.attributes("-alpha", transparency_value)
+    manager_app_window.attributes("-alpha", config['transperency'])
 
     manager_app_window.resizable(False, False)
 
@@ -306,7 +189,6 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
             manager_app_window.config(bg="systemTransparent")
         elif  system() == "Windows":
             manager_app_window.iconbitmap(r'assets/logo_new.ico')
-            from win10toast_click import ToastNotifier 
         elif  system() == "win":
             manager_app_window.iconphoto(r'assets/logo_new.ico')
         else:
@@ -341,16 +223,13 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     ok_button.place(x=95, y=126)
 
 def createSettingsWindow():
-    global lc_theme, theme, cfg, value_label, New_Play_Buzzer_Setting
+    global theme, config
 
     settings_window = tkinter.Toplevel()
     settings_window.geometry('500x320')
     settings_window.title('Settings')
     settings_window.resizable(False, False)
-    try:
-        settings_window.attributes("-alpha", new_transparency_value)
-    except:
-        settings_window.attributes("-alpha", transparency_value)
+    settings_window.attributes("-alpha", config['transperency'])
 
     try:
         if system() == "darwin":
@@ -359,7 +238,6 @@ def createSettingsWindow():
             settings_window.config(bg="systemTransparent")
         elif  system() == "Windows":
             settings_window.iconbitmap(r'assets/logo_new.ico')
-            from win10toast_click import ToastNotifier 
         elif  system() == "win":
             settings_window.iconphoto(r'assets/logo_new.ico')
         else:
@@ -367,8 +245,6 @@ def createSettingsWindow():
             settings_window.iconphoto(False, logo_img)
     except TclError:
         pass
-
-    ###
 
     theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
     theme_light = PhotoImage(file="./assets/images/light/dark_theme.png")
@@ -401,196 +277,116 @@ def createSettingsWindow():
     pin_label = ttk.Label(settings_window, text="  Keep app always on top", image=pin_dark, compound=LEFT)
     pin_label.place(x=23, y=223)
 
+    if theme == "Dark":
+        theme_label.configure(image=theme_dark)
+        transparency_label.configure(image=transparency_dark)
+        speaker_label.configure(image=speaker_dark)
+        bell_label.configure(image=bell_dark)
+        pin_label.configure(image=pin_dark)
+    else:
+        theme_label.configure(image=theme_light)
+        transparency_label.configure(image=transparency_light)
+        speaker_label.configure(image=speaker_light)
+        bell_label.configure(image=bell_light)
+        pin_label.configure(image=pin_light)
 
-    ###
+    box_slider_value= StringVar(settings_window)
 
-    try:
-        if lc_new_theme == "dark":
-            theme_label.configure(image=theme_dark)
-            transparency_label.configure(image=transparency_dark)
-            speaker_label.configure(image=speaker_dark)
-            bell_label.configure(image=bell_dark)
-            pin_label.configure(image=pin_dark)
-        elif lc_new_theme == "light":
-            theme_label.configure(image=theme_light)
-            transparency_label.configure(image=transparency_light)
-            speaker_label.configure(image=speaker_light)
-            bell_label.configure(image=bell_light)
-            pin_label.configure(image=pin_light)
-    except:
-        if lc_theme == "dark":
-            theme_label.configure(image=theme_dark)
-            transparency_label.configure(image=transparency_dark)
-            speaker_label.configure(image=speaker_dark)
-            bell_label.configure(image=bell_dark)
-            pin_label.configure(image=pin_dark)
-        elif lc_theme == "light":
-            theme_label.configure(image=theme_light)
-            transparency_label.configure(image=transparency_light)
-            speaker_label.configure(image=speaker_light)
-            bell_label.configure(image=bell_light)
-            pin_label.configure(image=pin_light)
+    if config['theme'] == 'System':
+        box_slider_value.set("System")    
+    elif theme == "Dark":
+        box_slider_value.set("Dark")
+    elif theme == "Light":
+        box_slider_value.set("Light")
 
-    ###
-
-    box_current_value= StringVar(settings_window)
-
-    try:
-        if new_theme == "Dark" or "Light" or "System":
-            box_current_value.set(f"{new_theme}")
-    except:
-        if use_sys_theme == 1:
-            box_current_value.set("System")
-        elif theme == "Dark":
-            box_current_value.set("Dark")
-        elif theme == "Light":
-            box_current_value.set("Light")
-
-    theme_combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_current_value)
+    theme_combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_slider_value)
     theme_combobox.place(x=275, y=20)
 
-    ###
+    slider_value = tkinter.DoubleVar()
 
-    current_value = tkinter.DoubleVar()
+    didsliderload = False
 
-    didsliderload = 0
-
-    def get_current_value():
-        return ".{:.0f}".format(slider.get())
+    def slider_value():
+        return  ".{:.0f}".format(slider.get())
 
     def slider_changed(event):
-        if didsliderload == 1:
-            settings_window.attributes("-alpha", get_current_value())
-            app.attributes("-alpha", get_current_value())
+        if didsliderload:
+            settings_window.attributes("-alpha", slider_value())
+            app.attributes("-alpha", slider_value())
 
-    slider = ttk.Scale(settings_window, from_=25, to=99, orient="horizontal", command=slider_changed, variable=current_value)
+    slider = ttk.Scale(settings_window, from_=25, to=99, orient="horizontal", command=slider_changed, variable=slider_value)
 
-    transparency_value_nodot = transparency_value.lstrip(".")
-    transparency_value_nodot = int(transparency_value_nodot)
-
-    try:
-        new_transparency_value_nodot = new_transparency_value.lstrip(".")
-        slider.set(new_transparency_value_nodot)
-    except:
-        slider.set(transparency_value_nodot)
+    print(str(config['transperency']).lstrip("."))
+    slider.set(str(config['transperency']).lstrip("."))
         
     slider.place(x=325, y=75)
 
-    didsliderload = 1
+    didsliderload = True
+
+    sound_button = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
+    if config['sound'] == True:
+        sound_button.state(['!alternate', 'selected'])
+    elif config['sound'] == False:
+        sound_button.state(['!alternate'])
+    sound_button.place(x=360, y=125)
+
+    notify_button = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
+    if config['notify'] == True:
+        notify_button.state(['!alternate', 'selected'])
+    elif config['notify'] == False:
+        notify_button.state(['!alternate'])
+    notify_button.place(x=360, y=175)
 
     ###
 
-    btn1 = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
-    try:
-        if new_play_buzzer_setting == True:
-            btn1.state(['!alternate', 'selected'])
-        elif new_play_buzzer_setting == False:
-            btn1.state(['!alternate'])
-    except:
-        if Play_Buzzer_Setting == True:
-            btn1.state(['!alternate', 'selected'])
-        elif Play_Buzzer_Setting == False:
-            btn1.state(['!alternate'])
-    btn1.place(x=360, y=125)
-
-    ###
-
-    btn2 = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
-    try:
-        if new_show_notification_setting == True:
-            btn2.state(['!alternate', 'selected'])
-        elif new_show_notification_setting == False:
-            btn2.state(['!alternate'])
-    except:
-        if Show_Notification_Setting == True:
-            btn2.state(['!alternate', 'selected'])
-        elif Show_Notification_Setting == False:
-            btn2.state(['!alternate'])
-    btn2.place(x=360, y=175)
-
-    ###
-
-    btn3 = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
-    if ontop == True:
-        btn3.state(['!alternate', 'selected'])
-    elif ontop == False:
-        btn3.state(['!alternate'])
-    btn3.place(x=360, y=215)
+    ontop_button = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
+    if config['ontop'] == True:
+        ontop_button.state(['!alternate', 'selected'])
+    elif config['ontop'] == False:
+        ontop_button.state(['!alternate'])
+    ontop_button.place(x=360, y=215)
 
     def ApplyChanges():
-        global theme, lc_theme, new_theme, lc_new_theme, new_transparency_value, new_play_buzzer_setting, new_show_notification_setting, ontop
+        global theme
 
-        new_theme = theme_combobox.get()
-        new_transparency_value = get_current_value()
-        new_play_buzzer_setting = btn1.instate(['selected'])
-        new_show_notification_setting = btn2.instate(["selected"])
-        ontop = btn3.instate(["selected"])
-        toggleAlwaysOnTop(app)
-
-        cfg[0] = f"{new_theme}\n"
-        cfg[1] = f"{new_transparency_value}\n"
-        cfg[2] = f"{new_play_buzzer_setting}\n"
-        cfg[3] = f"{new_show_notification_setting}\n"
-        cfg[4] = f"{ontop}\n"
+        config['theme'] = theme_combobox.get()
+        theme = config['theme']
+        config['transperency'] = slider_value()
+        config['sound'] = sound_button.instate(['selected'])
+        config['notify'] = notify_button.instate(["selected"])
+        config['ontop'] = ontop_button.instate(["selected"])
+        setAlwaysOnTop(app)
         
-        savethemecfg = open("./config/config.txt", "w+")
-        savethemecfg.writelines(cfg[0])
-        savethemecfg.writelines(cfg[1])
-        savethemecfg.writelines(cfg[2])
-        savethemecfg.writelines(cfg[3])
-        savethemecfg.writelines(cfg[4])
-        savethemecfg.close
+        setConfig(config)
 
-
-        if new_theme == "Dark":
-            lc_new_theme = "dark"
-        elif new_theme == "Light":
-            lc_new_theme = "light"
-        elif new_theme == "System":
-            lc_new_theme = f"{systheme}"
-
-        if new_theme == "Dark":
+        if theme == "Dark":
             app.tk.call("set_theme", "dark")
             settings_btn.configure(image=settings_image_dark)
-        elif new_theme == "Light":
+        elif theme == "Light":
             app.tk.call("set_theme", "light")
             settings_btn.configure(image=settings_image_light)
-        elif new_theme == "System":
-            app.tk.call("set_theme", f"{systheme}")
-            if systheme == "dark":
+        elif theme == "System":
+            app.tk.call("set_theme", f"{darkdetect.theme()}")
+            if darkdetect.theme() == "dark":
                 settings_btn.configure(image=settings_image_dark)
-            elif systheme == "light":
+            elif darkdetect.theme() == "light":
                 settings_btn.configure(image=settings_image_light)
        
-        settings_window.destroy()
-
-    def CancelSettings():
         settings_window.destroy()
 
     okbtn = ttk.Button(settings_window, text="Apply Changes", command=lambda:ApplyChanges(), style="Accent.TButton")
     okbtn.place(x=250, y=270)
 
-    cancelbtn = ttk.Button(settings_window, text="Cancel", command=lambda:CancelSettings()) 
+    cancelbtn = ttk.Button(settings_window, text="Cancel", command=lambda:settings_window.destroy()) 
     cancelbtn.place(x=125, y=270)
 
     settings_window.mainloop() 
 
-
-######################################################################################################
-
-##################################################################################################
-
-
-
 # APP THEME
-
-try:
-    app.attributes("-alpha", new_transparency_value)
-except:
-    app.attributes("-alpha", transparency_value)
+app.attributes("-alpha", config['transperency'])
 
 app.tk.call("source", "sun-valley.tcl")
-app.tk.call("set_theme", f"{lc_theme}")
+app.tk.call("set_theme", f"{theme.lower()}")
 
 #KEYBINDS
 app.bind('key-space', startstopButtonPressed)
@@ -622,9 +418,9 @@ settings_btn.place(x=5, y=163)
 
 # THEMED IMAGES
 
-if lc_theme == "dark":
+if config['theme'] == "dark":
     settings_btn.configure(image=settings_image_dark)
-elif lc_theme == "light":
+elif config['theme'] == "light":
     settings_btn.configure(image=settings_image_light)   
 
 # TKINTER MAINLOOP
