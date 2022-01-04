@@ -52,7 +52,6 @@ GlobalBlur(HWND)
 blur(HWND, hexColor='#12121240')
 """
 # SYSTEM CODE
-print(f'Running on {system}')
 try:
     if  system() == "darwin":
         app.iconbitmap(r'assets/logo_new.icns')
@@ -107,7 +106,7 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_wind
         timer_seconds = int(timer_sec_input.get())
         timer_minutes = int(timer_min_input.get())
         timer_hours = int(timer_hr_input.get())
-        time_selected_display.configure(text = f'Time Selected : {timer_hours}:{timer_minutes}:{timer_seconds}')
+        time_selected_display.configure(text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds')
         time_display.configure(text = f'{timer_hours} : {timer_minutes} : {timer_seconds}')
         manager_app_window.destroy()
     except ValueError:
@@ -315,10 +314,7 @@ def createSettingsWindow():
             app.attributes("-alpha", slider_value())
 
     slider = ttk.Scale(settings_window, from_=25, to=99, orient="horizontal", command=slider_changed, variable=slider_value)
-
-    print(str(config['transperency']).lstrip("."))
     slider.set(str(config['transperency']).lstrip("."))
-        
     slider.place(x=325, y=75)
 
     didsliderload = True
@@ -401,10 +397,10 @@ window = Frame(app)
 window.pack(fill="both", expand=True)
 
 # WINDOW ELEMENTS
-time_selected_display = ttk.Label(master = window, text = f'Time Selected : {timer_seconds} Seconds')
+time_selected_display = ttk.Label(master = window, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds')
 time_selected_display.pack()
 
-time_display = ttk.Label(master = window, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("any", 30))
+time_display = ttk.Label(master = window, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30))
 time_display.pack(pady = 5)
 
 play_button = ttk.Button(master = window, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
