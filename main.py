@@ -1,5 +1,7 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
+ver = "0.9"
+
 from time import sleep
 from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar
 import tkinter
@@ -9,6 +11,7 @@ from threading import  Thread
 from platform import system
 import os
 from utils import *
+import webbrowser
 """
 # Disabled by default due to module unavailability on Linux
 from BlurWindow.blurWindow import GlobalBlur, blur
@@ -221,8 +224,73 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     ok_button = ttk.Button(manager_window, text = 'Ok!', command = lambda:saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window), style="Accent.TButton")
     ok_button.place(x=95, y=126)
 
+def createAboutWindow():
+    settings_window.destroy()
+
+    about_window = tkinter.Toplevel()
+    about_window.geometry("420x240")
+    about_window.resizable(False, False)
+
+    try:
+        if system() == "darwin":
+            about_window.iconbitmap(r'assets/logo_new.icns')
+            about_window.wm_attributes("-transparent", True)
+            about_window.config(bg="systemTransparent")
+        elif  system() == "Windows":
+            about_window.iconbitmap(r'assets/logo_new.ico')
+            from win10toast_click import ToastNotifier 
+        elif  system() == "win":
+            about_window.iconphoto(r'assets/logo_new.ico')
+        else:
+            logo_img = PhotoImage(file = 'assets/images/logo.png')
+            about_window.iconphoto(False, logo_img)
+    except TclError:
+        pass
+
+    def openGithub():
+        webbrowser.open("https://github.com/sumeshir26/TimerX")
+
+    logo = PhotoImage(file="./assets/logo_new_150x150.png")
+    logo_label = ttk.Label(about_window, image=logo)
+    logo_label.place(x=10, y=10)
+
+    github_logo_dark = PhotoImage(file="./assets/images/dark/github.png")
+    github_logo_light = PhotoImage(file="./assets/images/light/github.png")
+
+    globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
+    globe_light = PhotoImage(file="./assets/images/light/globe.png")
+
+    TimerX_Label = ttk.Label(about_window, text="TimerX", font=("Arial Rounded MT Bold", 50))
+    TimerX_Label.place(x=170, y=20)
+
+    Version_Label = ttk.Label(about_window, text=f"Version: {ver}", font="Arial 20")
+    Version_Label.place(x=180, y=100)
+
+    github_btn = ttk.Button(about_window, text="  Github Repository", image=github_logo_dark, compound=LEFT, command=lambda:openGithub())
+    github_btn.place(x=50, y=180)
+
+    website_btn = ttk.Button(about_window, text="  Website", image=globe_dark, compound=LEFT)
+    website_btn.place(x=250, y=180)
+
+    if theme == "Dark":
+        github_btn.configure(image=github_logo_dark)
+        website_btn.configure(image=globe_dark)
+    elif theme == "Light":
+        github_btn.configure(image=github_logo_light)
+        website_btn.configure(image=globe_light)
+    elif theme == "System":
+        if darkdetect.theme() == "Dark":
+            github_btn.configure(image=github_logo_dark)
+            website_btn.configure(image=globe_dark)
+        elif darkdetect.theme() == "Light":
+            github_btn.configure(image=github_logo_light)
+            website_btn.configure(image=globe_light)
+
+
+    about_window.mainloop()
+
 def createSettingsWindow():
-    global theme, config
+    global theme, config, settings_window
 
     settings_window = tkinter.Toplevel()
     settings_window.geometry('500x320')
@@ -260,6 +328,9 @@ def createSettingsWindow():
     pin_dark = PhotoImage(file="./assets/images/dark/pin.png")
     pin_light = PhotoImage(file="./assets/images/light/pin.png")
 
+    info_dark = PhotoImage(file="./assets/images/dark/info.png")
+    info_light = PhotoImage(file="./assets/images/light/info.png")
+
 
     theme_label = ttk.Label(settings_window, text="  Change theme of the app", image=theme_dark, compound=LEFT)
     theme_label.place(x=23, y=23)
@@ -276,18 +347,38 @@ def createSettingsWindow():
     pin_label = ttk.Label(settings_window, text="  Keep app always on top", image=pin_dark, compound=LEFT)
     pin_label.place(x=23, y=223)
 
+    about_btn = ttk.Button(master=settings_window, image=info_dark, command=lambda:createAboutWindow(), style="Toolbutton")
+    about_btn.place(x=5, y=273)
+
     if theme == "Dark":
         theme_label.configure(image=theme_dark)
         transparency_label.configure(image=transparency_dark)
         speaker_label.configure(image=speaker_dark)
         bell_label.configure(image=bell_dark)
         pin_label.configure(image=pin_dark)
+        about_btn.configure(image=info_dark)
     else:
         theme_label.configure(image=theme_light)
         transparency_label.configure(image=transparency_light)
         speaker_label.configure(image=speaker_light)
         bell_label.configure(image=bell_light)
         pin_label.configure(image=pin_light)
+        about_btn.configure(image=info_light)
+    if theme == "System":
+        if darkdetect.theme() == "Dark":
+            theme_label.configure(image=theme_dark)
+            transparency_label.configure(image=transparency_dark)
+            speaker_label.configure(image=speaker_dark)
+            bell_label.configure(image=bell_dark)
+            pin_label.configure(image=pin_dark)
+            about_btn.configure(image=info_dark)
+        elif darkdetect.theme() == "Light":
+            theme_label.configure(image=theme_light)
+            transparency_label.configure(image=transparency_light)
+            speaker_label.configure(image=speaker_light)
+            bell_label.configure(image=bell_light)
+            pin_label.configure(image=pin_light)
+            about_btn.configure(image=info_light)
 
     box_slider_value= StringVar(settings_window)
 
@@ -362,11 +453,12 @@ def createSettingsWindow():
             app.tk.call("set_theme", "light")
             settings_btn.configure(image=settings_image_light)
         elif theme == "System":
-            app.tk.call("set_theme", f"{darkdetect.theme()}")
-            if darkdetect.theme() == "dark":
+            if darkdetect.theme() == "Dark":
                 settings_btn.configure(image=settings_image_dark)
-            elif darkdetect.theme() == "light":
+                app.tk.call("set_theme", "dark")
+            elif darkdetect.theme() == "Light":
                 settings_btn.configure(image=settings_image_light)
+                app.tk.call("set_theme", "light")
        
         settings_window.destroy()
 
@@ -383,6 +475,11 @@ app.attributes("-alpha", config['transperency'])
 
 app.tk.call("source", "sun-valley.tcl")
 app.tk.call("set_theme", f"{theme.lower()}")
+if theme == "System":
+    if darkdetect.theme() == "Dark":
+        app.tk.call("set_theme", "dark")
+    elif darkdetect.theme() == "Light":
+        app.tk.call("set_theme", "light")
 
 #KEYBINDS
 app.bind('key-space', startstopButtonPressed)
@@ -414,10 +511,15 @@ settings_btn.place(x=5, y=163)
 
 # THEMED IMAGES
 
-if config['theme'] == "dark":
+if config['theme'] == "Dark":
     settings_btn.configure(image=settings_image_dark)
-elif config['theme'] == "light":
-    settings_btn.configure(image=settings_image_light)   
+elif config['theme'] == "Light":
+    settings_btn.configure(image=settings_image_light)
+if theme == "System":
+    if darkdetect.theme() == "Dark":
+        settings_btn.configure(image=settings_image_dark)
+    elif darkdetect.theme() == "Light":
+        settings_btn.configure(image=settings_image_light)  
 
 # TKINTER MAINLOOP
 app.mainloop()
