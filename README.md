@@ -10,6 +10,9 @@
     <img src="./assets/readme/dark.png"></img>
 </p>
 
+| 📢 Version 0.9 is Out! Get it [here](https://github.com/sumeshir26/TimerX/releases)! 🎉
+| ---
+
 # 🎯TODO before v1.0
 - 🔝~~Add Always on Top option~~ _Added in codebase!_
 - 🌑~~Dark Mode~~ _Added in codebase!_
