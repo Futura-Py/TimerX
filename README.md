@@ -1,6 +1,10 @@
-<p style="text-align: center;">
-    <img src="./assets/readme/banner_new.png"></img>
-</p>
+<div align=center>
+    
+| 📢 Version 0.9 is Out! Get it [here](https://github.com/sumeshir26/TimerX/releases)! 🎉
+| ---
+
+<img src="./assets/readme/banner_new.png"></img>
+</div>
 
 # <img alt="TimerX icon" width="32px" src="https://raw.githubusercontent.com/sumeshir26/TimerX/master/assets/logo_new.png"> TimerX
 
@@ -9,10 +13,7 @@
 <p style="text-align: center;">
     <img src="./assets/readme/dark.png"></img>
 </p>
-
-| 📢 Version 0.9 is Out! Get it [here](https://github.com/sumeshir26/TimerX/releases)! 🎉
-| ---
-
+    
 # 🎯TODO before v1.0
 - 🔝~~Add Always on Top option~~ _Added in codebase!_
 - 🌑~~Dark Mode~~ _Added in codebase!_
