@@ -11,6 +11,10 @@ tasks:
     before: cd docs
     init: yarn install
     command: yarn start
+  
+  - name: Initialize `cz` and `pre-commit`
+    init: pip install -r requirements-dev.txt
+    command: pre-commit install && pre-commit run
 
 ports:
   - port: 3000
