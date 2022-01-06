@@ -1,5 +1,6 @@
-image: 
-  file: .gitpod.Dockerfile
+# image: 
+#   file: .gitpod.Dockerfile
+image: axonasif/gitpod-workspace-images:tkinter_vnc_full
 
 tasks:
   - name: TimerX
