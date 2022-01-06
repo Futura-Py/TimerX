@@ -1,12 +1,13 @@
-<div align=center>
-    
-| 📢 Version 0.9 is Out! Get it [here](https://github.com/sumeshir26/TimerX/releases)! 🎉
-| ---
+<p align="center">
+    <img alt="TimerX Logo" src="./assets/logo_new.png" width="100px" />
+    <h1 align="center">TimerX</h1>
+</p>
 
-<img src="./assets/readme/banner_new.png"></img>
-</div>
-
-# <img alt="TimerX icon" width="32px" src="https://raw.githubusercontent.com/sumeshir26/TimerX/master/assets/logo_new.png"> TimerX
+<p align="center">
+    <a style="text-decoration:none" href="https://github.com/sumeshir26/TimerX/releases">
+        <img src="https://img.shields.io/github/release/sumeshir26/TimerX.svg?style=flat-square" alt="Releases" />
+    </a>
+</p>
 
 ### A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's [Sun Valley TTk Theme](https://github.com/rdbende/Sun-Valley-TTk-Theme)
 
