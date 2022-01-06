@@ -230,6 +230,7 @@ def createAboutWindow():
     about_window = tkinter.Toplevel()
     about_window.geometry("420x240")
     about_window.resizable(False, False)
+    about_window.attributes('-topmost', True)
 
     try:
         if system() == "darwin":
@@ -238,7 +239,6 @@ def createAboutWindow():
             about_window.config(bg="systemTransparent")
         elif  system() == "Windows":
             about_window.iconbitmap(r'assets/logo_new.ico')
-            from win10toast_click import ToastNotifier 
         elif  system() == "win":
             about_window.iconphoto(r'assets/logo_new.ico')
         else:
@@ -246,9 +246,6 @@ def createAboutWindow():
             about_window.iconphoto(False, logo_img)
     except TclError:
         pass
-
-    def openGithub():
-        webbrowser.open("https://github.com/sumeshir26/TimerX")
 
     logo = PhotoImage(file="./assets/logo_new_150x150.png")
     logo_label = ttk.Label(about_window, image=logo)
@@ -263,14 +260,14 @@ def createAboutWindow():
     TimerX_Label = ttk.Label(about_window, text="TimerX", font=("Arial Rounded MT Bold", 50))
     TimerX_Label.place(x=170, y=20)
 
-    Version_Label = ttk.Label(about_window, text=f"Version: {ver}", font="Arial 20")
-    Version_Label.place(x=180, y=100)
+    version_Label = ttk.Label(about_window, text=f"Version: {ver}", font=("Segoe UI" ,"20"))
+    version_Label.place(x=180, y=100)
 
-    github_btn = ttk.Button(about_window, text="  Github Repository", image=github_logo_dark, compound=LEFT, command=lambda:openGithub())
-    github_btn.place(x=50, y=180)
+    github_btn = ttk.Button(about_window, text=" Fork on Github", image=github_logo_dark, compound=LEFT, command=lambda:webbrowser.open("https://github.com/sumeshir26/TimerX"))
+    github_btn.place(x=40, y=180)
 
-    website_btn = ttk.Button(about_window, text="  Website", image=globe_dark, compound=LEFT)
-    website_btn.place(x=250, y=180)
+    website_btn = ttk.Button(about_window, text=" Check out our Website!", image=globe_dark, compound=LEFT)
+    website_btn.place(x=190, y=180)
 
     if theme == "Dark":
         github_btn.configure(image=github_logo_dark)
@@ -285,7 +282,6 @@ def createAboutWindow():
         elif darkdetect.theme() == "Light":
             github_btn.configure(image=github_logo_light)
             website_btn.configure(image=globe_light)
-
 
     about_window.mainloop()
 
