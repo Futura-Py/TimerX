@@ -8,7 +8,7 @@ tasks:
 # PS: App doesn't work here since "_tkinter" is unavailable
 
   - name: Website
-    before: cd docs
+    before: cd docs && nvm install 14
     init: yarn install
     command: yarn start
   
