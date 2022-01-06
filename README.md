@@ -3,7 +3,7 @@
 | 📢 Version 0.9 is Out! Get it [here](https://github.com/sumeshir26/TimerX/releases)! 🎉
 | ---
 
-<img src="./assets/readme/banner_new.png"></img>
+<img src="./assets/readme/banner.png"></img>
 </div>
 
 # <img alt="TimerX icon" width="32px" src="https://raw.githubusercontent.com/sumeshir26/TimerX/master/assets/logo_new.png"> TimerX
@@ -15,17 +15,17 @@
 </p>
     
 # 🎯TODO before v1.0
-- 🔝~~Add Always on Top option~~ _Added in codebase!_
-- 🌑~~Dark Mode~~ _Added in codebase!_
-- ⌨️~~Keybindings to Play/Pause~~ _Added in codebase!_
-- 🔔~~Notifications~~ _Added in codebase!(Windows Only)_
+- 🔝~~Add Always on Top option~~ _Released with v0.9, Get it [here](https://github.com/sumeshir26/TimerX/releases)!_
+- 🌑~~Dark Mode~~ _Released with v0.9, Get it [here](https://github.com/sumeshir26/TimerX/releases)!_
+- ⌨️~~Keybindings to Play/Pause~~ _Released with v0.9, Get it [here](https://github.com/sumeshir26/TimerX/releases)!_
+- 🔔~~Notifications~~ _Released with v0.9, Get it [here](https://github.com/sumeshir26/TimerX/releases)!_
 # Features coming after v1.0(No promises!)
-- ⚙️ Add settings and about page
+- ⚙️ ~~Add settings and about page~~ _Added in codebase!(Thanks @not-nef!)_
 - Dynamically resize elements & theme
 - Dark Titlebar
 - ⏱️ Stopwatch Mode
 
 # Supported Platforms
 - ✔️ Windows: Tested on Windows 7,10, and 11
-- ❔Linux: Tested on Debian-based systems(Raspbian<!-- and ZorinOS-->). Not tested on Red Hat-based systems(Help Wanted)
+- ❔Linux: Tested on Debian-based systems(Raspbian<!-- and ZorinOS-->). Also tested on Ubuntu 20.14. Not tested on Red Hat-based systems(Help Wanted)
 - ❌ MacOS: GitHub Actions build succeeds, but fails to work upon install. **Help wanted to debug.**
