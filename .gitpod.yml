@@ -14,7 +14,8 @@ tasks:
     command: yarn start
   
   - name: Initialize `cz` and `pre-commit`
-    command: pip install -r requirements.txt && pre-commit install && pre-commit run
+    init: cd /workspace/TimerX
+    command: pip install -r requirements-dev.txt && pre-commit install && pre-commit run
 
 ports:
   - port: 3000
