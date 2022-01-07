@@ -3,7 +3,7 @@
 ver = "0.9"
 
 from time import sleep
-from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar
+from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar, Grid
 import tkinter
 from tkinter.constants import  LEFT
 from playsound import playsound
@@ -45,8 +45,8 @@ else:
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
-app.geometry('300x210')
-app.resizable(False, False)
+app.minsize(width=300, height=210)
+app.maxsize(width=512, height=400)
 app.update()
 """
 # Disabled by default
@@ -480,6 +480,11 @@ if theme == "System":
 #KEYBINDS
 app.bind('key-space', startstopButtonPressed)
 
+Grid.rowconfigure(app, 0, weight=1)
+Grid.columnconfigure(app, 1, weight=1)
+
+Grid.rowconfigure(app, 2, weight=1)
+
 # IMAGES
 
 settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
@@ -487,23 +492,57 @@ settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 
 # WINDOW FRAME
 window = Frame(app)
-window.pack(fill="both", expand=True)
+#window.pack(fill="both", expand=True)
 
 # WINDOW ELEMENTS
-time_selected_display = ttk.Label(master = window, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds')
-time_selected_display.pack()
+time_selected_display = ttk.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds')
+time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
-time_display = ttk.Label(master = window, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30))
-time_display.pack(pady = 5)
+time_display = ttk.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30))
+#time_display.grid(column=1, row=0, pady=40)
+time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
-play_button = ttk.Button(master = window, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
-play_button.pack()
+play_button = ttk.Button(master = app, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
+play_button.grid(column=1, row=0, sticky="S", rowspan=2)
 
-manager_button = ttk.Button(master =window, text = 'Edit Timer', command = lambda: createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
-manager_button.pack(pady = 5)
+manager_button = ttk.Button(master = app, text = 'Edit Timer', command = lambda: createManagerWindow(saveTimer, timer_minutes, timer_seconds, timer_hours), width = 25)
+manager_button.grid(column=1, row=2, sticky="N", pady=10)
 
-settings_btn = ttk.Button(master=window, image=settings_image_dark, command=lambda:createSettingsWindow(), style="Toolbutton")
-settings_btn.place(x=5, y=163)
+settings_btn = ttk.Button(master=app, image=settings_image_dark, command=lambda:createSettingsWindow(), style="Toolbutton")
+
+def sizechanged(e):
+    settings_btn.place(x=5, y=app.winfo_height() - 45)
+    if app.winfo_height() >= 220:
+        if app.winfo_height() > 250:
+            if app.winfo_height() > 270:
+                if app.winfo_height() > 290:
+                    if app.winfo_height() > 330:
+                        if app.winfo_height() > 350:
+                            if app.winfo_height() > 370:
+                                if app.winfo_height() > 390:
+                                    if app.winfo_width() > 420:
+                                        time_display.configure(font=("Segoe UI Variable", 100))
+                            else:
+                                if app.winfo_width() > 420:
+                                    time_display.configure(font=("Segoe UI Variable", 90))
+                        else:
+                            if app.winfo_width() > 400:
+                                time_display.configure(font=("Segoe UI Variable", 80))
+                    else:
+                        if app.winfo_width() > 360:
+                            time_display.configure(font=("Segoe UI Variable", 70))
+                else:
+                    if app.winfo_width() > 360:
+                        time_display.configure(font=("Segoe UI Variable", 60))
+            else:
+                if app.winfo_width() >= 300:
+                    time_display.configure(font=("Segoe UI Variable", 50))
+        else:
+            if app.winfo_width() >= 300:
+                time_display.configure(font=("Segoe UI Variable", 40))
+    else:
+        time_display.configure(font=("Segoe UI Variable", 30))
+        
 
 # THEMED IMAGES
 
@@ -516,6 +555,9 @@ if theme == "System":
         settings_btn.configure(image=settings_image_dark)
     elif darkdetect.theme() == "Light":
         settings_btn.configure(image=settings_image_light)  
+
+
+app.bind("<Configure>", sizechanged)
 
 # TKINTER MAINLOOP
 app.mainloop()
