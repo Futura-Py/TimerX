@@ -30,7 +30,7 @@ First, create a new branch. Name it in a way that it tells your feature in a sho
 git add . # stages your code to commit.
 cz c # The tool for committing the code
 ```
-It will ask you what type of change it is, the scope(just hit enter) and the commit title. Make sure the title is apt and short(~50 words). Then, add a commit description if you want and choose N for breaking change(although if it's a breaking change, choose yes). Then, go ahead with enters and type this in the end:
+It will ask you what type of change it is, the scope(just hit enter) and the commit title. Make sure the title is apt and short(~50 letters). Then, add a commit description if you want and choose N for breaking change(although if it's a breaking change, choose yes). Then, go ahead with enters and type this in the end:
 ```shell
 git push
 ```
