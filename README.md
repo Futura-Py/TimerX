@@ -30,6 +30,8 @@
     <img src="./assets/readme/dark.png"></img>
 </p>
     
+# Deployed with [Netlify](netlify.app)
+    
 # 🎯TODO before v1.0
 - 🔝~~Add Always on Top option~~ _Released with v0.9, Get it [here](https://github.com/sumeshir26/TimerX/releases)!_
 - 🌑~~Dark Mode~~ _Released with v0.9, Get it [here](https://github.com/sumeshir26/TimerX/releases)!_

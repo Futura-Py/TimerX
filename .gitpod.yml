@@ -1,5 +1,6 @@
-image: 
-  file: .gitpod.Dockerfile
+# image: 
+#   file: .gitpod.Dockerfile
+image: axonasif/gitpod-workspace-images:tkinter_vnc_full
 
 tasks:
   - name: TimerX
@@ -8,9 +9,13 @@ tasks:
 # PS: App doesn't work here since "_tkinter" is unavailable
 
   - name: Website
-    before: cd docs
+    before: cd docs && nvm install 14
     init: yarn install
     command: yarn start
+  
+  - name: Initialize `cz` and `pre-commit`
+    init: cd /workspace/TimerX
+    command: pip install -r requirements-dev.txt && pre-commit install && pre-commit run
 
 ports:
   - port: 3000
