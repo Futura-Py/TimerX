@@ -5,7 +5,7 @@
 
 <p align="center">
     <a style="text-decoration:none" href="https://github.com/sumeshir26/TimerX/releases">
-        <img src="https://img.shields.io/github/release/sumeshir26/TimerX.svg?style=flat-square" alt="Releases" />
+        <img src="https://img.shields.io/github/release/sumeshir26/TimerX.svg?style=flat-square" alt="Releases" width="117px" />
     </a>
     <a style="text-decoration:none" href="https://python.org">
         <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python" />
