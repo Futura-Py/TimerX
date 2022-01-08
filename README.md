@@ -14,7 +14,7 @@
         <img src="https://img.shields.io/badge/gitpod-f06611.svg?style=for-the-badge&logo=gitpod&logoColor=white" alt="Gitpod" />
     </a>
     <a style="text-decoration:none" href="https://vercel.com">
-        <img src="https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+        <img src="https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7" alt="Netlify" />
     </a>
     <a style="text-decoration:none" href="https://github.com/sumeshir26/TimerX/actions">
         <img src="https://img.shields.io/badge/githubactions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white" alt="Actions" />
