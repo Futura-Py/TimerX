@@ -13,7 +13,7 @@
     <a style="text-decoration:none" href="https://gitpod.io">
         <img src="https://img.shields.io/badge/gitpod-f06611.svg?style=for-the-badge&logo=gitpod&logoColor=white" alt="Gitpod" />
     </a>
-    <a style="text-decoration:none" href="https://vercel.com">
+    <a style="text-decoration:none" href="https://www.netlify.com">
         <img src="https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7" alt="Netlify" />
     </a>
     <a style="text-decoration:none" href="https://github.com/sumeshir26/TimerX/actions">
