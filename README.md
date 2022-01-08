@@ -50,4 +50,4 @@
 
 # Contributing
 
-Read [this](./CONTRIBUTING.md) for instructions!
+Read [this](/CONTRIBUTING.md) for instructions!
