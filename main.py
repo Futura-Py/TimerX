@@ -2,24 +2,27 @@
 # IMPORTS
 ver = "0.9"
 
+import os
+import tkinter
+import webbrowser
+from platform import system
+from threading import Thread
 from time import sleep
 from tkinter import *
 from tkinter import ttk
-import tkinter
-from tkinter.constants import  LEFT
+from tkinter.constants import LEFT
+
 from playsound import playsound
-from threading import  Thread
-from platform import system
-import os
+
 from utils import *
-import webbrowser
+
 """
 # Disabled by default due to module unavailability on Linux
 from BlurWindow.blurWindow import GlobalBlur, blur
 """
-import darkdetect
-
 from tkinter.messagebox import showinfo
+
+import darkdetect
 
 # CONFIG
 
