@@ -3,7 +3,8 @@
 ver = "0.9"
 
 from time import sleep
-from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar, Grid
+from tkinter import *
+from tkinter import ttk
 import tkinter
 from tkinter.constants import  LEFT
 from playsound import playsound
@@ -481,26 +482,20 @@ if theme == "System":
 #KEYBINDS
 app.bind('key-space', startstopButtonPressed)
 
+#GRID CONFIGURE
 Grid.rowconfigure(app, 0, weight=1)
 Grid.columnconfigure(app, 1, weight=1)
-
 Grid.rowconfigure(app, 2, weight=1)
 
 # IMAGES
-
 settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
 settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
-
-# WINDOW FRAME
-window = Frame(app)
-#window.pack(fill="both", expand=True)
 
 # WINDOW ELEMENTS
 time_selected_display = ttk.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds')
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
 time_display = ttk.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30))
-#time_display.grid(column=1, row=0, pady=40)
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
 play_button = ttk.Button(master = app, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
@@ -511,6 +506,7 @@ manager_button.grid(column=1, row=2, sticky="N", pady=10)
 
 settings_btn = ttk.Button(master=app, image=settings_image_dark, command=lambda:createSettingsWindow(), style="Toolbutton")
 
+#RESIZING
 def sizechanged(e):
     settings_btn.place(x=5, y=app.winfo_height() - 45)
     if app.winfo_height() >= 220:
@@ -582,7 +578,6 @@ def sizechanged(e):
         
 
 # THEMED IMAGES
-
 if config['theme'] == "Dark":
     settings_btn.configure(image=settings_image_dark)
 elif config['theme'] == "Light":
@@ -593,7 +588,7 @@ if theme == "System":
     elif darkdetect.theme() == "Light":
         settings_btn.configure(image=settings_image_light)  
 
-
+#DETECT RESIZING
 app.bind("<Configure>", sizechanged)
 
 # TKINTER MAINLOOP
