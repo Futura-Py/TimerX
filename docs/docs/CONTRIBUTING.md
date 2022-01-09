@@ -17,7 +17,7 @@ python3 -m pip install -r requirements.txt
 python3 -m pip install -r windows-requirements.txt
 ```
 After following the series of commands, open your favourite text editor. We recommend that you use [Visual Studio Code](https://code.visualstudio.com). Make your changes and before committing, go to the status bar. There will be a place showing branches and the text `master`. Click that, click `New branch` and name your branch, such as `patch-1` or so. Make sure it correlates to your feature, if it's a patch, name it as a patch, if it's a feature, name the feature. Next, go to the Version Control tab from the sidebar and commit the file, _semantically_. We recommend you to use semantic commits since that is more concise.
-Commit your changes to that new branch, [open a pull request](https://github.com/sumeshir26/TimerX/pulls) and someone will review it ASAP.
+Commit your changes to that new branch, [open a pull request](https://github.com/sumeshir26/TimerX/compare) (click `Compare across forks`) and someone will review it ASAP.
 
 ### Gitpod - Ready to code
 We support Gitpod - a ready-to-code environment customised for TimerX. You could either customise the app or the TimerX website. To code on Gitpod, follow the steps below:
