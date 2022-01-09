@@ -1,13 +1,15 @@
 ---
 sidebar_position: 2
+id: contributing
+title: Contributing to TimerX
 ---
 
 # Contributing to TimerX
 
 TimerX is written in **Python**, so you have to install it if you want to contribute.
 You can download  the latest version from [here](https://www.python.org/downloads/).
-Make sure to check `Add Python 3.10 to path` when installing it.
-After installing Python, get [Git](https://git-scm.org). It's version control, so that will help you in adding your changes over here.
+Make sure to check `Add Python 3.10 to PATH` when installing it.
+After installing Python, install [Git](https://git-scm.org). It's version control, so that will help you in adding your changes over here.
 Click the `Fork` button on the top-right in the GitHub page. Give it a few seconds to fork TimerX and then execute these series of commands in your Terminal/Command Prompt.
 ```shell
 git clone https://github.com/your-username/TimerX && cd TimerX
@@ -29,7 +31,7 @@ The environment is building itself. You'll have to wait for at least 2 minutes, 
 #### 4. Start coding!
 When Gitpod loads, you will be greeted by a VS Code UI. You could start coding immediately. But be wary - the commits are forced to be semantic. Fortunately, we have a CLI tool called `cz` that could help you on committing.
 #### Ready to commit?
-First, create a new branch. Name it in a way that it tells your feature in a short, abstract way. After creating your branch, open a new terminal(<kbd>Ctrl</kbd> + <kbd>`</kbd>.
+First, create a new branch. Name it in a way that it tells your feature in a short, abstract way. After creating your branch, open a new terminal by typing <kbd>Ctrl</kbd> + <kbd>`</kbd>.
 
 The <kbd>`</kbd> symbol is beside the number 1 key or right above the Tab key. Then, type these commands:
 ```shell
@@ -40,4 +42,4 @@ It will ask you what type of change it is, the scope(just hit enter) and the com
 ```shell
 git push
 ```
-After that, you can open a PR [here](https://github.com/sumeshir26/TimerX/pulls) and a reviewer will review it soon.
+After that, you can open a PR [here](https://github.com/sumeshir26/TimerX/pulls/new). Choose your branch and open it and a reviewer will review it soon.
