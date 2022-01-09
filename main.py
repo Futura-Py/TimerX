@@ -45,6 +45,7 @@ else:
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
+app.geometry("300x210")
 app.minsize(width=300, height=210)
 app.maxsize(width=512, height=400)
 app.update()
@@ -542,6 +543,42 @@ def sizechanged(e):
                 time_display.configure(font=("Segoe UI Variable", 40))
     else:
         time_display.configure(font=("Segoe UI Variable", 30))
+
+    if app.winfo_width() >= 301:
+        if app.winfo_width() >= 320:
+            if app.winfo_width() >= 340:
+                if app.winfo_width() >= 360:
+                    if app.winfo_width() >= 380:
+                        if app.winfo_width() >= 400:
+                            if app.winfo_width() >= 420:
+                                if app.winfo_width() >= 440:
+                                    if app.winfo_width() >= 460:
+                                        play_button.configure(width=54)
+                                        manager_button.configure(width=54)
+                                else:
+                                    play_button.configure(width=50)
+                                    manager_button.configure(width=50)
+                            else:
+                                play_button.configure(width=46)
+                                manager_button.configure(width=46)
+                        else:
+                            play_button.configure(width=42)
+                            manager_button.configure(width=42)
+                    else:
+                        play_button.configure(width=38)
+                        manager_button.configure(width=38)
+                else:
+                    play_button.configure(width=34)
+                    manager_button.configure(width=34)
+            else:
+                play_button.configure(width=31)
+                manager_button.configure(width=31)
+        else:
+            play_button.configure(width=28)
+            manager_button.configure(width=28)
+    else:
+        play_button.configure(width=25)
+        manager_button.configure(width=25)
         
 
 # THEMED IMAGES
