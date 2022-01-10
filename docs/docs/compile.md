@@ -43,3 +43,33 @@ REM if you need an installer:
 python setup.py bdist_msi
 ```
 
+### macOS compiling
+```shell
+# Standalone app
+python3 setup.py bdist_mac
+# Installer
+python3 setup.py bdist_dmg
+```
+If you use Anaconda3:
+```shell
+# Standalone app
+python setup.py bdist_mac
+# Installer
+python setup.py bdist_dmg
+```
+### Linux
+You can generate only a DEB or RPM installer for Linux.
+For Debian-based distros:
+```shell
+# If on Anaconda3, use `python setup.py bdist_rpm`
+python3 setup.py bdist_rpm
+cd dist
+sudo apt install alien
+sudo alien -d TimerX-*.tar.gz --version=1.0
+```
+For RHEL-based distros:
+```shell
+python3 setup.py bdist_rpm
+# Anaconda3
+python setup.py bdist_rpm
+```
