@@ -38,7 +38,7 @@ python3 setup.py bdist_msi
 If you use Anaconda3:
 ```batch
 REM if you want the unzipped package
-python setup.py bdist_win
+python setup.py bdist_exe
 REM if you need an installer:
 python setup.py bdist_msi
 ```
