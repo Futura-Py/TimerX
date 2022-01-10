@@ -72,7 +72,7 @@ const config = {
               },
               {
                 label: 'Compiling from source',
-                to: '/docs/compiling',
+                to: '/docs/compile',
               },
             ],
           },
