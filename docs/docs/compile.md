@@ -30,7 +30,7 @@ pip install -r windows-requirements.txt
 After you install the required packages, execute these commands in TimerX's root directory:
 ### Windows compiling
 ```batch
-REM for making a n unzipped executable package
+REM for making an unzipped executable package
 python3 setup.py bdist_win
 REM for making an installer:
 python3 setup.py bdist_msi
