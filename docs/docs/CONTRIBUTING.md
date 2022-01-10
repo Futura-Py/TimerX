@@ -43,3 +43,10 @@ It will ask you what type of change it is, the scope(just hit enter) and the com
 git push
 ```
 After that, you can open a PR [here](https://github.com/sumeshir26/TimerX/pulls/new). Choose your branch and open it and a reviewer will review it soon.
+
+### [Repl.it](https://repl.it)
+Go to the Repl.it homepage and click `Create a repl`. On the top right corner, there is a `Import from GitHub` button. Click that and in the place of the URL, type `github.com/sumeshir26/TimerX`. Create the repl and go to it.
+
+The repl will be booted and ready to use.
+
+Happy coding 🚀
