@@ -63,8 +63,16 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Under work',
+                label: 'Documentation',
                 to: '/docs/intro',
+              },
+              {
+                label: 'Contributing to TimerX',
+                to: '/docs/contributing',
+              },
+              {
+                label: 'Compiling from source',
+                to: '/docs/compiling',
               },
             ],
           },
