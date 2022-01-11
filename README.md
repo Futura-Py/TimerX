@@ -45,7 +45,7 @@
 
 # Supported Platforms
 - ✔️ Windows: Tested on Windows 7,10, and 11
-- ❔Linux: Tested on Debian-based systems(Raspbian<!-- and ZorinOS-->). Also tested on Ubuntu 20.14. Not tested on Red Hat-based systems(Help Wanted)
+- ❔Linux: Tested on Debian-based systems(Raspbian<!-- and ZorinOS-->). Also tested on Ubuntu 21.10. Not tested on Red Hat-based systems(Help Wanted)
 - ❌ MacOS: GitHub Actions build succeeds, but fails to work upon install. **Help wanted to debug.**
 
 # Contributing
