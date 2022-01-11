@@ -14,10 +14,10 @@ Open your terminal and head to the TimerX folder; if you have Git, clone it with
 After going inside your directory, make sure that you install the required packages via `pip3` or `pip` if you use Anaconda3:
 ```console
 $ pip3 install -r requirements.txt
-$ pip3 install -r packager-requirements.txt
+$ pip3 install -r requirements-dev.txt
 OR, if you use Anaconda3,
 $ pip install -r requirements.txt
-$ pip install -r packager-requirements.txt
+$ pip install -r requirements-dev.txt
 ```
 If you are on Windows, you can install the Windows requirements file by:
 ```batch
