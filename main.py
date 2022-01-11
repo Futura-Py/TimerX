@@ -19,7 +19,6 @@ from BlurWindow.blurWindow import GlobalBlur, blur
 """
 
 # CONFIG
-
 theme = f"{darkdetect.theme()}"
 
 if not os.path.isfile("./config.json"):
@@ -52,6 +51,7 @@ HWND = ctypes.windll.user32.GetForegroundWindow()
 GlobalBlur(HWND)
 blur(HWND, hexColor='#12121240')
 """
+
 # SYSTEM CODE
 try:
     if  system() == "darwin":
@@ -171,8 +171,7 @@ def setAlwaysOnTop(app):
 
 setAlwaysOnTop(app)
 
-#WINDOWS
-
+# WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     global manager_app_window, config
     manager_app_window = tkinter.Toplevel()
@@ -484,7 +483,6 @@ Grid.columnconfigure(app, 1, weight=1)
 Grid.rowconfigure(app, 2, weight=1)
 
 # IMAGES
-
 settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
 settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 
