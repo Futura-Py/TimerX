@@ -22,7 +22,7 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r packager-requirements.txt
-      - name: Run PyInstaller
+      - name: Run cx_Freeze
         run: |
           python setup.py bdist_msi
           
