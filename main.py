@@ -25,7 +25,6 @@ if not os.path.isfile("./config.json"):
     from utils import *
     createConfig()
     config = loadConfig()
-
 else:
     config = loadConfig()
 
@@ -79,13 +78,13 @@ app_on = True
 timer_on = False
 timer_paused = False
 
-timer_seconds = 5
-timer_minutes = 0
-timer_hours = 0
+timer_seconds = config['default_seconds']
+timer_minutes = config['default_minutes']
+timer_hours = config['default_hours']
 
 # FUNCTIONS
-def playBuzzer():
-    playsound(r".\assets\sounds\sound1.wav")
+def playBuzzer(config):
+    playsound(config['sound_path'])
 
 def startstopButtonPressed():
     global timer_on, timer_paused
@@ -123,8 +122,7 @@ def showNotification():
         duration='None', 
         threaded=True,
         callback_on_click= app.focus_force(),
-        title='TimerX'
-        )
+        title='TimerX')
 
 def runTimer():
     global timer_seconds, timer_minutes, timer_hours, timer_on, app, config
@@ -160,7 +158,7 @@ def runTimer():
     if config['notify']:
         showNotification()
     if config['sound']:
-        playBuzzer()
+        playBuzzer(config)
 
 def setAlwaysOnTop(app):
     global config
@@ -479,7 +477,6 @@ app.bind('key-space', startstopButtonPressed)
 
 Grid.rowconfigure(app, 0, weight=1)
 Grid.columnconfigure(app, 1, weight=1)
-
 Grid.rowconfigure(app, 2, weight=1)
 
 # IMAGES
@@ -488,7 +485,6 @@ settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 
 # WINDOW FRAME
 window = Frame(app)
-#window.pack(fill="both", expand=True)
 
 # WINDOW ELEMENTS
 time_selected_display = ttk.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10))

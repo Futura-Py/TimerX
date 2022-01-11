@@ -1,3 +1,7 @@
+# VENV
+pyenv.cfg
+Scripts/
+
 # Config
 config.json
 

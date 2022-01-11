@@ -12,4 +12,4 @@ def setConfig(config):
 
 def createConfig():
     with open('config.json', 'w') as config_file:
-        json.dump({"theme": "Light", "notify": False, "ontop": False, "transperency": 1.0, "sound": True}, config_file)
+        json.dump({"theme": "Light", "notify": False, "ontop": False, "transperency": 1.0, "sound": True, "default_minutes": 0, "default_hours": 0, "default_seconds": 5, "sound_path": r".\assets\sounds\sound1.wav"}, config_file)
