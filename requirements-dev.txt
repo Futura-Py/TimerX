@@ -1,2 +1,3 @@
-pre-commit
 cx_Freeze
+commitizen
+pre-commit
