@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+slug: intro
+title: Welcome to TimerX Docs
 ---
-
-# Under development
+# Welcome to TimerX Docs

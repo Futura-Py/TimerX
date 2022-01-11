@@ -21,8 +21,10 @@ jobs:
           architecture: 'x64'
       - name: Install requirements
         run: |
+
           pip install -r requirements-dev.txt
-      - name: Run PyInstaller
+      - name: Run cx_Freeze
+
         run: |
           python setup.py bdist_msi
           

@@ -24,7 +24,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/sumeshir26/TimerX',
+          editUrl: 'https://github.com/sumeshir26/TimerX/blob/master/docs',
         },
         blog: false,
         theme: {
@@ -63,8 +63,16 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Under work',
+                label: 'Documentation',
                 to: '/docs/intro',
+              },
+              {
+                label: 'Contributing to TimerX',
+                to: '/docs/contributing',
+              },
+              {
+                label: 'Compiling from source',
+                to: '/docs/compile',
               },
             ],
           },
