@@ -22,7 +22,7 @@ jobs:
       - name: Install requirements
         run: |
 
-          pip install -r packager-requirements.txt
+          pip install -r requirements-dev.txt
       - name: Run cx_Freeze
 
         run: |
