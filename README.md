@@ -10,7 +10,7 @@
     <a style="text-decoration:none" href="https://python.org">
         <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python" />
     </a>
-    <a style="text-decoration:none" href="https://gitpod.io">
+    <a style="text-decoration:none" href="https://gitpod.io/#https://github.com/sumeshir26/TimerX">
         <img src="https://img.shields.io/badge/gitpod-f06611.svg?style=for-the-badge&logo=gitpod&logoColor=white" alt="Gitpod" />
     </a>
     <a style="text-decoration:none" href="https://www.netlify.com">
@@ -39,7 +39,7 @@
 - 🔔~~Notifications~~ _Released with v0.9, Get it [here](https://github.com/sumeshir26/TimerX/releases)!_
 # Features coming after v1.0(No promises!)
 - ⚙️ ~~Add settings and about page~~ _Added in codebase!(Thanks [@not-nef](https://github.com/not-nef)!)_
-- Dynamically resize elements & theme
+- ~~Dynamically resize elements & theme~~ _Added in codebase!(Thanks [@not-nef](https://github.com/not-nef)!)_
 - Dark Titlebar
 - ⏱️ Stopwatch Mode
 
