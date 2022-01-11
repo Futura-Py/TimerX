@@ -2,27 +2,21 @@
 # IMPORTS
 ver = "0.9"
 
-import os
-import tkinter
-import webbrowser
-from platform import system
-from threading import Thread
 from time import sleep
-from tkinter import *
-from tkinter import ttk
-from tkinter.constants import LEFT
-
+from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar, Grid
+import tkinter
+from tkinter.constants import  LEFT
 from playsound import playsound
-
+from threading import  Thread
+from platform import system
+import os
 from utils import *
-
+import webbrowser
+import darkdetect
 """
 # Disabled by default due to module unavailability on Linux
 from BlurWindow.blurWindow import GlobalBlur, blur
 """
-from tkinter.messagebox import showinfo
-
-import darkdetect
 
 # CONFIG
 
@@ -49,7 +43,6 @@ else:
 # TKINTER WINDOW
 app = Tk()
 app.title('TimerX')
-app.geometry("300x210")
 app.minsize(width=300, height=210)
 app.maxsize(width=512, height=400)
 app.update()
@@ -485,17 +478,22 @@ if theme == "System":
 #KEYBINDS
 app.bind('key-space', startstopButtonPressed)
 
-#GRID CONFIGURE
 Grid.rowconfigure(app, 0, weight=1)
 Grid.columnconfigure(app, 1, weight=1)
+
 Grid.rowconfigure(app, 2, weight=1)
 
 # IMAGES
+
 settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
 settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 
+# WINDOW FRAME
+window = Frame(app)
+#window.pack(fill="both", expand=True)
+
 # WINDOW ELEMENTS
-time_selected_display = ttk.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds')
+time_selected_display = ttk.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10))
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
 time_display = ttk.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30))
@@ -509,7 +507,6 @@ manager_button.grid(column=1, row=2, sticky="N", pady=10)
 
 settings_btn = ttk.Button(master=app, image=settings_image_dark, command=lambda:createSettingsWindow(), style="Toolbutton")
 
-#RESIZING
 def sizechanged(e):
     settings_btn.place(x=5, y=app.winfo_height() - 45)
     if app.winfo_height() >= 220:
@@ -522,65 +519,40 @@ def sizechanged(e):
                                 if app.winfo_height() > 390:
                                     if app.winfo_width() > 420:
                                         time_display.configure(font=("Segoe UI Variable", 100))
+                                        time_selected_display.configure(font = ("Segoe UI Variable", 25))
                             else:
                                 if app.winfo_width() > 420:
                                     time_display.configure(font=("Segoe UI Variable", 90))
+                                    time_selected_display.configure(font = ("Segoe UI Variable", 25))
                         else:
                             if app.winfo_width() > 400:
                                 time_display.configure(font=("Segoe UI Variable", 80))
+                                time_selected_display.configure(font = ("Segoe UI Variable", 25))
                     else:
                         if app.winfo_width() > 360:
                             time_display.configure(font=("Segoe UI Variable", 70))
+                            time_selected_display.configure(font = ("Segoe UI Variable", 23))
                 else:
                     if app.winfo_width() > 360:
                         time_display.configure(font=("Segoe UI Variable", 60))
+                        time_selected_display.configure(font = ("Segoe UI Variable", 20))
             else:
                 if app.winfo_width() >= 300:
                     time_display.configure(font=("Segoe UI Variable", 50))
+                    time_selected_display.configure(font = ("Segoe UI Variable", 17))
         else:
             if app.winfo_width() >= 300:
                 time_display.configure(font=("Segoe UI Variable", 40))
+                time_selected_display.configure(font = ("Segoe UI Variable", 13))
     else:
         time_display.configure(font=("Segoe UI Variable", 30))
+        time_selected_display.configure(font = ("Segoe UI Variable", 10))
 
-    if app.winfo_width() >= 301:
-        if app.winfo_width() >= 320:
-            if app.winfo_width() >= 340:
-                if app.winfo_width() >= 360:
-                    if app.winfo_width() >= 380:
-                        if app.winfo_width() >= 400:
-                            if app.winfo_width() >= 420:
-                                if app.winfo_width() >= 440:
-                                    if app.winfo_width() >= 460:
-                                        play_button.configure(width=54)
-                                        manager_button.configure(width=54)
-                                else:
-                                    play_button.configure(width=50)
-                                    manager_button.configure(width=50)
-                            else:
-                                play_button.configure(width=46)
-                                manager_button.configure(width=46)
-                        else:
-                            play_button.configure(width=42)
-                            manager_button.configure(width=42)
-                    else:
-                        play_button.configure(width=38)
-                        manager_button.configure(width=38)
-                else:
-                    play_button.configure(width=34)
-                    manager_button.configure(width=34)
-            else:
-                play_button.configure(width=31)
-                manager_button.configure(width=31)
-        else:
-            play_button.configure(width=28)
-            manager_button.configure(width=28)
-    else:
-        play_button.configure(width=25)
-        manager_button.configure(width=25)
-        
+    play_button.configure(width=int(app.winfo_width()/12))
+    manager_button.configure(width=int(app.winfo_width()/12))  
 
 # THEMED IMAGES
+
 if config['theme'] == "Dark":
     settings_btn.configure(image=settings_image_dark)
 elif config['theme'] == "Light":
@@ -591,7 +563,7 @@ if theme == "System":
     elif darkdetect.theme() == "Light":
         settings_btn.configure(image=settings_image_light)  
 
-#DETECT RESIZING
+
 app.bind("<Configure>", sizechanged)
 
 # TKINTER MAINLOOP
