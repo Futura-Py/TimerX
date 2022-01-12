@@ -13,10 +13,8 @@ import os
 from utils import *
 import webbrowser
 import darkdetect
-"""
-# Disabled by default due to module unavailability on Linux
-from BlurWindow.blurWindow import GlobalBlur, blur
-"""
+from BlurWindow.blurWindow import *
+import ctypes
 
 # CONFIG
 theme = f"{darkdetect.theme()}"
@@ -43,13 +41,12 @@ app = Tk()
 app.title('TimerX')
 app.minsize(width=300, height=210)
 app.maxsize(width=512, height=400)
+app.config(bg="green")
+app.wm_attributes("-transparent", "green")
 app.update()
-"""
-# Disabled by default
 HWND = ctypes.windll.user32.GetForegroundWindow()
-GlobalBlur(HWND)
-blur(HWND, hexColor='#12121240')
-"""
+GlobalBlur(HWND, Acrylic=True)
+
 
 # SYSTEM CODE
 try:
@@ -487,10 +484,10 @@ settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 window = Frame(app)
 
 # WINDOW ELEMENTS
-time_selected_display = ttk.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10))
+time_selected_display = tkinter.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10), bg="green")
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
-time_display = ttk.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30))
+time_display = tkinter.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30), bg="green")
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
 play_button = ttk.Button(master = app, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
