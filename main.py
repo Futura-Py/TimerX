@@ -45,7 +45,6 @@ app.config(bg="green")
 app.wm_attributes("-transparent", "green")
 app.update()
 HWND = ctypes.windll.user32.GetForegroundWindow()
-GlobalBlur(HWND, Acrylic=True)
 
 
 # SYSTEM CODE
@@ -484,10 +483,10 @@ settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 window = Frame(app)
 
 # WINDOW ELEMENTS
-time_selected_display = tkinter.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10), bg="green")
+time_selected_display = tkinter.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10), bg="green", fg="white")
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
-time_display = tkinter.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30), bg="green")
+time_display = tkinter.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30), bg="green", fg="white")
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
 play_button = ttk.Button(master = app, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
@@ -546,13 +545,18 @@ def sizechanged(e):
 
 if config['theme'] == "Dark":
     settings_btn.configure(image=settings_image_dark)
+    GlobalBlur(HWND, Acrylic=True, Dark=True)
 elif config['theme'] == "Light":
     settings_btn.configure(image=settings_image_light)
-if theme == "System":
+    GlobalBlur(HWND, Acrylic=True)
+if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
         settings_btn.configure(image=settings_image_dark)
+        GlobalBlur(HWND, Acrylic=True, Dark=True)
     elif darkdetect.theme() == "Light":
-        settings_btn.configure(image=settings_image_light)  
+        settings_btn.configure(image=settings_image_light)
+        GlobalBlur(HWND, Acrylic=True)
+
 
 
 app.bind("<Configure>", sizechanged)
