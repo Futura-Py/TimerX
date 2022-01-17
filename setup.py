@@ -4,13 +4,13 @@ from cx_Freeze import setup, Executable
 base = None
 if sys.platform == "win32":
     base = "Win32GUI"
-    icon="./assets/logo.ico"
+    icon="./assets/logo_new.ico"
     executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe", shortcutDir="ProgramMenuFolder")]
 elif sys.platform == "darwin":
-    icon="./assets/logo.icns"
+    icon="./assets/logo_new.icns"
     executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe")]
 else:
-    icon="./assets/logo.png"
+    icon="./assets/logo_new.png"
     executables = [Executable("main.py", base=base, icon=icon, shortcut_name="TimerX", target_name="TimerX.exe")]
 
 # directory_table = [
@@ -43,13 +43,13 @@ bdist_rpm_options = {
 
 bdist_msi_options = {
     "add_to_path":False,
-    "install_icon":"assets/logo.ico",
+    "install_icon":"assets/logo_new.ico",
     #"upgrade_code":upgradeid,
     "target_name":"TimerX"
 }
 bdist_mac_options = {
     "bundle_name": "TimerX",
-    "iconfile":"./assets/logo.icns"
+    "iconfile":"./assets/logo_new.icns"
 }
 
 bdist_dmg_options = {
