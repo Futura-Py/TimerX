@@ -21,15 +21,18 @@ jobs:
           architecture: 'x64'
       - name: Install requirements
         run: |
-
+          pip install -r requirements.txt
+          pip install -r requirements-windows.txt
           pip install -r requirements-dev.txt
-      - name: Run cx_Freeze
-
+      - name: Test App
+        run: |
+          python main.py
+      - name: Test cx_Freeze
         run: |
           python setup.py bdist_msi
-          
-  build-macos:
-    runs-on: macos-latest
+
+  build-ubuntu:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -40,7 +43,25 @@ jobs:
           architecture: 'x64'
       - name: Install requirements
         run: |
+          pip install -r requirements.txt
           pip install -r requirements-dev.txt
-      - name: Run cx_freeze
+      - name: Test App
         run: |
-          python setup.py bdist_dmg    
+          python main.py
+          
+  # build-macos:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
+  #     - name: Install Python
+  #       uses: actions/setup-python@v1
+  #       with:
+  #         python-version: '3.10'
+  #         architecture: 'x64'
+  #     - name: Install requirements
+  #       run: |
+  #         pip install -r requirements-dev.txt
+  #     - name: Run cx_freeze
+  #       run: |
+  #         python setup.py bdist_dmg
