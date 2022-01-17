@@ -13,7 +13,7 @@ const config = {
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'sumeshir26', // Usually your GitHub org/user name.
+  organizationName: 'TimerX-App', // Usually your GitHub org/user name.
   projectName: 'TimerX', // Usually your repo name.
 
   presets: [
@@ -24,7 +24,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/sumeshir26/TimerX/blob/master/docs',
+          editUrl: 'https://github.com/TimerX-App/TimerX/blob/master/docs',
         },
         blog: false,
         theme: {
@@ -48,9 +48,9 @@ const config = {
         
         items: [
           {to: '/docs/intro', label: 'Documentation', position: 'left'},
-          {to: 'https://github.com/sumeshir26/TimerX/releases', label: "Download TimerX", position: 'left'},
+          {to: 'https://github.com/TimerX-App/TimerX/releases', label: "Download TimerX", position: 'left'},
           {
-            href: 'https://github.com/sumeshir26/TimerX',
+            href: 'https://github.com/TimerX-App/TimerX',
             label: 'GitHub',
             position: 'right',
           },
@@ -86,7 +86,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/sumeshir26/TimerX',
+                href: 'https://github.com/TimerX-App/TimerX',
               },
             ],
           },
@@ -121,7 +121,7 @@ const config = {
       announcementBar: {
         id: 'under_development',
         content:
-          'TimerX is under heavy development. If you would like to contribute, please visit the <a href="https://github.com/sumeshir26/TimerX">GitHub repo</a>.',
+          'TimerX is under heavy development. If you would like to contribute, please visit the <a href="https://github.com/TimerX-App/TimerX">GitHub repo</a>.',
         backgroundColor: '#fafbfc',
         textColor: '#091E42',
         isCloseable: true,
