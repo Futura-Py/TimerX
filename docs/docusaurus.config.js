@@ -9,7 +9,7 @@ const config = {
   title: "TimerX",
   tagline:
     "A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's Sun Valley TTk Theme",
-  url: "https://timerx.vercel.app",
+  url: "https://timerx.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
