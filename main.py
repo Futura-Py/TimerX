@@ -2,7 +2,6 @@
 # IMPORTS
 ver = "0.9"
 
-from platform import sys
 import os
 import tkinter
 import webbrowser
@@ -13,8 +12,13 @@ from tkinter import Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
 from tkinter.constants import LEFT
 
 import darkdetect
+from playsound import playsound
+
+from utils import *
+
 from BlurWindow.blurWindow import *
 import ctypes
+
 
 # CONFIG
 theme = f"{darkdetect.theme()}"
@@ -42,7 +46,17 @@ app = Tk()
 app.title("TimerX")
 app.minsize(width=300, height=210)
 app.maxsize(width=512, height=400)
-app.wm_attributes("-transparent", ttk.Style().lookup(".", "background"))
+
+app.tk.call("source", "sun-valley.tcl")
+app.tk.call("set_theme", f"{theme.lower()}")
+if theme == "System":
+    if darkdetect.theme() == "Dark":
+        app.tk.call("set_theme", "dark")
+    elif darkdetect.theme() == "Light":
+        app.tk.call("set_theme", "light")
+
+bg_color = ttk.Style().lookup(".", "background")
+app.wm_attributes("-transparent", bg_color)
 app.update()
 HWND = ctypes.windll.user32.GetForegroundWindow()
 
@@ -183,11 +197,11 @@ setAlwaysOnTop(app)
 # WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     global manager_app_window, config
-  
     manager_app_window = tkinter.Toplevel()
     manager_app_window.geometry("250x170")
     manager_app_window.title("Edit Timer")
     manager_app_window.attributes("-alpha", config["transperency"])
+
     manager_app_window.resizable(False, False)
 
     try:
@@ -241,7 +255,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
 def createAboutWindow():
     settings_window.destroy()
 
-    about_window = Toplevel()
+    about_window = tkinter.Toplevel()
     about_window.geometry("420x240")
     about_window.resizable(False, False)
     about_window.attributes("-topmost", True)
@@ -447,7 +461,7 @@ def createSettingsWindow():
     )
     theme_combobox.place(x=275, y=20)
 
-    slider_value = DoubleVar()
+    slider_value = tkinter.DoubleVar()
 
     didsliderload = False
 
@@ -543,14 +557,6 @@ def createSettingsWindow():
 # APP THEME
 app.attributes("-alpha", config["transperency"])
 
-app.tk.call("source", "sun-valley.tcl")
-app.tk.call("set_theme", f"{theme.lower()}")
-if theme == "System":
-    if darkdetect.theme() == "Dark":
-        app.tk.call("set_theme", "dark")
-    elif darkdetect.theme() == "Light":
-        app.tk.call("set_theme", "light")
-
 # KEYBINDS
 app.bind("key-space", startstopButtonPressed)
 
@@ -566,11 +572,22 @@ settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 window = Frame(app)
 
 # WINDOW ELEMENTS
-time_selected_display = Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10), bg=ttk.Style().lookup(".", "background"), fg="white")
+time_selected_display = tkinter.Label(
+    master=app,
+    text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds",
+    font=("Segoe UI Variable", 10),
+    bg=bg_color,
+    fg="white"
+)
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
-time_display = Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30), bg=ttk.Style().lookup(".", "background"), fg="white")
-
+time_display = tkinter.Label(
+    master=app,
+    text=f"{timer_hours} : {timer_minutes} : {timer_seconds}",
+    font=("Segoe UI Variable", 30),
+    bg=bg_color,
+    fg="white"
+)
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
 play_button = ttk.Button(
@@ -662,7 +679,7 @@ def sizechanged(e):
 if config["theme"] == "Dark":
     settings_btn.configure(image=settings_image_dark)
     GlobalBlur(HWND, Acrylic=True, Dark=True)
-elif config['theme'] == "Light":
+elif config["theme"] == "Light":
     settings_btn.configure(image=settings_image_light)
     GlobalBlur(HWND, Acrylic=True)
 if config["theme"] == "System":
@@ -672,6 +689,7 @@ if config["theme"] == "System":
     elif darkdetect.theme() == "Light":
         settings_btn.configure(image=settings_image_light)
         GlobalBlur(HWND, Acrylic=True)
+
 
 app.bind("<Configure>", sizechanged)
 
