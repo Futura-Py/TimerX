@@ -3,8 +3,7 @@
 ver = "0.9"
 
 from time import sleep
-from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar, Grid
-import tkinter
+from tkinter import  TclError, ttk, Tk, PhotoImage, Frame, StringVar, DoubleVar, Grid, Label, Toplevel
 from tkinter.constants import  LEFT
 from playsound import playsound
 from threading import  Thread
@@ -41,8 +40,7 @@ app = Tk()
 app.title('TimerX')
 app.minsize(width=300, height=210)
 app.maxsize(width=512, height=400)
-app.config(bg="green")
-app.wm_attributes("-transparent", "green")
+app.wm_attributes("-transparent", ttk.Style().lookup(".", "background"))
 app.update()
 HWND = ctypes.windll.user32.GetForegroundWindow()
 
@@ -168,7 +166,7 @@ setAlwaysOnTop(app)
 # WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     global manager_app_window, config
-    manager_app_window = tkinter.Toplevel()
+    manager_app_window = Toplevel()
     manager_app_window.geometry('250x170')
     manager_app_window.title('Edit Timer')
     manager_app_window.attributes("-alpha", config['transperency'])
@@ -218,7 +216,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
 def createAboutWindow():
     settings_window.destroy()
 
-    about_window = tkinter.Toplevel()
+    about_window = Toplevel()
     about_window.geometry("420x240")
     about_window.resizable(False, False)
     about_window.attributes('-topmost', True)
@@ -279,7 +277,7 @@ def createAboutWindow():
 def createSettingsWindow():
     global theme, config, settings_window
 
-    settings_window = tkinter.Toplevel()
+    settings_window = Toplevel()
     settings_window.geometry('500x320')
     settings_window.title('Settings')
     settings_window.resizable(False, False)
@@ -379,7 +377,7 @@ def createSettingsWindow():
     theme_combobox = ttk.Spinbox(settings_window, state="readonly", values=("Dark", "Light", "System"), wrap=True, textvariable=box_slider_value)
     theme_combobox.place(x=275, y=20)
 
-    slider_value = tkinter.DoubleVar()
+    slider_value = DoubleVar()
 
     didsliderload = False
 
@@ -483,10 +481,10 @@ settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 window = Frame(app)
 
 # WINDOW ELEMENTS
-time_selected_display = tkinter.Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10), bg="green", fg="white")
+time_selected_display = Label(master = app, text = f'{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds', font = ("Segoe UI Variable", 10), bg=ttk.Style().lookup(".", "background"), fg="white")
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
-time_display = tkinter.Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30), bg="green", fg="white")
+time_display = Label(master = app, text = f'{timer_hours} : {timer_minutes} : {timer_seconds}', font = ("Segoe UI Variable", 30), bg=ttk.Style().lookup(".", "background"), fg="white")
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
 play_button = ttk.Button(master = app, text = "Play", width = 25, command = startstopButtonPressed, style="Accent.TButton")
