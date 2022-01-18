@@ -2,6 +2,14 @@
 pyenv.cfg
 Scripts/
 
+# Lockfile
+docs/package-lock.json
+
+# IDE
+vscode/
+.vscode
+
+
 # Config
 config.json
 
