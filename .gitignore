@@ -2,6 +2,10 @@
 pyenv.cfg
 Scripts/
 
+# IDE
+vscode/
+.vscode
+
 # Config
 config.json
 
