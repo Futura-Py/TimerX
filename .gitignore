@@ -1,5 +1,5 @@
 # VENV
-pyenv.cfg
+pyvenv.cfg
 Scripts/
 
 # Lockfile
@@ -144,4 +144,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-

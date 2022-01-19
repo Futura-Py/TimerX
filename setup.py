@@ -69,7 +69,7 @@ bdist_rpm_options = {"icon": icon}
 bdist_msi_options = {
     "add_to_path": False,
     "install_icon": "assets/logo_new.ico",
-    # "upgrade_code":upgradeid,
+    "upgrade_code": "{1aaa0457-7406-4383-8307-2ef43e2112cf}",
     "target_name": "TimerX",
 }
 bdist_mac_options = {"bundle_name": "TimerX", "iconfile": "./assets/logo_new.icns"}
