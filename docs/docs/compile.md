@@ -56,25 +56,7 @@ REM if you need an installer:
 python setup.py bdist_msi
 ```
 
-### macOS compiling
-
-```shell
-# Standalone app
-python3 setup.py bdist_mac
-# Installer
-python3 setup.py bdist_dmg
-```
-
-If you use Anaconda3:
-
-```shell
-# Standalone app
-python setup.py bdist_mac
-# Installer
-python setup.py bdist_dmg
-```
-
-### Linux
+### Linux compiling
 
 You can generate only a DEB or RPM installer for Linux.
 For Debian-based distros:
