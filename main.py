@@ -41,6 +41,7 @@ elif config["theme"] == "Dark":
 else:
     theme = "Light"
 
+
 # TKINTER WINDOW
 app = Tk()
 app.title("TimerX")
@@ -681,14 +682,18 @@ if config["theme"] == "Dark":
     GlobalBlur(HWND, Acrylic=True, Dark=True)
 elif config["theme"] == "Light":
     settings_btn.configure(image=settings_image_light)
-    GlobalBlur(HWND, Acrylic=True)
+    GlobalBlur(HWND, Acrylic=True, hexColor=f"{bg_color}")
+    time_display.configure(fg="black")
+    time_selected_display.configure(fg="black")
 if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
         settings_btn.configure(image=settings_image_dark)
         GlobalBlur(HWND, Acrylic=True, Dark=True)
     elif darkdetect.theme() == "Light":
         settings_btn.configure(image=settings_image_light)
-        GlobalBlur(HWND, Acrylic=True)
+        GlobalBlur(HWND, Acrylic=True, hexColor=f"{bg_color}")
+        time_display.configure(fg="black")
+        time_selected_display.configure(fg="black")
 
 
 app.bind("<Configure>", sizechanged)
