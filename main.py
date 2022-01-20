@@ -16,10 +16,9 @@ from playsound import playsound
 
 from utils import *
 
-"""
-# Disabled by default due to module unavailability on Linux
-from BlurWindow.blurWindow import GlobalBlur, blur
-"""
+from BlurWindow.blurWindow import *
+import ctypes
+
 
 # CONFIG
 theme = f"{darkdetect.theme()}"
@@ -42,18 +41,26 @@ elif config["theme"] == "Dark":
 else:
     theme = "Light"
 
+
 # TKINTER WINDOW
 app = Tk()
 app.title("TimerX")
 app.minsize(width=300, height=210)
 app.maxsize(width=512, height=400)
+
+app.tk.call("source", "sun-valley.tcl")
+app.tk.call("set_theme", f"{theme.lower()}")
+if theme == "System":
+    if darkdetect.theme() == "Dark":
+        app.tk.call("set_theme", "dark")
+    elif darkdetect.theme() == "Light":
+        app.tk.call("set_theme", "light")
+
+bg_color = ttk.Style().lookup(".", "background")
+app.wm_attributes("-transparent", bg_color)
 app.update()
-"""
-# Disabled by default
 HWND = ctypes.windll.user32.GetForegroundWindow()
-GlobalBlur(HWND)
-blur(HWND, hexColor='#12121240')
-"""
+
 
 # SYSTEM CODE
 try:
@@ -127,7 +134,6 @@ def showNotification():
     if system() == "Windows":
         notification = ToastNotifier()
         notification.show_toast(
-            "TimerX",
             "Time's up!",
             icon_path="./assets/logo.ico",
             duration="None",
@@ -551,14 +557,6 @@ def createSettingsWindow():
 # APP THEME
 app.attributes("-alpha", config["transperency"])
 
-app.tk.call("source", "sun-valley.tcl")
-app.tk.call("set_theme", f"{theme.lower()}")
-if theme == "System":
-    if darkdetect.theme() == "Dark":
-        app.tk.call("set_theme", "dark")
-    elif darkdetect.theme() == "Light":
-        app.tk.call("set_theme", "light")
-
 # KEYBINDS
 app.bind("key-space", startstopButtonPressed)
 
@@ -574,17 +572,21 @@ settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 window = Frame(app)
 
 # WINDOW ELEMENTS
-time_selected_display = ttk.Label(
+time_selected_display = tkinter.Label(
     master=app,
     text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds",
     font=("Segoe UI Variable", 10),
+    bg=bg_color,
+    fg="white"
 )
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
-time_display = ttk.Label(
+time_display = tkinter.Label(
     master=app,
     text=f"{timer_hours} : {timer_minutes} : {timer_seconds}",
     font=("Segoe UI Variable", 30),
+    bg=bg_color,
+    fg="white"
 )
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
@@ -676,13 +678,21 @@ def sizechanged(e):
 
 if config["theme"] == "Dark":
     settings_btn.configure(image=settings_image_dark)
+    GlobalBlur(HWND, Acrylic=True, Dark=True)
 elif config["theme"] == "Light":
     settings_btn.configure(image=settings_image_light)
-if theme == "System":
+    GlobalBlur(HWND, Acrylic=True, hexColor=f"{bg_color}")
+    time_display.configure(fg="black")
+    time_selected_display.configure(fg="black")
+if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
         settings_btn.configure(image=settings_image_dark)
+        GlobalBlur(HWND, Acrylic=True, Dark=True)
     elif darkdetect.theme() == "Light":
         settings_btn.configure(image=settings_image_light)
+        GlobalBlur(HWND, Acrylic=True, hexColor=f"{bg_color}")
+        time_display.configure(fg="black")
+        time_selected_display.configure(fg="black")
 
 
 app.bind("<Configure>", sizechanged)
