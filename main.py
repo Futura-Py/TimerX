@@ -134,7 +134,6 @@ def showNotification():
     if system() == "Windows":
         notification = ToastNotifier()
         notification.show_toast(
-            "TimerX",
             "Time's up!",
             icon_path="./assets/logo.ico",
             duration="None",
