@@ -59,8 +59,8 @@ jobs:
           asset_name: TimerX-BigSur.dmg
           asset_content_type: application/zip 
           
-  build-macos:
-    runs-on: macos-latest
+  build-macos1015:
+    runs-on: macos-10.15
     steps:
       - name: Checkout
         uses: actions/checkout@v1
