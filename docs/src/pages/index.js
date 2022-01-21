@@ -16,7 +16,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="https://github.com/sumeshir26/TimerX/releases"
+            to="https://github.com/TimerX-App/TimerX/releases/latest"
           >
             Download
           </Link>
