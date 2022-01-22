@@ -300,7 +300,7 @@ def createAboutWindow():
         text=" Fork on Github",
         image=github_logo_dark,
         compound=LEFT,
-        command=lambda: webbrowser.open("https://github.com/sumeshir26/TimerX"),
+        command=lambda: webbrowser.open("https://github.com/TimerX-App/TimerX"),
     )
     github_btn.place(x=40, y=180)
 
@@ -664,7 +664,7 @@ def sizechanged(e):
                     time_selected_display.configure(font=("Segoe UI Variable", 17))
         else:
             if app.winfo_width() >= 300:
-                time_display.configure(font=("Segoe UI Variable", 40))
+        github.com        time_display.configure(font=("Segoe UI Variable", 40))
                 time_selected_display.configure(font=("Segoe UI Variable", 13))
     else:
         time_display.configure(font=("Segoe UI Variable", 30))
