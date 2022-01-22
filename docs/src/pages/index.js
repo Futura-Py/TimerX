@@ -18,7 +18,7 @@ function HomepageHeader() {
             className="button button--secondary button--lg"
             to="https://github.com/TimerX-App/TimerX/releases/latest"
           >
-            Download
+            Download TimerX
           </Link>
         </div>
       </div>
