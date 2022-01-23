@@ -2,6 +2,7 @@
 # IMPORTS
 ver = "0.9"
 
+import ctypes
 import os
 import tkinter
 import webbrowser
@@ -12,13 +13,10 @@ from tkinter import Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
 from tkinter.constants import LEFT
 
 import darkdetect
+from BlurWindow.blurWindow import *
 from playsound import playsound
 
 from utils import *
-
-from BlurWindow.blurWindow import *
-import ctypes
-
 
 # CONFIG
 theme = f"{darkdetect.theme()}"
