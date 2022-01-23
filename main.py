@@ -300,7 +300,7 @@ def createAboutWindow():
         text=" Fork on Github",
         image=github_logo_dark,
         compound=LEFT,
-        command=lambda: webbrowser.open("https://github.com/sumeshir26/TimerX"),
+        command=lambda: webbrowser.open("https://github.com/TimerX-App/TimerX"),
     )
     github_btn.place(x=40, y=180)
 
