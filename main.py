@@ -305,7 +305,7 @@ def createAboutWindow():
     github_btn.place(x=40, y=180)
 
     website_btn = ttk.Button(
-        about_window, text=" Check out our Website!", image=globe_dark, compound=LEFT
+        about_window, text=" Check out our Website!", image=globe_dark, compound=LEFT, command=lambda: webbrowser.open("https://timerx-app.netlify.app/")
     )
     website_btn.place(x=190, y=180)
 
