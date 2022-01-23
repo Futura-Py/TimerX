@@ -296,16 +296,17 @@ def createSettingsWindow():
     globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
     globe_light = PhotoImage(file="./assets/images/light/globe.png")
 
-    notebook = ttk.Notebook(settings_window)
-    notebook.pack(fill="both", expand=True)
 
-    tab_1 = ttk.Frame(notebook)
-    tab_2 = ttk.Frame(notebook)
-    tab_3 = ttk.Frame(notebook)
+    tabview = ttk.Notebook(settings_window)
+    tabview.pack(fill="both", expand=True)
 
-    notebook.add(tab_1, text="Appearence")
-    notebook.add(tab_2, text="Notifications")
-    notebook.add(tab_3, text="About")
+    tab_1 = ttk.Frame(tabview)
+    tab_2 = ttk.Frame(tabview)
+    tab_3 = ttk.Frame(tabview)
+
+    tabview.add(tab_1, text="Appearence")
+    tabview.add(tab_2, text="Notifications")
+    tabview.add(tab_3, text="About")
 
     theme_label = ttk.Label(
         tab_1,
