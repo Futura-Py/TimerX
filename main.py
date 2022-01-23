@@ -502,16 +502,24 @@ def createSettingsWindow():
         if theme == "Dark":
             app.tk.call("set_theme", "dark")
             settings_btn.configure(image=settings_image_dark)
+            time_display.configure(fg="white")
+            time_selected_display.configure(fg="white")
         elif theme == "Light":
             app.tk.call("set_theme", "light")
             settings_btn.configure(image=settings_image_light)
+            time_display.configure(fg="black")
+            time_selected_display.configure(fg="black")
         elif theme == "System":
             if darkdetect.theme() == "Dark":
                 settings_btn.configure(image=settings_image_dark)
                 app.tk.call("set_theme", "dark")
+                time_display.configure(fg="white")
+                time_selected_display.configure(fg="white")
             elif darkdetect.theme() == "Light":
                 settings_btn.configure(image=settings_image_light)
                 app.tk.call("set_theme", "light")
+                time_display.configure(fg="black")
+                time_selected_display.configure(fg="black")
 
         settings_window.destroy()
 
