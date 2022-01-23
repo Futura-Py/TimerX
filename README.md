@@ -38,9 +38,9 @@
 - ⌨️~~Keybindings to Play/Pause~~ _Released with v0.9, Get it [here](https://github.com/TimerX-App/TimerX/releases)!_
 - 🔔~~Notifications~~ _Released with v0.9, Get it [here](https://github.com/TimerX-App/TimerX/releases)!_
 # Features coming after v1.0(No promises!)
-- ⚙️ ~~Add settings and about page~~ _Added in codebase!(Thanks [@not-nef](https://github.com/not-nef)!)_
-- ~~Dynamically resize elements & theme~~ _Added in codebase!(Thanks [@not-nef](https://github.com/not-nef)!)_
-- Dark Titlebar
+- ⚙️ ~~Add settings and about page~~ _Added in codebase!(Thanks [nef](https://github.com/not-nef)!)_
+- ~~Dynamically resize elements & theme~~ _Added in codebase!(Thanks [nef](https://github.com/not-nef)!)_
+- ~~Dark Titlebar~~ _Added in codebase!(Thanks [nef](https://github.com/not-nef)!)_
 - ⏱️ Stopwatch Mode
 
 # Supported Platforms
