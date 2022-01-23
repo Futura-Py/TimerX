@@ -32,9 +32,9 @@ else:
     config = loadConfig()
 
 if config["theme"] == "System":
-    if darkdetect.theme() == "dark":
+    if darkdetect.theme() == "Dark":
         theme = "Dark"
-    elif darkdetect.theme() == "light":
+    elif darkdetect.theme() == "Light":
         theme = "Light"
 elif config["theme"] == "Dark":
     theme = "Dark"
@@ -251,13 +251,14 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     )
     ok_button.place(x=95, y=126)
 
+
 def createSettingsWindow():
     global theme, config, settings_window
 
     settings_window = tkinter.Toplevel()
     settings_window.geometry("500x320")
     settings_window.title("Settings")
-    #settings_window.resizable(False, False)
+    # settings_window.resizable(False, False)
     settings_window.attributes("-alpha", config["transperency"])
 
     try:
@@ -295,7 +296,6 @@ def createSettingsWindow():
 
     globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
     globe_light = PhotoImage(file="./assets/images/light/globe.png")
-
 
     tabview = ttk.Notebook(settings_window)
     tabview.pack(fill="both", expand=True)
@@ -349,14 +349,10 @@ def createSettingsWindow():
     logo_label = ttk.Label(tab_3, image=logo)
     logo_label.place(x=50, y=30)
 
-    TimerX_Label = ttk.Label(
-        tab_3, text="TimerX", font=("Arial Rounded MT Bold", 50)
-    )
+    TimerX_Label = ttk.Label(tab_3, text="TimerX", font=("Arial Rounded MT Bold", 50))
     TimerX_Label.place(x=210, y=40)
 
-    version_Label = ttk.Label(
-        tab_3, text=f"Version: {ver}", font=("Segoe UI", "20")
-    )
+    version_Label = ttk.Label(tab_3, text=f"Version: {ver}", font=("Segoe UI", "20"))
     version_Label.place(x=220, y=120)
 
     github_btn = ttk.Button(
@@ -369,7 +365,11 @@ def createSettingsWindow():
     github_btn.place(x=50, y=200)
 
     website_btn = ttk.Button(
-        tab_3, text=" Check out our Website!", image=globe_dark, compound=LEFT, command=lambda: webbrowser.open("https://timerx-app.netlify.app/")
+        tab_3,
+        text=" Check out our Website!",
+        image=globe_dark,
+        compound=LEFT,
+        command=lambda: webbrowser.open("https://timerx-app.netlify.app/"),
     )
     website_btn.place(x=250, y=200)
 
@@ -379,13 +379,6 @@ def createSettingsWindow():
     elif theme == "Light":
         github_btn.configure(image=github_logo_light)
         website_btn.configure(image=globe_light)
-    elif theme == "System":
-        if darkdetect.theme() == "Dark":
-            github_btn.configure(image=github_logo_dark)
-            website_btn.configure(image=globe_dark)
-        elif darkdetect.theme() == "Light":
-            github_btn.configure(image=github_logo_light)
-            website_btn.configure(image=globe_light)
 
     if theme == "Dark":
         theme_label.configure(image=theme_dark)
@@ -403,23 +396,6 @@ def createSettingsWindow():
         pin_label.configure(image=pin_light)
         github_btn.configure(image=github_logo_light)
         website_btn.configure(image=globe_light)
-    if theme == "System":
-        if darkdetect.theme() == "Dark":
-            theme_label.configure(image=theme_dark)
-            transparency_label.configure(image=transparency_dark)
-            speaker_label.configure(image=speaker_dark)
-            bell_label.configure(image=bell_dark)
-            pin_label.configure(image=pin_dark)
-            github_btn.configure(image=github_logo_dark)
-            website_btn.configure(image=globe_dark)
-        elif darkdetect.theme() == "Light":
-            theme_label.configure(image=theme_light)
-            transparency_label.configure(image=transparency_light)
-            speaker_label.configure(image=speaker_light)
-            bell_label.configure(image=bell_light)
-            pin_label.configure(image=pin_light)
-            github_btn.configure(image=github_logo_light)
-            website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
 
@@ -500,6 +476,12 @@ def createSettingsWindow():
 
         setConfig(config)
 
+        if theme == "System":
+            if darkdetect.theme() == "Dark":
+                theme = "Dark"
+            else:
+                theme = "Light"
+
         if theme == "Dark":
             app.tk.call("set_theme", "dark")
             settings_btn.configure(image=settings_image_dark)
@@ -510,17 +492,6 @@ def createSettingsWindow():
             settings_btn.configure(image=settings_image_light)
             time_display.configure(fg="black")
             time_selected_display.configure(fg="black")
-        elif theme == "System":
-            if darkdetect.theme() == "Dark":
-                settings_btn.configure(image=settings_image_dark)
-                app.tk.call("set_theme", "dark")
-                time_display.configure(fg="white")
-                time_selected_display.configure(fg="white")
-            elif darkdetect.theme() == "Light":
-                settings_btn.configure(image=settings_image_light)
-                app.tk.call("set_theme", "light")
-                time_display.configure(fg="black")
-                time_selected_display.configure(fg="black")
 
         settings_window.destroy()
 
@@ -576,7 +547,7 @@ time_selected_display = tkinter.Label(
     text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds",
     font=("Segoe UI Variable", 10),
     bg=bg_color,
-    fg="white"
+    fg="white",
 )
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
@@ -585,7 +556,7 @@ time_display = tkinter.Label(
     text=f"{timer_hours} : {timer_minutes} : {timer_seconds}",
     font=("Segoe UI Variable", 30),
     bg=bg_color,
-    fg="white"
+    fg="white",
 )
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
@@ -675,23 +646,14 @@ def sizechanged(e):
 
 # THEMED IMAGES
 
-if config["theme"] == "Dark":
+if theme == "Dark":
     settings_btn.configure(image=settings_image_dark)
     GlobalBlur(HWND, Acrylic=True, Dark=True)
-elif config["theme"] == "Light":
+elif theme == "Light":
     settings_btn.configure(image=settings_image_light)
     GlobalBlur(HWND, Acrylic=True, hexColor=f"{bg_color}")
     time_display.configure(fg="black")
     time_selected_display.configure(fg="black")
-if config["theme"] == "System":
-    if darkdetect.theme() == "Dark":
-        settings_btn.configure(image=settings_image_dark)
-        GlobalBlur(HWND, Acrylic=True, Dark=True)
-    elif darkdetect.theme() == "Light":
-        settings_btn.configure(image=settings_image_light)
-        GlobalBlur(HWND, Acrylic=True, hexColor=f"{bg_color}")
-        time_display.configure(fg="black")
-        time_selected_display.configure(fg="black")
 
 
 app.bind("<Configure>", sizechanged)
