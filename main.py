@@ -300,12 +300,12 @@ def createAboutWindow():
         text=" Fork on Github",
         image=github_logo_dark,
         compound=LEFT,
-        command=lambda: webbrowser.open("https://github.com/TimerX-App/TimerX"),
+        command=lambda: webbrowser.open("https://github.com/sumeshir26/TimerX"),
     )
     github_btn.place(x=40, y=180)
 
     website_btn = ttk.Button(
-        about_window, text=" Check out our Website!", image=globe_dark, compound=LEFT, command=lambda: webbrowser.open("https://timerx-app.netlify.app/")
+        about_window, text=" Check out our Website!", image=globe_dark, compound=LEFT
     )
     website_btn.place(x=190, y=180)
 
@@ -368,8 +368,19 @@ def createSettingsWindow():
     info_dark = PhotoImage(file="./assets/images/dark/info.png")
     info_light = PhotoImage(file="./assets/images/light/info.png")
 
+    notebook = ttk.Notebook(settings_window)
+    notebook.pack(fill="both", expand=True)
+
+    tab_1 = ttk.Frame(notebook)
+    tab_2 = ttk.Frame(notebook)
+    #tab_3 = ttk.Frame(notebook)
+
+    notebook.add(tab_1, text="Appearence")
+    notebook.add(tab_2, text="Notifications")
+    #notebook.add(tab_3, text="Tab 3")
+
     theme_label = ttk.Label(
-        settings_window,
+        tab_1,
         text="  Change theme of the app",
         image=theme_dark,
         compound=LEFT,
@@ -377,7 +388,7 @@ def createSettingsWindow():
     theme_label.place(x=23, y=23)
 
     transparency_label = ttk.Label(
-        settings_window,
+        tab_1,
         text="  Adjust Transparency of the app",
         image=transparency_dark,
         compound=LEFT,
@@ -385,25 +396,25 @@ def createSettingsWindow():
     transparency_label.place(x=23, y=73)
 
     speaker_label = ttk.Label(
-        settings_window,
+        tab_2,
         text="  Play sound when timer ends",
         image=speaker_dark,
         compound=LEFT,
     )
-    speaker_label.place(x=23, y=123)
+    speaker_label.place(x=23, y=23)
 
     bell_label = ttk.Label(
-        settings_window,
+        tab_2,
         text="  Show notification when timer ends",
         image=bell_dark,
         compound=LEFT,
     )
-    bell_label.place(x=23, y=173)
+    bell_label.place(x=23, y=73)
 
     pin_label = ttk.Label(
-        settings_window, text="  Keep app always on top", image=pin_dark, compound=LEFT
+        tab_1, text="  Keep app always on top", image=pin_dark, compound=LEFT
     )
-    pin_label.place(x=23, y=223)
+    pin_label.place(x=23, y=123)
 
     about_btn = ttk.Button(
         master=settings_window,
@@ -411,7 +422,7 @@ def createSettingsWindow():
         command=lambda: createAboutWindow(),
         style="Toolbutton",
     )
-    about_btn.place(x=5, y=273)
+    about_btn.place(x=5, y=275)
 
     if theme == "Dark":
         theme_label.configure(image=theme_dark)
@@ -453,7 +464,7 @@ def createSettingsWindow():
         box_slider_value.set("Light")
 
     theme_combobox = ttk.Spinbox(
-        settings_window,
+        tab_1,
         state="readonly",
         values=("Dark", "Light", "System"),
         wrap=True,
@@ -474,7 +485,7 @@ def createSettingsWindow():
             app.attributes("-alpha", slider_value())
 
     slider = ttk.Scale(
-        settings_window,
+        tab_1,
         from_=25,
         to=99,
         orient="horizontal",
@@ -486,28 +497,28 @@ def createSettingsWindow():
 
     didsliderload = True
 
-    sound_button = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
+    sound_button = ttk.Checkbutton(tab_2, style="Switch.TCheckbutton")
     if config["sound"] == True:
         sound_button.state(["!alternate", "selected"])
     elif config["sound"] == False:
         sound_button.state(["!alternate"])
-    sound_button.place(x=360, y=125)
+    sound_button.place(x=360, y=25)
 
-    notify_button = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
+    notify_button = ttk.Checkbutton(tab_2, style="Switch.TCheckbutton")
     if config["notify"] == True:
         notify_button.state(["!alternate", "selected"])
     elif config["notify"] == False:
         notify_button.state(["!alternate"])
-    notify_button.place(x=360, y=175)
+    notify_button.place(x=360, y=75)
 
     ###
 
-    ontop_button = ttk.Checkbutton(settings_window, style="Switch.TCheckbutton")
+    ontop_button = ttk.Checkbutton(tab_1, style="Switch.TCheckbutton")
     if config["ontop"] == True:
         ontop_button.state(["!alternate", "selected"])
     elif config["ontop"] == False:
         ontop_button.state(["!alternate"])
-    ontop_button.place(x=360, y=215)
+    ontop_button.place(x=360, y=125)
 
     def ApplyChanges():
         global theme
