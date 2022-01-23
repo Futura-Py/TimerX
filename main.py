@@ -251,88 +251,13 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     )
     ok_button.place(x=95, y=126)
 
-
-def createAboutWindow():
-    settings_window.destroy()
-
-    about_window = tkinter.Toplevel()
-    about_window.geometry("420x240")
-    about_window.resizable(False, False)
-    about_window.attributes("-topmost", True)
-
-    try:
-        if system() == "darwin":
-            about_window.iconbitmap(r"assets/logo_new.icns")
-            about_window.wm_attributes("-transparent", True)
-            about_window.config(bg="systemTransparent")
-        elif system() == "Windows":
-            about_window.iconbitmap(r"assets/logo_new.ico")
-        elif system() == "win":
-            about_window.iconphoto(r"assets/logo_new.ico")
-        else:
-            logo_img = PhotoImage(file="assets/images/logo.png")
-            about_window.iconphoto(False, logo_img)
-    except TclError:
-        pass
-
-    logo = PhotoImage(file="./assets/logo_new_150x150.png")
-    logo_label = ttk.Label(about_window, image=logo)
-    logo_label.place(x=10, y=10)
-
-    github_logo_dark = PhotoImage(file="./assets/images/dark/github.png")
-    github_logo_light = PhotoImage(file="./assets/images/light/github.png")
-
-    globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
-    globe_light = PhotoImage(file="./assets/images/light/globe.png")
-
-    TimerX_Label = ttk.Label(
-        about_window, text="TimerX", font=("Arial Rounded MT Bold", 50)
-    )
-    TimerX_Label.place(x=170, y=20)
-
-    version_Label = ttk.Label(
-        about_window, text=f"Version: {ver}", font=("Segoe UI", "20")
-    )
-    version_Label.place(x=180, y=100)
-
-    github_btn = ttk.Button(
-        about_window,
-        text=" Fork on Github",
-        image=github_logo_dark,
-        compound=LEFT,
-        command=lambda: webbrowser.open("https://github.com/TimerX-App/TimerX"),
-    )
-    github_btn.place(x=40, y=180)
-
-    website_btn = ttk.Button(
-        about_window, text=" Check out our Website!", image=globe_dark, compound=LEFT, command=lambda: webbrowser.open("https://timerx-app.netlify.app/")
-    )
-    website_btn.place(x=190, y=180)
-
-    if theme == "Dark":
-        github_btn.configure(image=github_logo_dark)
-        website_btn.configure(image=globe_dark)
-    elif theme == "Light":
-        github_btn.configure(image=github_logo_light)
-        website_btn.configure(image=globe_light)
-    elif theme == "System":
-        if darkdetect.theme() == "Dark":
-            github_btn.configure(image=github_logo_dark)
-            website_btn.configure(image=globe_dark)
-        elif darkdetect.theme() == "Light":
-            github_btn.configure(image=github_logo_light)
-            website_btn.configure(image=globe_light)
-
-    about_window.mainloop()
-
-
 def createSettingsWindow():
     global theme, config, settings_window
 
     settings_window = tkinter.Toplevel()
     settings_window.geometry("500x320")
     settings_window.title("Settings")
-    settings_window.resizable(False, False)
+    #settings_window.resizable(False, False)
     settings_window.attributes("-alpha", config["transperency"])
 
     try:
@@ -365,19 +290,22 @@ def createSettingsWindow():
     pin_dark = PhotoImage(file="./assets/images/dark/pin.png")
     pin_light = PhotoImage(file="./assets/images/light/pin.png")
 
-    info_dark = PhotoImage(file="./assets/images/dark/info.png")
-    info_light = PhotoImage(file="./assets/images/light/info.png")
+    github_logo_dark = PhotoImage(file="./assets/images/dark/github.png")
+    github_logo_light = PhotoImage(file="./assets/images/light/github.png")
+
+    globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
+    globe_light = PhotoImage(file="./assets/images/light/globe.png")
 
     notebook = ttk.Notebook(settings_window)
     notebook.pack(fill="both", expand=True)
 
     tab_1 = ttk.Frame(notebook)
     tab_2 = ttk.Frame(notebook)
-    #tab_3 = ttk.Frame(notebook)
+    tab_3 = ttk.Frame(notebook)
 
     notebook.add(tab_1, text="Appearence")
     notebook.add(tab_2, text="Notifications")
-    #notebook.add(tab_3, text="Tab 3")
+    notebook.add(tab_3, text="About")
 
     theme_label = ttk.Label(
         tab_1,
@@ -416,13 +344,47 @@ def createSettingsWindow():
     )
     pin_label.place(x=23, y=123)
 
-    about_btn = ttk.Button(
-        master=settings_window,
-        image=info_dark,
-        command=lambda: createAboutWindow(),
-        style="Toolbutton",
+    logo = PhotoImage(file="./assets/logo_new_150x150.png")
+    logo_label = ttk.Label(tab_3, image=logo)
+    logo_label.place(x=50, y=30)
+
+    TimerX_Label = ttk.Label(
+        tab_3, text="TimerX", font=("Arial Rounded MT Bold", 50)
     )
-    about_btn.place(x=5, y=275)
+    TimerX_Label.place(x=210, y=40)
+
+    version_Label = ttk.Label(
+        tab_3, text=f"Version: {ver}", font=("Segoe UI", "20")
+    )
+    version_Label.place(x=220, y=120)
+
+    github_btn = ttk.Button(
+        tab_3,
+        text=" Fork on Github",
+        image=github_logo_dark,
+        compound=LEFT,
+        command=lambda: webbrowser.open("https://github.com/TimerX-App/TimerX"),
+    )
+    github_btn.place(x=50, y=200)
+
+    website_btn = ttk.Button(
+        tab_3, text=" Check out our Website!", image=globe_dark, compound=LEFT, command=lambda: webbrowser.open("https://timerx-app.netlify.app/")
+    )
+    website_btn.place(x=250, y=200)
+
+    if theme == "Dark":
+        github_btn.configure(image=github_logo_dark)
+        website_btn.configure(image=globe_dark)
+    elif theme == "Light":
+        github_btn.configure(image=github_logo_light)
+        website_btn.configure(image=globe_light)
+    elif theme == "System":
+        if darkdetect.theme() == "Dark":
+            github_btn.configure(image=github_logo_dark)
+            website_btn.configure(image=globe_dark)
+        elif darkdetect.theme() == "Light":
+            github_btn.configure(image=github_logo_light)
+            website_btn.configure(image=globe_light)
 
     if theme == "Dark":
         theme_label.configure(image=theme_dark)
@@ -430,14 +392,16 @@ def createSettingsWindow():
         speaker_label.configure(image=speaker_dark)
         bell_label.configure(image=bell_dark)
         pin_label.configure(image=pin_dark)
-        about_btn.configure(image=info_dark)
+        github_btn.configure(image=github_logo_dark)
+        website_btn.configure(image=globe_dark)
     else:
         theme_label.configure(image=theme_light)
         transparency_label.configure(image=transparency_light)
         speaker_label.configure(image=speaker_light)
         bell_label.configure(image=bell_light)
         pin_label.configure(image=pin_light)
-        about_btn.configure(image=info_light)
+        github_btn.configure(image=github_logo_light)
+        website_btn.configure(image=globe_light)
     if theme == "System":
         if darkdetect.theme() == "Dark":
             theme_label.configure(image=theme_dark)
@@ -445,14 +409,16 @@ def createSettingsWindow():
             speaker_label.configure(image=speaker_dark)
             bell_label.configure(image=bell_dark)
             pin_label.configure(image=pin_dark)
-            about_btn.configure(image=info_dark)
+            github_btn.configure(image=github_logo_dark)
+            website_btn.configure(image=globe_dark)
         elif darkdetect.theme() == "Light":
             theme_label.configure(image=theme_light)
             transparency_label.configure(image=transparency_light)
             speaker_label.configure(image=speaker_light)
             bell_label.configure(image=bell_light)
             pin_label.configure(image=pin_light)
-            about_btn.configure(image=info_light)
+            github_btn.configure(image=github_logo_light)
+            website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
 
@@ -550,17 +516,30 @@ def createSettingsWindow():
         settings_window.destroy()
 
     okbtn = ttk.Button(
-        settings_window,
+        tab_1,
         text="Apply Changes",
         command=lambda: ApplyChanges(),
         style="Accent.TButton",
     )
-    okbtn.place(x=250, y=270)
+    okbtn.place(x=250, y=230)
 
     cancelbtn = ttk.Button(
-        settings_window, text="Cancel", command=lambda: settings_window.destroy()
+        tab_1, text="Cancel", command=lambda: settings_window.destroy()
     )
-    cancelbtn.place(x=125, y=270)
+    cancelbtn.place(x=125, y=230)
+
+    okbtn_2 = ttk.Button(
+        tab_2,
+        text="Apply Changes",
+        command=lambda: ApplyChanges(),
+        style="Accent.TButton",
+    )
+    okbtn_2.place(x=250, y=230)
+
+    cancelbtn_2 = ttk.Button(
+        tab_2, text="Cancel", command=lambda: settings_window.destroy()
+    )
+    cancelbtn_2.place(x=125, y=230)
 
     settings_window.mainloop()
 
