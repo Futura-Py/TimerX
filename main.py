@@ -13,6 +13,7 @@ from tkinter import Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
 from tkinter.constants import LEFT
 
 import darkdetect
+import time
 from BlurWindow.blurWindow import *
 from playsound import playsound
 
@@ -90,6 +91,7 @@ timer_paused = False
 timer_seconds = config["default_seconds"]
 timer_minutes = config["default_minutes"]
 timer_hours = config["default_hours"]
+timer_milliseconds = 100
 
 # FUNCTIONS
 def playBuzzer(config):
@@ -147,8 +149,10 @@ def runTimer():
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
+    milliseconds_left = 999
     timer_on = True
 
+    time_start = time.time()
     while True:
         if timer_on and timer_paused == False:
             time_display.configure(
@@ -166,6 +170,7 @@ def runTimer():
             else:
                 seconds_left -= 1
             sleep(1)
+            seconds_left = int(time.time() - time_start) - minutes_left * 60
 
         else:
             time_display.configure(
