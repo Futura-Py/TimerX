@@ -56,12 +56,12 @@ else:
 import uuid
 
 upgradeid = str(uuid.uuid3(uuid.NAMESPACE_DNS, "TimerX.TimerX.org")).upper()
-# print(str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper())
 
 # build_exe_options = {"includes": ["tkinter, platform, threading"], "include_msvcr": True}
 build_exe_options = {
     "include_msvcr": True,
     "include_files": (r"./sun-valley.tcl", r"./utils.py", r"./theme", r"./assets"),
+    "includes": ["tkinter, platform, threading, win10Toast-click, BlurWindow, darkdetect"],
 }
 
 bdist_rpm_options = {"icon": icon}
