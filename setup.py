@@ -13,7 +13,7 @@ if sys.platform == "win32":
             icon=icon,
             shortcut_name="TimerX",
             target_name="TimerX.exe",
-            shortcutDir="ProgramMenuFolder",
+            shortcut_dir="ProgramMenuFolder",
         )
     ]
 elif sys.platform == "darwin":
@@ -61,7 +61,7 @@ upgradeid = str(uuid.uuid3(uuid.NAMESPACE_DNS, "TimerX.TimerX.org")).upper()
 build_exe_options = {
     "include_msvcr": True,
     "include_files": (r"./sun-valley.tcl", r"./utils.py", r"./theme", r"./assets"),
-    "includes": ["tkinter, platform, threading, win10Toast-click, BlurWindow, darkdetect"],
+    "includes": ["tkinter", "platform", "threading", "win10toast-click", "BlurWindow", "darkdetect"],
 }
 
 bdist_rpm_options = {"icon": icon}
