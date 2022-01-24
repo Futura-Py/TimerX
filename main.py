@@ -303,7 +303,7 @@ def createSettingsWindow():
     tab_3 = ttk.Frame(tabview)
 
     tabview.add(tab_1, text="Appearence")
-    tabview.add(tab_2, text="Notifications")
+    tabview.add(tab_2, text="Notifications & Sound")
     tabview.add(tab_3, text="About")
 
     theme_label = ttk.Label(
