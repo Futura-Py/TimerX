@@ -123,14 +123,6 @@ const config = {
           },
         },
       },
-      announcementBar: {
-        id: "under_development",
-        content:
-          'TimerX is under heavy development. If you would like to contribute, please visit the <a href="https://github.com/TimerX-App/TimerX">GitHub repo</a>.',
-        backgroundColor: "#fafbfc",
-        textColor: "#091E42",
-        isCloseable: true,
-      },
     }),
 };
 
