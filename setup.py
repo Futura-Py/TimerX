@@ -13,7 +13,7 @@ if sys.platform == "win32":
             icon=icon,
             shortcut_name="TimerX",
             target_name="TimerX.exe",
-            shortcutDir="ProgramMenuFolder",
+            shortcut_dir="ProgramMenuFolder",
         )
     ]
 elif sys.platform == "darwin":
