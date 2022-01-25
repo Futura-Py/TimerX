@@ -55,10 +55,8 @@ else:
 # }
 import uuid
 
-upgradeid = str(uuid.uuid3(uuid.NAMESPACE_DNS, "TimerX.TimerX.org")).upper()
-# print(str(uuid.uuid3(uuid.NAMESPACE_DNS, 'TimerX.TimerX.org')).upper())
+upgradeid = "{" + str(uuid.uuid3(uuid.NAMESPACE_DNS, "TimerX-App.TimerX.org")).upper() + "}"
 
-# build_exe_options = {"includes": ["tkinter, platform, threading"], "include_msvcr": True}
 build_exe_options = {
     "include_msvcr": True,
     "include_files": (r"./sun-valley.tcl", r"./utils.py", r"./theme", r"./assets"),
@@ -69,7 +67,7 @@ bdist_rpm_options = {"icon": icon}
 bdist_msi_options = {
     "add_to_path": False,
     "install_icon": "assets/logo_new.ico",
-    "upgrade_code": "{1aaa0457-7406-4383-8307-2ef43e2112cf}",
+    "upgrade_code": upgradeid,
     "target_name": "TimerX",
 }
 bdist_mac_options = {"bundle_name": "TimerX", "iconfile": "./assets/logo_new.icns"}
