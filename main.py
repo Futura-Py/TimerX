@@ -1,6 +1,6 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
-ver = "0.9"
+ver = "1.0"
 
 import ctypes
 import os
