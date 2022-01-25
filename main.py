@@ -172,6 +172,7 @@ def runTimer():
                 text=f"{hours_left} : {minutes_left} : {seconds_left}"
             )
 
+
     timer_on = False
     time_display.configure(text=f"{hours_left} : {minutes_left} : {seconds_left}")
     play_button.config(text="Play")
