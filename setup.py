@@ -79,7 +79,7 @@ bdist_dmg_options = {
     "applications_shortcut": True,
 }
 
-version = "0.9"
+version = "1.0"
 
 setup(
     name="TimerX",
