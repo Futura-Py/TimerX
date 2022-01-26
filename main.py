@@ -29,6 +29,11 @@ if not os.path.isfile("./config.json"):
 else:
     config = loadConfig()
 
+##### TEMPORARY ######
+if config["theme"] == "System":
+    config["theme"] = "Light"
+#####################
+
 if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
         theme = "Dark"
@@ -171,6 +176,7 @@ def runTimer():
             time_display.configure(
                 text=f"{hours_left} : {minutes_left} : {seconds_left}"
             )
+
 
     timer_on = False
     time_display.configure(text=f"{hours_left} : {minutes_left} : {seconds_left}")
@@ -396,9 +402,12 @@ def createSettingsWindow():
         website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
-
+ 
+##### TEMPORARY ######
     if config["theme"] == "System":
-        box_slider_value.set("System")
+        # box_slider_value.set("System")
+        box_slider_value.set("Light")
+#####################
     elif theme == "Dark":
         box_slider_value.set("Dark")
     elif theme == "Light":
@@ -407,7 +416,10 @@ def createSettingsWindow():
     theme_combobox = ttk.Spinbox(
         tab_1,
         state="readonly",
-        values=("Dark", "Light", "System"),
+##### TEMPORARY ######
+        # values=("Dark", "Light", "System"),
+        values=("Dark", "Light"),
+#####################
         wrap=True,
         textvariable=box_slider_value,
     )
