@@ -32,7 +32,7 @@ else:
 if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
         theme = "Dark"
-    elif darkdetect.theme() == "Light":
+    else:
         theme = "Light"
 elif config["theme"] == "Dark":
     theme = "Dark"
@@ -48,11 +48,6 @@ app.maxsize(width=512, height=400)
 
 app.tk.call("source", "sun-valley.tcl")
 app.tk.call("set_theme", f"{theme.lower()}")
-if theme == "System":
-    if darkdetect.theme() == "Dark":
-        app.tk.call("set_theme", "dark")
-    elif darkdetect.theme() == "Light":
-        app.tk.call("set_theme", "light")
 
 bg_color = ttk.Style().lookup(".", "background")
 app.wm_attributes("-transparent", bg_color)
@@ -396,7 +391,7 @@ def createSettingsWindow():
         website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
-
+ 
     if config["theme"] == "System":
         box_slider_value.set("System")
     elif theme == "Dark":
@@ -473,12 +468,6 @@ def createSettingsWindow():
         setAlwaysOnTop(app)
 
         setConfig(config)
-
-        if theme == "System":
-            if darkdetect.theme() == "Dark":
-                theme = "Dark"
-            else:
-                theme = "Light"
 
         if theme == "Dark":
             app.tk.call("set_theme", "dark")
