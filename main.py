@@ -465,7 +465,7 @@ def createSettingsWindow():
             if darkdetect.isDark():
                 theme = "Dark"
             else:
-                theme: "Light"
+                theme = "Light"
         else:
             theme = config["theme"]
         config["transperency"] = slider_value()
