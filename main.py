@@ -29,11 +29,6 @@ if not os.path.isfile("./config.json"):
 else:
     config = loadConfig()
 
-##### TEMPORARY ######
-if config["theme"] == "System":
-    config["theme"] = "Light"
-#####################
-
 if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
         theme = "Dark"
