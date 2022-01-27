@@ -399,8 +399,7 @@ def createSettingsWindow():
     box_slider_value = StringVar(settings_window)
     
     if config["theme"] == "System":
-        # box_slider_value.set("System")
-        box_slider_value.set("Light")
+        box_slider_value.set("System")
     elif theme == "Dark":
         box_slider_value.set("Dark")
     elif theme == "Light":
