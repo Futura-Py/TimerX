@@ -4,6 +4,7 @@ ver = "0.9"
 
 import ctypes
 import os
+import time
 import tkinter
 import webbrowser
 from platform import system
@@ -147,30 +148,31 @@ def runTimer():
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
+    milliseconds_left = 100
     timer_on = True
 
-    while True:
-        if timer_on and timer_paused == False:
-            time_display.configure(
-                text=f"{hours_left} : {minutes_left} : {seconds_left}"
-            )
-            if seconds_left == 0 and minutes_left != 0:
-                minutes_left -= 1
-                seconds_left = 59
-            elif seconds_left == 0 and minutes_left == 0 and hours_left != 0:
-                hours_left -= 1
-                minutes_left = 59
-                seconds_left = 59
-            elif seconds_left == 0 and timer_minutes == 0 and hours_left == 0:
-                break
-            else:
-                seconds_left -= 1
-            sleep(1)
+    last_paused = time.time()
 
-        else:
-            time_display.configure(
-                text=f"{hours_left} : {minutes_left} : {seconds_left}"
-            )
+    while True:            
+        latest_time = time.time()
+
+        print(latest_time - last_paused)
+        time_to_subtract = round((latest_time-last_paused), 3)
+        print(time_to_subtract)
+
+        split_time = str(time_to_subtract).split('.')
+        print(split_time)
+
+        milliseconds_left -= int(split_time[1])
+        seconds_left -= int(split_time[0])
+        if milliseconds_left < 0:
+            seconds_left -= 1
+            milliseconds_left = 999 - abs(milliseconds_left)
+        print(f'{seconds_left}:{milliseconds_left}')
+
+        time_display.configure(
+            text=f"{hours_left} : {minutes_left} : {seconds_left}"
+        )
 
 
     timer_on = False
