@@ -1,6 +1,6 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
-ver = "0.9"
+ver = "1.0"
 
 import ctypes
 import os
@@ -28,6 +28,11 @@ if not os.path.isfile("./config.json"):
     config = loadConfig()
 else:
     config = loadConfig()
+
+##### TEMPORARY ######
+if config["theme"] == "System":
+    config["theme"] = "Light"
+#####################
 
 if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
@@ -166,6 +171,7 @@ def runTimer():
             time_display.configure(
                 text=f"{hours_left} : {minutes_left} : {seconds_left}"
             )
+
 
     timer_on = False
     time_display.configure(text=f"{hours_left} : {minutes_left} : {seconds_left}")
@@ -391,9 +397,10 @@ def createSettingsWindow():
         website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
- 
+    
     if config["theme"] == "System":
-        box_slider_value.set("System")
+        # box_slider_value.set("System")
+        box_slider_value.set("Light")
     elif theme == "Dark":
         box_slider_value.set("Dark")
     elif theme == "Light":
