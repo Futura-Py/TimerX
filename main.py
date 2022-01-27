@@ -252,7 +252,7 @@ def createSettingsWindow():
     settings_window = tkinter.Toplevel()
     settings_window.geometry("500x320")
     settings_window.title("Settings")
-    # settings_window.resizable(False, False)
+    settings_window.resizable(False, False)
     settings_window.attributes("-alpha", config["transperency"])
 
     try:
@@ -461,7 +461,13 @@ def createSettingsWindow():
         global theme
 
         config["theme"] = theme_combobox.get()
-        theme = config["theme"]
+        if config['theme'] == "System":
+            if darkdetect.isDark():
+                theme = "Dark"
+            else:
+                theme: "Light"
+        else:
+            theme = config["theme"]
         config["transperency"] = slider_value()
         config["sound"] = sound_button.instate(["selected"])
         config["notify"] = notify_button.instate(["selected"])
@@ -512,7 +518,7 @@ def createSettingsWindow():
     settings_window.mainloop()
 
 
-# APP THEME
+# APP TRANSPERENCY
 app.attributes("-alpha", config["transperency"])
 
 # KEYBINDS
