@@ -29,8 +29,16 @@
 <p style="text-align: center;">
     <img src="./assets/readme/dark.png"></img>
 </p>
+
+> Dark
+
+<p style="text-align: center;">
+    <img src="./assets/readme/light.png"></img>
+</p>
+
+> Light
     
-# Deployed with [Netlify](netlify.app)
+# 🌏Deployed with [Netlify](netlify.app)
     
 # 🎯TODO before v1.0
 - 🔝~~Add Always on Top option~~ _Released with v0.9, Get it [here](https://github.com/TimerX-App/TimerX/releases)!_
