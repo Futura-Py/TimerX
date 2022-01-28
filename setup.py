@@ -60,6 +60,7 @@ upgradeid = "{" + str(uuid.uuid3(uuid.NAMESPACE_DNS, "TimerX-App.TimerX.org")).u
 build_exe_options = {
     "include_msvcr": True,
     "include_files": (r"./sun-valley.tcl", r"./utils.py", r"./theme", r"./assets"),
+    "includes": ["tkinter", "platform", "threading", "BlurWindow", "darkdetect"],
 }
 
 bdist_rpm_options = {"icon": icon}
@@ -77,7 +78,7 @@ bdist_dmg_options = {
     "applications_shortcut": True,
 }
 
-version = "0.9"
+version = "1.0"
 
 setup(
     name="TimerX",

@@ -17,7 +17,7 @@ def createConfig():
     with open("config.json", "w") as config_file:
         json.dump(
             {
-                "theme": "System",
+                "theme": "Light",
                 "notify": False,
                 "ontop": False,
                 "transperency": 0.99,
