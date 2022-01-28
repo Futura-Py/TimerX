@@ -164,16 +164,26 @@ def runTimer():
         print(split_time)
 
         milliseconds_left -= int(split_time[1])
-        seconds_left -= int(split_time[0])
+        seconds_left = timer_seconds - int(split_time[0])
         if milliseconds_left < 0:
             seconds_left -= 1
+            print(f'This is ms: {milliseconds_left}')
             milliseconds_left = 999 - abs(milliseconds_left)
+            print(f'This is ms: {milliseconds_left}')
         print(f'{seconds_left}:{milliseconds_left}')
+
+        if seconds_left == 0 and minutes_left == 0 and hours_left == 0:
+            break
+        if seconds_left < 0:
+            seconds_left = 59
+            minutes_left -= 1
+        if minutes_left < 0:
+            hours_left-= 1
+            minutes_left = 59
 
         time_display.configure(
             text=f"{hours_left} : {minutes_left} : {seconds_left}"
         )
-
 
     timer_on = False
     time_display.configure(text=f"{hours_left} : {minutes_left} : {seconds_left}")
