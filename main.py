@@ -163,8 +163,15 @@ def runTimer():
         split_time = str(time_to_subtract).split('.')
         print(split_time)
 
+        ty_res = time.gmtime(int(split_time[0]))
+        res = time.strftime("%H:%M:%S",ty_res)
+
         milliseconds_left -= int(split_time[1])
-        seconds_left = timer_seconds - int(split_time[0])
+        split_secs = res.split(':')
+        print(f'split secs is {split_secs}')
+        hours_left = timer_hours - int(split_secs[0])
+        minutes_left = timer_minutes - int(split_secs[1])
+        seconds_left = timer_seconds - int(split_secs[2])
         if milliseconds_left < 0:
             seconds_left -= 1
             print(f'This is ms: {milliseconds_left}')
