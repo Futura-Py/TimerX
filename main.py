@@ -1,6 +1,6 @@
 # TimerX v0.2 by sumeshir26
 # IMPORTS
-ver = "0.9"
+ver = "1.0"
 
 import ctypes
 import os
@@ -33,7 +33,7 @@ else:
 if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
         theme = "Dark"
-    elif darkdetect.theme() == "Light":
+    else:
         theme = "Light"
 elif config["theme"] == "Dark":
     theme = "Dark"
@@ -49,11 +49,6 @@ app.maxsize(width=512, height=400)
 
 app.tk.call("source", "sun-valley.tcl")
 app.tk.call("set_theme", f"{theme.lower()}")
-if theme == "System":
-    if darkdetect.theme() == "Dark":
-        app.tk.call("set_theme", "dark")
-    elif darkdetect.theme() == "Light":
-        app.tk.call("set_theme", "light")
 
 bg_color = ttk.Style().lookup(".", "background")
 app.wm_attributes("-transparent", bg_color)
@@ -192,6 +187,7 @@ def runTimer():
             text=f"{hours_left} : {minutes_left} : {seconds_left}"
         )
 
+
     timer_on = False
     time_display.configure(text=f"{hours_left} : {minutes_left} : {seconds_left}")
     play_button.config(text="Play")
@@ -276,7 +272,7 @@ def createSettingsWindow():
     settings_window = tkinter.Toplevel()
     settings_window.geometry("500x320")
     settings_window.title("Settings")
-    # settings_window.resizable(False, False)
+    settings_window.resizable(False, False)
     settings_window.attributes("-alpha", config["transperency"])
 
     try:
@@ -416,7 +412,7 @@ def createSettingsWindow():
         website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
-
+    
     if config["theme"] == "System":
         box_slider_value.set("System")
     elif theme == "Dark":
@@ -485,7 +481,13 @@ def createSettingsWindow():
         global theme
 
         config["theme"] = theme_combobox.get()
-        theme = config["theme"]
+        if config['theme'] == "System":
+            if darkdetect.isDark():
+                theme = "Dark"
+            else:
+                theme = "Light"
+        else:
+            theme = config["theme"]
         config["transperency"] = slider_value()
         config["sound"] = sound_button.instate(["selected"])
         config["notify"] = notify_button.instate(["selected"])
@@ -493,12 +495,6 @@ def createSettingsWindow():
         setAlwaysOnTop(app)
 
         setConfig(config)
-
-        if theme == "System":
-            if darkdetect.theme() == "Dark":
-                theme = "Dark"
-            else:
-                theme = "Light"
 
         if theme == "Dark":
             app.tk.call("set_theme", "dark")
@@ -542,7 +538,7 @@ def createSettingsWindow():
     settings_window.mainloop()
 
 
-# APP THEME
+# APP TRANSPERENCY
 app.attributes("-alpha", config["transperency"])
 
 # KEYBINDS
