@@ -40,16 +40,8 @@
     
 # 🌏Deployed with [Netlify](netlify.app)
     
-# 🎯TODO before v1.0
-- 🔝~~Add Always on Top option~~ _Released with v0.9, Get it [here](https://github.com/TimerX-App/TimerX/releases)!_
-- 🌑~~Dark Mode~~ _Released with v0.9, Get it [here](https://github.com/TimerX-App/TimerX/releases)!_
-- ⌨️~~Keybindings to Play/Pause~~ _Released with v0.9, Get it [here](https://github.com/TimerX-App/TimerX/releases)!_
-- 🔔~~Notifications~~ _Released with v0.9, Get it [here](https://github.com/TimerX-App/TimerX/releases)!_
-# Features coming after v1.0(No promises!)
-- ⚙️ ~~Add settings and about page~~ _Added in codebase!(Thanks [nef](https://github.com/not-nef)!)_
-- ~~Dynamically resize elements & theme~~ _Added in codebase!(Thanks [nef](https://github.com/not-nef)!)_
-- ~~Dark Titlebar~~ _Added in codebase!(Thanks [nef](https://github.com/not-nef)!)_
-- ⏱️ Stopwatch Mode
+# 🎯TODO
+Look [here](https://github.com/orgs/TimerX-App/projects/1)!
 
 # Supported Platforms
 - ✔️ Windows: Tested on Windows 7,10, and 11
