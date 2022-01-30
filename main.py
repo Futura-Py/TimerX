@@ -1,4 +1,4 @@
-# TimerX v0.2 by sumeshir26
+# TimerX v1.1
 # IMPORTS
 ver = "1.0"
 
