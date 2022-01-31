@@ -143,49 +143,38 @@ def runTimer():
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
-    milliseconds_left = 100
+    milliseconds_left = 99
     timer_on = True
 
     last_paused = time.time()
 
-    while True:            
-        latest_time = time.time()
+    while True:
+        if timer_on and timer_paused == False:
+            latest_time = time.time()
 
-        print(latest_time - last_paused)
-        time_to_subtract = round((latest_time-last_paused), 3)
-        print(time_to_subtract)
+            print(latest_time - last_paused)
+            time_to_subtract = round((latest_time-last_paused), 3)
+            print(time_to_subtract)
 
-        split_time = str(time_to_subtract).split('.')
-        print(split_time)
+            split_time = str(time_to_subtract).split('.')
+            print(split_time)
 
-        ty_res = time.gmtime(int(split_time[0]))
-        res = time.strftime("%H:%M:%S",ty_res)
+            ty_res = time.gmtime(int(split_time[0]))
+            formatted_time = time.strftime(f"%H:%M:%S:{split_time[1]}",ty_res)
+            print(formatted_time)
 
-        milliseconds_left -= int(split_time[1])
-        split_secs = res.split(':')
-        print(f'split secs is {split_secs}')
-        hours_left = timer_hours - int(split_secs[0])
-        minutes_left = timer_minutes - int(split_secs[1])
-        seconds_left = timer_seconds - int(split_secs[2])
-        if milliseconds_left < 0:
-            seconds_left -= 1
-            print(f'This is ms: {milliseconds_left}')
-            milliseconds_left = 999 - abs(milliseconds_left)
-            print(f'This is ms: {milliseconds_left}')
-        print(f'{seconds_left}:{milliseconds_left}')
+            milliseconds_left -= int(split_time[1])
+            split_fmt_time = formatted_time.split(':')
+            hours_left = timer_hours - int(split_fmt_time[0])
+            minutes_left = timer_minutes - int(split_fmt_time[1])
+            seconds_left = timer_seconds - int(split_fmt_time[2])
 
-        if seconds_left == 0 and minutes_left == 0 and hours_left == 0:
-            break
-        if seconds_left < 0:
-            seconds_left = 59
-            minutes_left -= 1
-        if minutes_left < 0:
-            hours_left-= 1
-            minutes_left = 59
+            if seconds_left < 0 and minutes_left == 0 and hours_left == 0:
+                break
 
-        time_display.configure(
-            text=f"{hours_left} : {minutes_left} : {seconds_left}"
-        )
+            time_display.configure(
+                text=f"{hours_left} : {minutes_left} : {seconds_left}"
+            )
 
 
     timer_on = False
