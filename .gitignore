@@ -1,3 +1,15 @@
+# VENV
+pyvenv.cfg
+Scripts/
+
+# Lockfile
+docs/package-lock.json
+
+# IDE
+vscode/
+.vscode
+
+
 # Config
 config.json
 
@@ -132,4 +144,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-

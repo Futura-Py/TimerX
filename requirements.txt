@@ -1,3 +1,4 @@
 playsound
 darkdetect
 tk
+BlurWindow

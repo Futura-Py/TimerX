@@ -1,4 +1,4 @@
-name: Release Build
+name: Release Build for All Platforms
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
       version:
         description: 'Version'
         required: true
-        default: '1.0'
+        default: 'X.X'
         
 
 jobs:     
@@ -25,7 +25,7 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
-          pip install -r packager-requirements.txt
+          pip install -r requirements-dev.txt
 
       - name: Run cx_freeze 
         continue-on-error: true
@@ -66,8 +66,8 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
-          pip install -r windows-requirements.txt
-          pip install -r packager-requirements.txt
+          pip install -r requirements-windows.txt
+          pip install -r requirements-dev.txt
       - name: Run cx_freeze
         run: |
           python setup.py bdist_msi
@@ -90,7 +90,7 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
-          pip install -r packager-requirements.txt
+          pip install -r requirements-dev.txt
       - name: Run cx_freeze
         run: |
           python setup.py bdist_dmg
