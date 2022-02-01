@@ -173,6 +173,15 @@ def runTimer():
             if seconds_left < 0 and minutes_left == 0 and hours_left == 0:
                 break
 
+            if seconds_left < 0:
+                subtract_secs = abs(seconds_left)
+                seconds_left = 60 - subtract_secs
+                minutes_left -= 1
+            if minutes_left < 0:
+                subtract_mins = abs(minutes_left)
+                minutes_left = 60 - subtract_mins
+                hours_left -= 1
+
             time_display.configure(
                 text=f"{hours_left} : {minutes_left} : {seconds_left}"
             )
