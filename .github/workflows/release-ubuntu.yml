@@ -4,14 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       version-ubuntu:
-        description: 'Version(semver)'
+        description: "Version(semver)"
         required: true
-        default: '1.0'
-        
+        default: "1.0"
 
 jobs:
-
-# UBUNTU BUILD
+  # UBUNTU BUILD
   build-ubuntu:
     runs-on: ubuntu-latest
     steps:
@@ -20,14 +18,14 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.7'
-          architecture: 'x64'
+          python-version: "3.7"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Run cx_freeze 
+      - name: Run cx_freeze
         continue-on-error: true
         run: |
           python setup.py bdist_rpm
@@ -47,8 +45,8 @@ jobs:
         with:
           name: TimerX-{{ github.event.inputs.version-ubuntu }}.rpm
           path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}-2.noarch.rpm
-          
-#RELEASE UBUNTU
+
+      #RELEASE UBUNTU
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -56,7 +54,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.version-ubuntu }}
-          release_name: 'Release ${{ github.event.inputs.version-ubuntu }}'
+          release_name: "Release ${{ github.event.inputs.version-ubuntu }}"
           overwrite: true
           body: |
             Release ${{ github.event.inputs.version-ubuntu }} (Add your content here and then publish this.)
@@ -71,7 +69,7 @@ jobs:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: dist/timerx_${{ github.event.inputs.version-ubuntu }}-2_all.deb
           asset_name: TimerX-deb
-          asset_content_type: application/zip          
+          asset_content_type: application/zip
 
       - name: Upload Release Asset(RPM)
         id: upload-release-asset-rpm
@@ -82,4 +80,4 @@ jobs:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: dist/TimerX-${{ github.event.inputs.version-ubuntu }}-2.noarch.rpm
           asset_name: TimerX-rpm
-          asset_content_type: application/zip         
+          asset_content_type: application/zip

@@ -4,14 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       version-macos:
-        description: 'Version(semver)'
+        description: "Version(semver)"
         required: true
-        default: 'X.X'
-        
+        default: "X.X"
 
 jobs:
-
-# MACOS BUILD
+  # MACOS BUILD
   build-macos11:
     runs-on: macos-11
     steps:
@@ -20,8 +18,8 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.10'
-          architecture: 'x64'
+          python-version: "3.10"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
@@ -33,7 +31,7 @@ jobs:
         with:
           name: TimerX-Big-Sur.dmg
           path: build/TimerX.dmg
-          
+
   build-macos1015:
     runs-on: macos-10.15
     steps:
@@ -42,8 +40,8 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.10'
-          architecture: 'x64'
+          python-version: "3.10"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
@@ -55,8 +53,8 @@ jobs:
         with:
           name: TimerX
           path: build/TimerX.dmg
-          
-#RELEASE
+
+      #RELEASE
       - name: create release
         id: create_release
         uses: actions/create-release@v1
@@ -64,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.version-macos }}
-          release_name: 'Release ${{ github.event.inputs.version-macos }}'
+          release_name: "Release ${{ github.event.inputs.version-macos }}"
           overwrite: true
           body: |
             Release ${{ github.event.inputs.version-macos }} (Add your content here and then publish this.)
@@ -93,5 +91,4 @@ jobs:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: TimerX-Big-Sur.dmg
           asset_name: TimerX-Big-Sur.dmg
-          asset_content_type: application/zip 
-  
+          asset_content_type: application/zip

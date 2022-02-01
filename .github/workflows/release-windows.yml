@@ -4,14 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       version-win:
-        description: 'Version(semver)'
+        description: "Version(semver)"
         required: true
-        default: 'X.X'
-        
+        default: "X.X"
 
 jobs:
-
-# WINDOWS BUILD
+  # WINDOWS BUILD
   build-windows:
     runs-on: windows-latest
     steps:
@@ -20,8 +18,8 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.10'
-          architecture: 'x64'
+          python-version: "3.10"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
@@ -34,8 +32,8 @@ jobs:
         with:
           name: TimerX.msi
           path: dist/TimerX-win64.msi
-          
-#RELEASE
+
+      #RELEASE
       - name: create release
         id: create_release
         uses: actions/create-release@v1
@@ -43,7 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.version-win }}
-          release_name: 'Release ${{ github.event.inputs.version-win }}'
+          release_name: "Release ${{ github.event.inputs.version-win }}"
           overwrite: true
           body: |
             Release ${{ github.event.inputs.version-win }} (Add your content here and then publish this.)
@@ -58,4 +56,4 @@ jobs:
           upload_url: ${{steps.create_release.outputs.upload_url}}
           asset_path: dist/TimerX-win64.msi
           asset_name: TimerX-win64.msi
-          asset_content_type: application/zip          
+          asset_content_type: application/zip

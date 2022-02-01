@@ -4,14 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version'
+        description: "Version"
         required: true
-        default: 'X.X'
-        
+        default: "X.X"
 
-jobs:     
-
-# UBUNTU BUILD
+jobs:
+  # UBUNTU BUILD
   build-ubuntu:
     runs-on: ubuntu-latest
     steps:
@@ -20,14 +18,14 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.8'
-          architecture: 'x64'
+          python-version: "3.8"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Run cx_freeze 
+      - name: Run cx_freeze
         continue-on-error: true
         run: |
           python setup.py bdist_rpm
@@ -52,7 +50,7 @@ jobs:
           name: TimerX.tar.gz
           path: dist/TimerX-${{ github.event.inputs.version }}.tar.gz
 
-# WINDOWS BUILD
+  # WINDOWS BUILD
   build-windows:
     runs-on: windows-latest
     steps:
@@ -61,8 +59,8 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.10'
-          architecture: 'x64'
+          python-version: "3.10"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
@@ -76,7 +74,7 @@ jobs:
           name: TimerX-setup.msi
           path: dist/TimerX-win64.msi
 
-# MACOS BUILD
+  # MACOS BUILD
   build-macos:
     runs-on: macos-latest
     steps:
@@ -85,8 +83,8 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v1
         with:
-          python-version: '3.10'
-          architecture: 'x64'
+          python-version: "3.10"
+          architecture: "x64"
       - name: Install requirements
         run: |
           pip install -r requirements.txt
@@ -127,12 +125,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.version }}
-          release_name: 'Release ${{ github.event.inputs.version }}'
+          release_name: "Release ${{ github.event.inputs.version }}"
           overwrite: true
           body: |
             Release ${{ github.event.inputs.version }} (Add your content here and then publish this.)
           draft: true
-          prerelease: false 
+          prerelease: false
 
       - name: Upload Release Asset(MSI)
         id: upload-release-asset-msi
@@ -166,7 +164,7 @@ jobs:
           asset_path: TimerX-${{ github.event.inputs.version }}.tar.gz
           asset_name: TimerX.tar.gz
           asset_content_type: application/zip
-      
+
       - name: Upload Release Asset(RPM)
         id: upload-release-asset-rpm
         uses: actions/upload-release-asset@v1
