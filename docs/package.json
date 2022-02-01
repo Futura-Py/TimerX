@@ -12,7 +12,8 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "fmt": "npx prettier --write ."
+    "fmt": "npx prettier --write .",
+    "fmt-check": "npx prettier --check ."
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-beta.14",
