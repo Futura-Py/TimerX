@@ -93,10 +93,14 @@ def playBuzzer(config):
 
 
 def startstopButtonPressed():
-    global timer_on, timer_paused
+    global timer_on, timer_paused, timer_hours, timer_minutes, timer_seconds, last_paused
     if timer_on:
         timer_on = False
         timer_paused = True
+        last_paused = time.time()
+        timer_hours = hours_left
+        timer_minutes = minutes_left
+        timer_seconds = seconds_left
         play_button.configure(text="Play")
     elif timer_paused == False and timer_on == False:
         play_button.configure(text="Pause")
@@ -138,7 +142,7 @@ def showNotification():
 
 
 def runTimer():
-    global timer_seconds, timer_minutes, timer_hours, timer_on, app, config
+    global timer_seconds, timer_minutes, timer_hours, timer_on, app, config, last_paused, seconds_left, minutes_left, hours_left
 
     seconds_left = timer_seconds
     minutes_left = timer_minutes
@@ -152,12 +156,9 @@ def runTimer():
         if timer_on and timer_paused == False:
             latest_time = time.time()
 
-            print(latest_time - last_paused)
             time_to_subtract = round((latest_time-last_paused), 3)
-            print(time_to_subtract)
 
             split_time = str(time_to_subtract).split('.')
-            print(split_time)
 
             ty_res = time.gmtime(int(split_time[0]))
             formatted_time = time.strftime(f"%H:%M:%S:{split_time[1]}",ty_res)
