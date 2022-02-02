@@ -6,21 +6,21 @@ on:
 
 
 jobs:
-  Formatting:
-    runs-on: windows-latest
+  prettier:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
-      - name: Install Python
-        uses: actions/setup-python@v1
+        uses: actions/checkout@v2
         with:
-          python-version: '3.10'
-          architecture: 'x64'
-      - name: Install requirements
-        run: |
-          python -m pip install black
-          python -m pip install isort
-      - name: Format code
-        run: |
-          python -m black main.py
-          python -m isort main.py
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+          # We have a PAT for this; it will work properly, trust me.
+          repo_token: ${{ secrets.ORG_PAT }}
+
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.2
+        with:
+          # This part is also where you can pass other options, for example:
+          prettier_options: --write .
+          
