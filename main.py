@@ -4,6 +4,7 @@ ver = "1.0"
 
 import ctypes
 import os
+from re import T
 import time
 import tkinter
 import webbrowser
@@ -94,7 +95,7 @@ def playBuzzer(config):
 
 def startstopButtonPressed():
     global timer_on, timer_paused, timer_hours, timer_minutes, timer_seconds, last_paused
-    if timer_on:
+    if timer_on and timer_paused == False:
         timer_on = False
         timer_paused = True
         last_paused = time.time()
@@ -108,6 +109,8 @@ def startstopButtonPressed():
         timer_thread.start()
     else:
         timer_paused = False
+        timer_on = True
+        play_button.configure(text="Pause")
 
 
 def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window):
@@ -117,6 +120,9 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_wind
         timer_seconds = int(timer_sec_input.get())
         timer_minutes = int(timer_min_input.get())
         timer_hours = int(timer_hr_input.get())
+        config["default_seconds"] = timer_seconds
+        config["default_minutes"] = timer_minutes
+        config["default_hours"] = timer_hours
         time_selected_display.configure(
             text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds"
         )
@@ -132,17 +138,21 @@ def showNotification():
     if system() == "Windows":
         notification = ToastNotifier()
         notification.show_toast(
+            "TimerX",
             "Time's up!",
-            icon_path="./assets/logo.ico",
+            icon_path="./assets/logo_new.ico",
             duration="None",
             threaded=True,
             callback_on_click=app.focus_force(),
-            title="TimerX",
         )
 
 
 def runTimer():
     global timer_seconds, timer_minutes, timer_hours, timer_on, app, config, last_paused, seconds_left, minutes_left, hours_left
+
+    timer_seconds = config["default_seconds"]
+    timer_minutes = config["default_minutes"]
+    timer_hours = config["default_hours"]
 
     seconds_left = timer_seconds
     minutes_left = timer_minutes
@@ -162,7 +172,6 @@ def runTimer():
 
             ty_res = time.gmtime(int(split_time[0]))
             formatted_time = time.strftime(f"%H:%M:%S:{split_time[1]}",ty_res)
-            print(formatted_time)
 
             milliseconds_left -= int(split_time[1])
             split_fmt_time = formatted_time.split(':')
@@ -186,9 +195,7 @@ def runTimer():
                 text=f"{hours_left} : {minutes_left} : {seconds_left}"
             )
 
-
     timer_on = False
-    time_display.configure(text=f"{hours_left} : {minutes_left} : {seconds_left}")
     play_button.config(text="Play")
 
     if config["notify"]:
