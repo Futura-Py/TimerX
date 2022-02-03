@@ -3,6 +3,8 @@ name: Formatting
 on:
   push:
     branches: [master]
+  schedule: 
+  - cron: 30 05 15 * *
 
 
 jobs:
