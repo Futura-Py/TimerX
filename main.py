@@ -4,11 +4,11 @@ ver = "1.0"
 
 import ctypes
 import os
-from re import T
 import time
 import tkinter
 import webbrowser
 from platform import system
+from re import T
 from threading import Thread
 from time import sleep
 from tkinter import Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
@@ -125,9 +125,7 @@ def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_wind
     time_selected_display.configure(
         text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds"
     )
-    time_display.configure(
-        text=f"{timer_hours} : {timer_minutes} : {timer_seconds}"
-    )
+    time_display.configure(text=f"{timer_hours} : {timer_minutes} : {timer_seconds}")
     manager_app_window.destroy()
 
 
@@ -163,15 +161,15 @@ def runTimer():
         if timer_on and timer_paused == False:
             latest_time = time.time()
 
-            time_to_subtract = round((latest_time-last_paused), 3)
+            time_to_subtract = round((latest_time - last_paused), 3)
 
-            split_time = str(time_to_subtract).split('.')
+            split_time = str(time_to_subtract).split(".")
 
             ty_res = time.gmtime(int(split_time[0]))
-            formatted_time = time.strftime(f"%H:%M:%S:{split_time[1]}",ty_res)
+            formatted_time = time.strftime(f"%H:%M:%S:{split_time[1]}", ty_res)
 
             milliseconds_left -= int(split_time[1])
-            split_fmt_time = formatted_time.split(':')
+            split_fmt_time = formatted_time.split(":")
             hours_left = timer_hours - int(split_fmt_time[0])
             minutes_left = timer_minutes - int(split_fmt_time[1])
             seconds_left = timer_seconds - int(split_fmt_time[2])
@@ -245,19 +243,25 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
 
     timer_hr_label = ttk.Label(manager_window, text="Hours: ")
     timer_hr_label.place(x=17, y=17)
-    timer_hr_input = ttk.Entry(manager_window, validate='key', validatecommand=(validate_command, '%P'))
+    timer_hr_input = ttk.Entry(
+        manager_window, validate="key", validatecommand=(validate_command, "%P")
+    )
     timer_hr_input.place(x=65, y=10)
     timer_hr_input.insert(1, current_hrs)
 
     timer_min_label = ttk.Label(manager_window, text="Minutes: ")
     timer_min_label.place(x=13, y=57)
-    timer_min_input = ttk.Entry(manager_window, validate='key', validatecommand=(validate_command, '%P'))
+    timer_min_input = ttk.Entry(
+        manager_window, validate="key", validatecommand=(validate_command, "%P")
+    )
     timer_min_input.place(x=65, y=50)
     timer_min_input.insert(1, current_mins)
 
     timer_sec_label = ttk.Label(manager_window, text="Seconds: ")
     timer_sec_label.place(x=12, y=97)
-    timer_sec_input = ttk.Entry(manager_window, validate='key', validatecommand=(validate_command, '%P'))
+    timer_sec_input = ttk.Entry(
+        manager_window, validate="key", validatecommand=(validate_command, "%P")
+    )
     timer_sec_input.place(x=65, y=90)
     timer_sec_input.insert(1, current_secs)
 
@@ -418,7 +422,7 @@ def createSettingsWindow():
         website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
-    
+
     if config["theme"] == "System":
         box_slider_value.set("System")
     elif theme == "Dark":
@@ -487,7 +491,7 @@ def createSettingsWindow():
         global theme
 
         config["theme"] = theme_combobox.get()
-        if config['theme'] == "System":
+        if config["theme"] == "System":
             if darkdetect.isDark():
                 theme = "Dark"
             else:

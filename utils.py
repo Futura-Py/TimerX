@@ -31,13 +31,14 @@ def createConfig():
             config_file,
         )
 
+
 # VALIDATION
 def validate(input):
     if input.isdigit():
         return True
-                          
+
     elif input == "":
         return True
-  
+
     else:
         return False
