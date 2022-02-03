@@ -108,20 +108,16 @@ def startstopButtonPressed():
 def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window):
     global timer_seconds, timer_minutes, timer_hours
 
-    try:
-        timer_seconds = int(timer_sec_input.get())
-        timer_minutes = int(timer_min_input.get())
-        timer_hours = int(timer_hr_input.get())
-        time_selected_display.configure(
-            text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds"
-        )
-        time_display.configure(
-            text=f"{timer_hours} : {timer_minutes} : {timer_seconds}"
-        )
-        manager_app_window.destroy()
-    except ValueError:
-        time_selected_display.configure(text="Please enter a number!")
-
+    timer_seconds = int(timer_sec_input.get())
+    timer_minutes = int(timer_min_input.get())
+    timer_hours = int(timer_hr_input.get())
+    time_selected_display.configure(
+        text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds"
+    )
+    time_display.configure(
+        text=f"{timer_hours} : {timer_minutes} : {timer_seconds}"
+    )
+    manager_app_window.destroy()
 
 def showNotification():
     if system() == "Windows":
@@ -213,25 +209,28 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     except TclError:
         pass
 
+    # VALIDATION
+    validate_command = manager_app_window.register(validate)
+
     # WINDOW FRAME
     manager_window = ttk.Frame(manager_app_window)
     manager_window.pack(fill="both", expand=True)
 
     timer_hr_label = ttk.Label(manager_window, text="Hours: ")
     timer_hr_label.place(x=17, y=17)
-    timer_hr_input = ttk.Entry(manager_window)
+    timer_hr_input = ttk.Entry(manager_window, validate='key', validatecommand=(validate_command, '%P'))
     timer_hr_input.place(x=65, y=10)
     timer_hr_input.insert(1, current_hrs)
 
     timer_min_label = ttk.Label(manager_window, text="Minutes: ")
     timer_min_label.place(x=13, y=57)
-    timer_min_input = ttk.Entry(manager_window)
+    timer_min_input = ttk.Entry(manager_window, validate='key', validatecommand=(validate_command, '%P'))
     timer_min_input.place(x=65, y=50)
     timer_min_input.insert(1, current_mins)
 
     timer_sec_label = ttk.Label(manager_window, text="Seconds: ")
     timer_sec_label.place(x=12, y=97)
-    timer_sec_input = ttk.Entry(manager_window)
+    timer_sec_input = ttk.Entry(manager_window, validate='key', validatecommand=(validate_command, '%P'))
     timer_sec_input.place(x=65, y=90)
     timer_sec_input.insert(1, current_secs)
 
