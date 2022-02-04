@@ -11,7 +11,7 @@ from platform import system
 from re import T
 from threading import Thread
 from time import sleep
-from tkinter import Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
+from tkinter import DISABLED, Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
 from tkinter.constants import LEFT
 
 import darkdetect
@@ -544,6 +544,9 @@ def createSettingsWindow():
         tab_2, text="Cancel", command=lambda: settings_window.destroy()
     )
     cancelbtn_2.place(x=125, y=230)
+
+    if system() != "Windows" or system() != "win":
+        notify_button.configure(state=DISABLED)
 
     settings_window.mainloop()
 
