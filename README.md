@@ -4,19 +4,19 @@
 </p>
 
 <p align="center">
-    <a style="text-decoration:none" href="https://github.com/TimerX-App/TimerX/releases">
-        <img src="https://img.shields.io/github/release/TimerX-App/TimerX.svg?style=flat-square" alt="Releases" width="117px" />
+    <a style="text-decoration:none" href="https://github.com/Futura-Py/TimerX/releases">
+        <img src="https://img.shields.io/github/release/Futura-Py/TimerX.svg?style=flat-square" alt="Releases" width="117px" />
     </a>
     <a style="text-decoration:none" href="https://python.org">
         <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python" />
     </a>
-    <a style="text-decoration:none" href="https://gitpod.io/#https://github.com/TimerX-App/TimerX">
+    <a style="text-decoration:none" href="https://gitpod.io/#https://github.com/Futura-Py/TimerX">
         <img src="https://img.shields.io/badge/gitpod-f06611.svg?style=for-the-badge&logo=gitpod&logoColor=white" alt="Gitpod" />
     </a>
     <a style="text-decoration:none" href="https://www.netlify.com">
         <img src="https://img.shields.io/badge/netlify-%23000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7" alt="Netlify" />
     </a>
-    <a style="text-decoration:none" href="https://github.com/TimerX-App/TimerX/actions">
+    <a style="text-decoration:none" href="https://github.com/Futura-Py/TimerX/actions">
         <img src="https://img.shields.io/badge/githubactions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white" alt="Actions" />
     </a>
     <a style="text-decoration:none" href="https://repl.it">
@@ -41,7 +41,7 @@
 # 🌏Deployed with [Netlify](netlify.app)
     
 # 🎯TODO
-Look [here](https://github.com/orgs/TimerX-App/projects/1)!
+Look [here](https://github.com/orgs/Futura-Py/projects/1)!
 
 # Supported Platforms
 - ✔️ Windows: Tested on Windows 7,10, and 11

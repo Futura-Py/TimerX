@@ -16,7 +16,7 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="https://github.com/TimerX-App/TimerX/releases/latest"
+            to="https://github.com/Futura-Py/TimerX/releases/latest"
           >
             Download TimerX
           </Link>
