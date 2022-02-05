@@ -384,7 +384,7 @@ def createSettingsWindow():
         text=" Fork on Github",
         image=github_logo_dark,
         compound=LEFT,
-        command=lambda: webbrowser.open("https://github.com/TimerX-App/TimerX"),
+        command=lambda: webbrowser.open("https://github.com/Futura-Py/TimerX"),
     )
     github_btn.place(x=50, y=200)
 
@@ -393,7 +393,7 @@ def createSettingsWindow():
         text=" Check out our Website!",
         image=globe_dark,
         compound=LEFT,
-        command=lambda: webbrowser.open("https://timerx-app.netlify.app/"),
+        command=lambda: webbrowser.open("https://Futura-Py.netlify.app/"),
     )
     website_btn.place(x=250, y=200)
 
