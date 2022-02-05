@@ -4,12 +4,14 @@ ver = "1.0"
 
 import ctypes
 import os
+import time
 import tkinter
 import webbrowser
 from platform import system
+from re import T
 from threading import Thread
 from time import sleep
-from tkinter import Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
+from tkinter import DISABLED, Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
 from tkinter.constants import LEFT
 
 import darkdetect
@@ -92,10 +94,14 @@ def playBuzzer(config):
 
 
 def startstopButtonPressed():
-    global timer_on, timer_paused
-    if timer_on:
+    global timer_on, timer_paused, timer_hours, timer_minutes, timer_seconds, last_paused
+    if timer_on and timer_paused == False:
         timer_on = False
         timer_paused = True
+        last_paused = time.time()
+        timer_hours = hours_left
+        timer_minutes = minutes_left
+        timer_seconds = seconds_left
         play_button.configure(text="Play")
     elif timer_paused == False and timer_on == False:
         play_button.configure(text="Pause")
@@ -103,73 +109,88 @@ def startstopButtonPressed():
         timer_thread.start()
     else:
         timer_paused = False
+        timer_on = True
+        play_button.configure(text="Pause")
 
 
 def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window):
     global timer_seconds, timer_minutes, timer_hours
 
-    try:
-        timer_seconds = int(timer_sec_input.get())
-        timer_minutes = int(timer_min_input.get())
-        timer_hours = int(timer_hr_input.get())
-        time_selected_display.configure(
-            text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds"
-        )
-        time_display.configure(
-            text=f"{timer_hours} : {timer_minutes} : {timer_seconds}"
-        )
-        manager_app_window.destroy()
-    except ValueError:
-        time_selected_display.configure(text="Please enter a number!")
+    timer_seconds = int(timer_sec_input.get())
+    timer_minutes = int(timer_min_input.get())
+    timer_hours = int(timer_hr_input.get())
+    config["default_seconds"] = timer_seconds
+    config["default_minutes"] = timer_minutes
+    config["default_hours"] = timer_hours
+    time_selected_display.configure(
+        text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds"
+    )
+    time_display.configure(text=f"{timer_hours} : {timer_minutes} : {timer_seconds}")
+    manager_app_window.destroy()
 
 
 def showNotification():
     if system() == "Windows":
         notification = ToastNotifier()
         notification.show_toast(
+            "TimerX",
             "Time's up!",
-            icon_path="./assets/logo.ico",
+            icon_path="./assets/logo_new.ico",
             duration="None",
             threaded=True,
             callback_on_click=app.focus_force(),
-            title="TimerX",
         )
 
 
 def runTimer():
-    global timer_seconds, timer_minutes, timer_hours, timer_on, app, config
+    global timer_seconds, timer_minutes, timer_hours, timer_on, app, config, last_paused, seconds_left, minutes_left, hours_left
+
+    timer_seconds = config["default_seconds"]
+    timer_minutes = config["default_minutes"]
+    timer_hours = config["default_hours"]
 
     seconds_left = timer_seconds
     minutes_left = timer_minutes
     hours_left = timer_hours
+    milliseconds_left = 99
     timer_on = True
+
+    last_paused = time.time()
 
     while True:
         if timer_on and timer_paused == False:
-            time_display.configure(
-                text=f"{hours_left} : {minutes_left} : {seconds_left}"
-            )
-            if seconds_left == 0 and minutes_left != 0:
-                minutes_left -= 1
-                seconds_left = 59
-            elif seconds_left == 0 and minutes_left == 0 and hours_left != 0:
-                hours_left -= 1
-                minutes_left = 59
-                seconds_left = 59
-            elif seconds_left == 0 and timer_minutes == 0 and hours_left == 0:
+            latest_time = time.time()
+
+            time_to_subtract = round((latest_time - last_paused), 3)
+
+            split_time = str(time_to_subtract).split(".")
+
+            ty_res = time.gmtime(int(split_time[0]))
+            formatted_time = time.strftime(f"%H:%M:%S:{split_time[1]}", ty_res)
+
+            milliseconds_left -= int(split_time[1])
+            split_fmt_time = formatted_time.split(":")
+            hours_left = timer_hours - int(split_fmt_time[0])
+            minutes_left = timer_minutes - int(split_fmt_time[1])
+            seconds_left = timer_seconds - int(split_fmt_time[2])
+
+            if seconds_left < 0 and minutes_left == 0 and hours_left == 0:
                 break
-            else:
-                seconds_left -= 1
-            sleep(1)
 
-        else:
+            if seconds_left < 0:
+                subtract_secs = abs(seconds_left)
+                seconds_left = 60 - subtract_secs
+                minutes_left -= 1
+            if minutes_left < 0:
+                subtract_mins = abs(minutes_left)
+                minutes_left = 60 - subtract_mins
+                hours_left -= 1
+
             time_display.configure(
                 text=f"{hours_left} : {minutes_left} : {seconds_left}"
             )
-
 
     timer_on = False
-    time_display.configure(text=f"{hours_left} : {minutes_left} : {seconds_left}")
     play_button.config(text="Play")
 
     if config["notify"]:
@@ -213,25 +234,34 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     except TclError:
         pass
 
+    # VALIDATION
+    validate_command = manager_app_window.register(validate)
+
     # WINDOW FRAME
     manager_window = ttk.Frame(manager_app_window)
     manager_window.pack(fill="both", expand=True)
 
     timer_hr_label = ttk.Label(manager_window, text="Hours: ")
     timer_hr_label.place(x=17, y=17)
-    timer_hr_input = ttk.Entry(manager_window)
+    timer_hr_input = ttk.Entry(
+        manager_window, validate="key", validatecommand=(validate_command, "%P")
+    )
     timer_hr_input.place(x=65, y=10)
     timer_hr_input.insert(1, current_hrs)
 
     timer_min_label = ttk.Label(manager_window, text="Minutes: ")
     timer_min_label.place(x=13, y=57)
-    timer_min_input = ttk.Entry(manager_window)
+    timer_min_input = ttk.Entry(
+        manager_window, validate="key", validatecommand=(validate_command, "%P")
+    )
     timer_min_input.place(x=65, y=50)
     timer_min_input.insert(1, current_mins)
 
     timer_sec_label = ttk.Label(manager_window, text="Seconds: ")
     timer_sec_label.place(x=12, y=97)
-    timer_sec_input = ttk.Entry(manager_window)
+    timer_sec_input = ttk.Entry(
+        manager_window, validate="key", validatecommand=(validate_command, "%P")
+    )
     timer_sec_input.place(x=65, y=90)
     timer_sec_input.insert(1, current_secs)
 
@@ -392,7 +422,7 @@ def createSettingsWindow():
         website_btn.configure(image=globe_light)
 
     box_slider_value = StringVar(settings_window)
-    
+
     if config["theme"] == "System":
         box_slider_value.set("System")
     elif theme == "Dark":
@@ -461,7 +491,7 @@ def createSettingsWindow():
         global theme
 
         config["theme"] = theme_combobox.get()
-        if config['theme'] == "System":
+        if config["theme"] == "System":
             if darkdetect.isDark():
                 theme = "Dark"
             else:
@@ -514,6 +544,9 @@ def createSettingsWindow():
         tab_2, text="Cancel", command=lambda: settings_window.destroy()
     )
     cancelbtn_2.place(x=125, y=230)
+
+    if system() != "Windows" or system() != "win":
+        notify_button.configure(state=DISABLED)
 
     settings_window.mainloop()
 
