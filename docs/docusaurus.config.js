@@ -96,7 +96,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} MIT License by sumeshir26`,
+        copyright: `Copyright © ${new Date().getFullYear()} MIT License by The Futura Team`,
       },
       prism: {
         theme: lightCodeTheme,
