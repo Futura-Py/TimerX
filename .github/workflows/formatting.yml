@@ -3,6 +3,7 @@ name: Formatting
 on:
   schedule: 
   - cron: 30 05 15 * *
+  workflow_dispatch:
 
 
 jobs:
