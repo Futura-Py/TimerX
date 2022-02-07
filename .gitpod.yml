@@ -1,4 +1,4 @@
-# image: 
+# image:
 #   file: .gitpod.Dockerfile
 image: axonasif/gitpod-workspace-images:tkinter_vnc_full
 
@@ -6,13 +6,13 @@ tasks:
   - name: TimerX
     init: pip install -r requirements.txt
     command: python main.py
-# PS: App doesn't work here since "_tkinter" is unavailable
+  # PS: App doesn't work here since "_tkinter" is unavailable
 
   - name: Website
     before: cd docs && nvm install 14
     init: yarn install
     command: yarn start
-  
+
   - name: Initialize `cz` and `pre-commit`
     init: cd /workspace/TimerX
     command: pip install -r requirements-dev.txt && pre-commit install && pre-commit run
