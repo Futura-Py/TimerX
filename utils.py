@@ -95,12 +95,6 @@ def popup(parent, title, details, icon, *, buttons):
     except tk.TclError:
         color = big_frame.tk.call("ttk::style", "lookup", "TFrame", "-background")
 
-    icon_label = ttk.Label(info_frame, image=icon, anchor="nw", background=color)
-    if icon is not None:
-        icon_label.grid(
-            row=0, column=0, sticky="nsew", padx=(12, 0), pady=10, rowspan=2
-        )
-
     title_label = ttk.Label(
         info_frame, text=title, anchor="nw", font=("", 14, "bold"), background=color
     )
