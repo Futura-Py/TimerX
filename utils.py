@@ -4,13 +4,21 @@ import tkinter as tk
 from tkinter import ttk
 from functools import partial
 
-def loadConfig():
+def loadConfig(current_version):
     with open("config.json") as config_file:
         config = json.load(config_file)
+        try:
+            if config['version'] < current_version:
+                # Update Settings when Needed
+                config['version'] = current_version
+                saveConfig(config)
+        except KeyError:
+            config.update({"version": current_version})
+            saveConfig(config)
     return config
 
 
-def setConfig(config):
+def saveConfig(config):
     with open("config.json", "w") as config_file:
         json.dump(config, config_file)
 
@@ -160,13 +168,11 @@ def createUpdatePopup(title="Title", details="Description", *, parent=None, icon
         buttons=[("Yes", True, "accent"), ("No", False)],
     )
 
-def checkForUpdates(app, current_version):
+def checkForUpdates(current_version):
     import requests, webbrowser
     api_response = requests.get(
     "https://api.github.com/repos/Futura-Py/TimerX/releases/latest"
     )
-
-    print(api_response)
 
     latest_tag = api_response.json()["tag_name"]
 
