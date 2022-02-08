@@ -1,8 +1,9 @@
 # CONFIG
 import json
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, PhotoImage, TclError
 from functools import partial
+from platform import system
 
 def loadConfig(current_version):
     with open("config.json") as config_file:
@@ -57,6 +58,26 @@ def popup(parent, title, details, icon, *, buttons):
     dialog = tk.Toplevel()
     dialog.attributes("-topmost", True)
 
+    try:
+        if system() == "darwin":
+            dialog.iconbitmap(r"assets/logo_new.icns")
+            dialog.wm_attributes("-transparent", True)
+            dialog.config(bg="systemTransparent")
+        elif system() == "Windows":
+            dialog.iconbitmap(r"assets/logo_new.ico")
+            from win10toast_click import ToastNotifier
+        elif system() == "win":
+            dialog.iconphoto(r"assets/logo_new.ico")
+        else:
+            logo_img = PhotoImage(file="assets/images/logo_new.png")
+            dialog.iconphoto(False, logo_img)
+    except TclError:
+        pass
+        try:
+            dialog.iconphoto(r"assets/logo.ico")
+        except TclError:
+            pass
+            
     result = None
 
     big_frame = ttk.Frame(dialog)
@@ -129,7 +150,6 @@ def popup(parent, title, details, icon, *, buttons):
 
         button_frame.columnconfigure(index, weight=1)
 
-    dialog.overrideredirect(True)
     dialog.update()
 
     dialog_width = dialog.winfo_width()
