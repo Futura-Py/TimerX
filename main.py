@@ -2,10 +2,13 @@
 # IMPORTS
 ver = "1.0"
 
+from cgitb import text
 import ctypes
+from email.mime import image
 import os
 import time
 import tkinter
+from tkinter import font
 import webbrowser
 from platform import system
 from re import T
@@ -16,6 +19,7 @@ from tkinter.constants import LEFT
 
 import darkdetect
 from BlurWindow.blurWindow import *
+from isort import file
 from playsound import playsound
 
 from utils import *
@@ -206,8 +210,14 @@ def setAlwaysOnTop(app):
     else:
         app.attributes("-topmost", False)
 
+def setFullscreen():
+    app.maxsize(width=app.winfo_screenwidth(), height=app.winfo_screenheight())
+    app.state("zoomed")
 
 setAlwaysOnTop(app)
+
+if config["fullscreen"] == "Fullscreen":
+    setFullscreen()
 
 # WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
@@ -321,6 +331,9 @@ def createSettingsWindow():
     globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
     globe_light = PhotoImage(file="./assets/images/light/globe.png")
 
+    fullscreen_dark = PhotoImage(file="./assets/images/dark/fullscreen.png")
+    fullscreen_light = PhotoImage(file="./assets/images/light/fullscreen.png")
+
     tabview = ttk.Notebook(settings_window)
     tabview.pack(fill="both", expand=True)
 
@@ -348,6 +361,16 @@ def createSettingsWindow():
     )
     transparency_label.place(x=23, y=73)
 
+    pin_label = ttk.Label(
+        tab_1, text="  Keep app always on top", image=pin_dark, compound=LEFT
+    )
+    pin_label.place(x=23, y=123)
+
+    window_mode_label = ttk.Label(
+        tab_1, text="  Window Mode", image=fullscreen_dark, compound=LEFT
+    )
+    window_mode_label.place(x=23, y=173)
+
     speaker_label = ttk.Label(
         tab_2,
         text="  Play sound when timer ends",
@@ -363,11 +386,6 @@ def createSettingsWindow():
         compound=LEFT,
     )
     bell_label.place(x=23, y=73)
-
-    pin_label = ttk.Label(
-        tab_1, text="  Keep app always on top", image=pin_dark, compound=LEFT
-    )
-    pin_label.place(x=23, y=123)
 
     logo = PhotoImage(file="./assets/logo_new_150x150.png")
     logo_label = ttk.Label(tab_3, image=logo)
@@ -398,13 +416,6 @@ def createSettingsWindow():
     website_btn.place(x=250, y=200)
 
     if theme == "Dark":
-        github_btn.configure(image=github_logo_dark)
-        website_btn.configure(image=globe_dark)
-    elif theme == "Light":
-        github_btn.configure(image=github_logo_light)
-        website_btn.configure(image=globe_light)
-
-    if theme == "Dark":
         theme_label.configure(image=theme_dark)
         transparency_label.configure(image=transparency_dark)
         speaker_label.configure(image=speaker_dark)
@@ -412,6 +423,7 @@ def createSettingsWindow():
         pin_label.configure(image=pin_dark)
         github_btn.configure(image=github_logo_dark)
         website_btn.configure(image=globe_dark)
+        window_mode_label.configure(image=fullscreen_dark)
     else:
         theme_label.configure(image=theme_light)
         transparency_label.configure(image=transparency_light)
@@ -420,6 +432,7 @@ def createSettingsWindow():
         pin_label.configure(image=pin_light)
         github_btn.configure(image=github_logo_light)
         website_btn.configure(image=globe_light)
+        window_mode_label.configure(image=fullscreen_light)
 
     box_slider_value = StringVar(settings_window)
 
@@ -478,14 +491,22 @@ def createSettingsWindow():
         notify_button.state(["!alternate"])
     notify_button.place(x=360, y=75)
 
-    ###
-
     ontop_button = ttk.Checkbutton(tab_1, style="Switch.TCheckbutton")
     if config["ontop"] == True:
         ontop_button.state(["!alternate", "selected"])
     elif config["ontop"] == False:
         ontop_button.state(["!alternate"])
     ontop_button.place(x=360, y=125)
+
+    window_mode_value = StringVar(settings_window)
+
+    if config["fullscreen"] == "Fullscreen":
+        window_mode_value.set("Fullscreen")
+    else:
+        window_mode_value.set("Windowed")
+
+    window_mode_spinbox = ttk.Spinbox(tab_1, state="readonly", values=("Windowed", "Fullscreen"), wrap=True, textvariable=window_mode_value)
+    window_mode_spinbox.place(x=275, y=165)
 
     def ApplyChanges():
         global theme
@@ -498,11 +519,12 @@ def createSettingsWindow():
                 theme = "Light"
         else:
             theme = config["theme"]
-        config["transperency"] = slider_value()
+        config["transperency"] = slider.get()
         config["sound"] = sound_button.instate(["selected"])
         config["notify"] = notify_button.instate(["selected"])
         config["ontop"] = ontop_button.instate(["selected"])
         setAlwaysOnTop(app)
+        config["fullscreen"] = window_mode_spinbox.get()
 
         saveConfig(config)
 
@@ -669,6 +691,9 @@ def sizechanged(e):
 
     play_button.configure(width=int(app.winfo_width() / 12))
     manager_button.configure(width=int(app.winfo_width() / 12))
+
+    if app.winfo_width() > 512 or app.winfo_height() > 400:
+        setFullscreen()
 
 
 # THEMED IMAGES
