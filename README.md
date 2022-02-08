@@ -26,22 +26,14 @@
 
 ### A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's [Sun Valley TTk Theme](https://github.com/rdbende/Sun-Valley-TTk-Theme)
 
-<p style="text-align: center;">
-    <img src="./assets/readme/dark.png"></img>
-</p>
-
-> 🌑Dark
-
-<p style="text-align: center;">
-    <img src="./assets/readme/light.png"></img>
-</p>
-
-> 🌕Light
+🌑Dark            |  🌕Light
+:-------------------------:|:-------------------------:
+![](./assets/readme/dark.png)  |  ![](./assets/readme/light.png)
 
 # 🌏Deployed with [Netlify](netlify.app)
 
 # 🎯TODO
-Look [here](https://github.com/orgs/Futura-Py/projects/1)!
+See our [roadmap](https://github.com/orgs/Futura-Py/projects/1)!
 
 # 💻Supported Platforms
 
@@ -51,4 +43,4 @@ Look [here](https://github.com/orgs/Futura-Py/projects/1)!
 
 # 📜Contributing
 
-Read [this](/docs/CONTRIBUTING.md) for instructions!
+Read the [contributing document](/docs/CONTRIBUTING.md) for instructions!
