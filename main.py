@@ -27,9 +27,9 @@ if not os.path.isfile("./config.json"):
     from utils import *
 
     createConfig()
-    config = loadConfig()
+    config = loadConfig(ver)
 else:
-    config = loadConfig()
+    config = loadConfig(ver)
 
 if config["theme"] == "System":
     if darkdetect.theme() == "Dark":
@@ -504,7 +504,7 @@ def createSettingsWindow():
         config["ontop"] = ontop_button.instate(["selected"])
         setAlwaysOnTop(app)
 
-        setConfig(config)
+        saveConfig(config)
 
         if theme == "Dark":
             app.tk.call("set_theme", "dark")
@@ -684,6 +684,9 @@ elif theme == "Light":
 
 
 app.bind("<Configure>", sizechanged)
+
+# UPDATE
+checkForUpdates(ver)
 
 # TKINTER MAINLOOP
 app.mainloop()
