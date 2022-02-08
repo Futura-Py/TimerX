@@ -37,6 +37,7 @@ def createConfig():
                 "default_hours": 0,
                 "default_seconds": 5,
                 "sound_path": r".\assets\sounds\sound1.wav",
+                "fullscreen": "Windowed"
             },
             config_file,
         )
