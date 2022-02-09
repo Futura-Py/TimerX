@@ -15,6 +15,7 @@ def loadConfig(current_version):
                 saveConfig(config)
         except KeyError:
             config.update({"version": current_version})
+            config.update({"fullscreen":"Windowed"})
             saveConfig(config)
     return config
 
@@ -53,6 +54,8 @@ def validate(input):
 
     else:
         return False
+
+
 # POPUP
 # From Sun-Valley-Messageboxes
 def popup(parent, title, details, icon, *, buttons):
@@ -66,7 +69,6 @@ def popup(parent, title, details, icon, *, buttons):
             dialog.config(bg="systemTransparent")
         elif system() == "Windows":
             dialog.iconbitmap(r"assets/logo_new.ico")
-            from win10toast_click import ToastNotifier
         elif system() == "win":
             dialog.iconphoto(r"assets/logo_new.ico")
         else:
