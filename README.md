@@ -3,6 +3,8 @@
     <h1 align="center">TimerX</h1>
 </p>
 
+> Believe it or not, this is made 100% in Python🐍
+
 <p align="center">
     <a style="text-decoration:none" href="https://github.com/Futura-Py/TimerX/releases">
         <img src="https://img.shields.io/github/release/Futura-Py/TimerX.svg?style=flat-square" alt="Releases" width="117px" />
