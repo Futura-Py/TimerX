@@ -9,8 +9,9 @@ def loadConfig(current_version):
     with open("config.json") as config_file:
         config = json.load(config_file)
         try:
-            if config['version'] < current_version:
-                # Update Settings when Needed
+            if int(config['version']) < int(current_version):
+                if int(config['version']) == 1.0:
+                    config.update({"fullscreen":"Windowed"})
                 config['version'] = current_version
                 saveConfig(config)
         except KeyError:
