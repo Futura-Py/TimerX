@@ -324,9 +324,6 @@ def createSettingsWindow():
     globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
     globe_light = PhotoImage(file="./assets/images/light/globe.png")
 
-    fullscreen_image_dark = PhotoImage(file="./assets/images/dark/fullscreen.png")
-    fullscreen_image_light = PhotoImage(file="./assets/images/light/fullscreen.png")
-
     tabview = ttk.Notebook(settings_window)
     tabview.pack(fill="both", expand=True)
 
@@ -358,11 +355,6 @@ def createSettingsWindow():
         tab_1, text="  Keep app always on top", image=pin_dark, compound=LEFT
     )
     pin_label.place(x=23, y=123)
-
-    window_mode_label = ttk.Label(
-        tab_1, text="  Window Mode", image=fullscreen_image_dark, compound=LEFT
-    )
-    window_mode_label.place(x=23, y=173)
 
     speaker_label = ttk.Label(
         tab_2,
@@ -416,7 +408,6 @@ def createSettingsWindow():
         pin_label.configure(image=pin_dark)
         github_btn.configure(image=github_logo_dark)
         website_btn.configure(image=globe_dark)
-        window_mode_label.configure(image=fullscreen_image_dark)
     else:
         theme_label.configure(image=theme_light)
         transparency_label.configure(image=transparency_light)
@@ -425,7 +416,6 @@ def createSettingsWindow():
         pin_label.configure(image=pin_light)
         github_btn.configure(image=github_logo_light)
         website_btn.configure(image=globe_light)
-        window_mode_label.configure(image=fullscreen_image_light)
 
     box_slider_value = StringVar(settings_window)
 
@@ -491,16 +481,6 @@ def createSettingsWindow():
         ontop_button.state(["!alternate"])
     ontop_button.place(x=360, y=125)
 
-    window_mode_value = StringVar(settings_window)
-
-    if config["fullscreen"] == "Fullscreen":
-        window_mode_value.set("Fullscreen")
-    else:
-        window_mode_value.set("Windowed")
-
-    window_mode_spinbox = ttk.Spinbox(tab_1, state="readonly", values=("Windowed", "Fullscreen"), wrap=True, textvariable=window_mode_value)
-    window_mode_spinbox.place(x=275, y=165)
-
     def ApplyChanges():
         global theme
 
@@ -517,7 +497,6 @@ def createSettingsWindow():
         config["notify"] = notify_button.instate(["selected"])
         config["ontop"] = ontop_button.instate(["selected"])
         setAlwaysOnTop(app)
-        config["fullscreen"] = window_mode_spinbox.get()
 
         saveConfig(config)
 
@@ -694,10 +673,6 @@ def sizechanged(e):
 
     play_button.configure(width=int(app.winfo_width() / 12))
     manager_button.configure(width=int(app.winfo_width() / 12))
-
-    if app.winfo_width() > 512 or app.winfo_height() > 400:
-        setFullscreen()
-
 
 # THEMED IMAGES
 
