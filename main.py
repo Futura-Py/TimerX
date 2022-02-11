@@ -1,25 +1,19 @@
-# TimerX v1.1
+# TimerX by Futura Software
 # IMPORTS
 ver = "1.0"
 
-from cgitb import text
 import ctypes
-from email.mime import image
 import os
 import time
 import tkinter
-from tkinter import font
 import webbrowser
 from platform import system
-from re import T
 from threading import Thread
-from time import sleep
 from tkinter import DISABLED, Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
 from tkinter.constants import LEFT
 
 import darkdetect
 from BlurWindow.blurWindow import *
-from isort import file
 from playsound import playsound
 
 from utils import *
@@ -28,8 +22,6 @@ from utils import *
 theme = f"{darkdetect.theme()}"
 
 if not os.path.isfile("./config.json"):
-    from utils import *
-
     createConfig()
     config = loadConfig(ver)
 else:
@@ -211,13 +203,14 @@ def setAlwaysOnTop(app):
         app.attributes("-topmost", False)
 
 def setFullscreen():
-    app.maxsize(width=app.winfo_screenwidth(), height=app.winfo_screenheight())
-    app.state("zoomed")
+    if app.state() != "zoomed":
+        app.maxsize(width=app.winfo_screenwidth(), height=app.winfo_screenheight())
+        app.state("zoomed")
+    else: 
+        app.state("normal")
+        app.maxsize(width=512, height=400)
 
 setAlwaysOnTop(app)
-
-if config["fullscreen"] == "Fullscreen":
-    setFullscreen()
 
 # WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
@@ -331,8 +324,8 @@ def createSettingsWindow():
     globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
     globe_light = PhotoImage(file="./assets/images/light/globe.png")
 
-    fullscreen_dark = PhotoImage(file="./assets/images/dark/fullscreen.png")
-    fullscreen_light = PhotoImage(file="./assets/images/light/fullscreen.png")
+    fullscreen_image_dark = PhotoImage(file="./assets/images/dark/fullscreen.png")
+    fullscreen_image_light = PhotoImage(file="./assets/images/light/fullscreen.png")
 
     tabview = ttk.Notebook(settings_window)
     tabview.pack(fill="both", expand=True)
@@ -367,7 +360,7 @@ def createSettingsWindow():
     pin_label.place(x=23, y=123)
 
     window_mode_label = ttk.Label(
-        tab_1, text="  Window Mode", image=fullscreen_dark, compound=LEFT
+        tab_1, text="  Window Mode", image=fullscreen_image_dark, compound=LEFT
     )
     window_mode_label.place(x=23, y=173)
 
@@ -423,7 +416,7 @@ def createSettingsWindow():
         pin_label.configure(image=pin_dark)
         github_btn.configure(image=github_logo_dark)
         website_btn.configure(image=globe_dark)
-        window_mode_label.configure(image=fullscreen_dark)
+        window_mode_label.configure(image=fullscreen_image_dark)
     else:
         theme_label.configure(image=theme_light)
         transparency_label.configure(image=transparency_light)
@@ -432,7 +425,7 @@ def createSettingsWindow():
         pin_label.configure(image=pin_light)
         github_btn.configure(image=github_logo_light)
         website_btn.configure(image=globe_light)
-        window_mode_label.configure(image=fullscreen_light)
+        window_mode_label.configure(image=fullscreen_image_light)
 
     box_slider_value = StringVar(settings_window)
 
@@ -587,6 +580,9 @@ Grid.rowconfigure(app, 2, weight=1)
 settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
 settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
 
+fullscreen_image_dark = PhotoImage(file="./assets/images/dark/fullscreen.png")
+fullscreen_image_light = PhotoImage(file="./assets/images/light/fullscreen.png")
+
 # WINDOW FRAME
 window = Frame(app)
 
@@ -635,9 +631,16 @@ settings_btn = ttk.Button(
     style="Toolbutton",
 )
 
+fullscreen_btn = ttk.Button(
+    master=app,
+    image=fullscreen_image_dark,
+    command=lambda: setFullscreen(),
+    style="Toolbutton",
+)
 
 def sizechanged(e):
     settings_btn.place(x=5, y=app.winfo_height() - 45)
+    fullscreen_btn.place(x=app.winfo_width() - 50, y=app.winfo_height() - 45)
     if app.winfo_height() >= 220:
         if app.winfo_height() > 250:
             if app.winfo_height() > 270:
