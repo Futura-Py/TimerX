@@ -1,17 +1,18 @@
 # CONFIG
 import json
 import tkinter as tk
-from tkinter import ttk, PhotoImage, TclError
 from functools import partial
 from platform import system
+from tkinter import PhotoImage, TclError, ttk
+
 
 def loadConfig(current_version):
     with open("config.json") as config_file:
         config = json.load(config_file)
         try:
-            if config['version'] < current_version:
+            if config["version"] < current_version:
                 # Update Settings when Needed
-                config['version'] = current_version
+                config["version"] = current_version
                 saveConfig(config)
         except KeyError:
             config.update({"version": current_version})
@@ -52,6 +53,8 @@ def validate(input):
 
     else:
         return False
+
+
 # POPUP
 # From Sun-Valley-Messageboxes
 def popup(parent, title, details, icon, *, buttons):
@@ -77,7 +80,7 @@ def popup(parent, title, details, icon, *, buttons):
             dialog.iconphoto(r"assets/logo.ico")
         except TclError:
             pass
-            
+
     result = None
 
     big_frame = ttk.Frame(dialog)
@@ -172,6 +175,7 @@ def popup(parent, title, details, icon, *, buttons):
     dialog.wait_window()
     return result
 
+
 # UPDATE
 def createUpdatePopup(title="Title", details="Description", *, parent=None, icon=None):
     return popup(
@@ -182,10 +186,14 @@ def createUpdatePopup(title="Title", details="Description", *, parent=None, icon
         buttons=[("Yes", True, "accent"), ("No", False)],
     )
 
+
 def checkForUpdates(current_version):
-    import requests, webbrowser
+    import webbrowser
+
+    import requests
+
     api_response = requests.get(
-    "https://api.github.com/repos/Futura-Py/TimerX/releases/latest"
+        "https://api.github.com/repos/Futura-Py/TimerX/releases/latest"
     )
 
     latest_tag = api_response.json()["tag_name"]
@@ -196,6 +204,8 @@ def checkForUpdates(current_version):
         pass
 
     if latest_tag != current_version:
-        answer = createUpdatePopup(title="Update Available", details="Do you want to Update TimerX?")
+        answer = createUpdatePopup(
+            title="Update Available", details="Do you want to Update TimerX?"
+        )
         if answer:
             webbrowser.open(api_response.json()["html_url"])
