@@ -1,4 +1,4 @@
-name: Formatting
+name: Test Formatting
 
 on:
   schedule: 
@@ -7,27 +7,33 @@ on:
 
 
 jobs:
-  isort:
+  formatting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8
-      - uses: isort/isort-action@master
+      - uses: actions/setup-node@v2
         with:
-            requirementsFiles: "requirements.txt requirements-dev.txt requirements-windows.txt"
-  black:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          # Make sure the actual branch is checked out when running on pull requests
-          ref: ${{ github.head_ref }}
-         
-      - uses: psf/black@stable
-        with:
-          src: "."
-          version: "21.5b1"
+          node-version: '14'
+      - name: Code Formatting (App)
+        run: |
+          pip install isort black
+          isort main.py
+          isort setup.py
+          isort utils.py
+          black main.py
+          black setup.py
+          black utils.py
+      - name: Code Formatting (website)
+        run: |
+          npm i -g prettier
+          cd docs
+          npx prettier --write .
+      - uses: fregante/setup-git-user@v1
+      - name: Commit
+        run: |
+          git add .
+          git commit -m "style: Code Formatting Workflow" -m "Either triggered by cron or workflow_dispatch"
+          git push --force
