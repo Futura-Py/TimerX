@@ -7,7 +7,6 @@ import os
 import time
 import tkinter
 import webbrowser
-import sv_ttk
 from platform import system
 from re import T
 from threading import Thread
@@ -16,6 +15,7 @@ from tkinter import DISABLED, Frame, Grid, PhotoImage, StringVar, TclError, Tk, 
 from tkinter.constants import LEFT
 
 import darkdetect
+import sv_ttk
 from BlurWindow.blurWindow import *
 from playsound import playsound
 
