@@ -590,7 +590,7 @@ def sizechanged(e):
     manager_button.configure(width=int(app.winfo_width() / 12))
 
 
-def make_windows_blur(window):
+def makeWindowsBlur(window):
     from ctypes import windll
 
     from BlurWindow.blurWindow import GlobalBlur
@@ -636,7 +636,7 @@ elif theme == "Light":
     time_selected_display.configure(fg="black")
 
 if system() == "Windows":
-    make_windows_blur(app)
+    makeWindowsBlur(app)
 
 app.bind("<Configure>", sizechanged)
 app.wait_visibility()  # Needed on Linux
