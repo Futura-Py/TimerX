@@ -71,8 +71,9 @@ def playBuzzer(config):
     playsound(Path(config["sound_path"]))
 
 
-def startstopButtonPressed():
+def startstopButtonPressed(*_):
     global timer_on, timer_paused, timer_hours, timer_minutes, timer_seconds, last_paused
+    
     if timer_on and not timer_paused:
         timer_on = False
         timer_paused = True
