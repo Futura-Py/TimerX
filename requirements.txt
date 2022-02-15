@@ -2,3 +2,4 @@ playsound
 darkdetect
 tk
 BlurWindow
+sv-ttk

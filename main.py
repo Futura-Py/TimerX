@@ -7,6 +7,7 @@ import os
 import time
 import tkinter
 import webbrowser
+import sv_ttk
 from platform import system
 from re import T
 from threading import Thread
@@ -47,8 +48,7 @@ app = Tk()
 app.title("TimerX")
 app.minsize(width=300, height=210)
 
-app.tk.call("source", "sun-valley.tcl")
-app.tk.call("set_theme", f"{theme.lower()}")
+sv_ttk.set_theme(theme.lower())
 
 bg_color = ttk.Style().lookup(".", "background")
 app.wm_attributes("-transparent", bg_color)
@@ -506,15 +506,15 @@ def createSettingsWindow():
         saveConfig(config)
 
         if theme == "Dark":
-            app.tk.call("set_theme", "dark")
             settings_btn.configure(image=settings_image_dark)
             time_display.configure(fg="white")
             time_selected_display.configure(fg="white")
         elif theme == "Light":
-            app.tk.call("set_theme", "light")
             settings_btn.configure(image=settings_image_light)
             time_display.configure(fg="black")
             time_selected_display.configure(fg="black")
+
+        sv_ttk.set_theme(theme.lower())
 
         settings_window.destroy()
 
