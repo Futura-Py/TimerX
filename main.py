@@ -46,7 +46,6 @@ else:
 app = Tk()
 app.title("TimerX")
 app.minsize(width=300, height=210)
-app.maxsize(width=512, height=400)
 
 app.tk.call("source", "sun-valley.tcl")
 app.tk.call("set_theme", f"{theme.lower()}")
