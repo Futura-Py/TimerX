@@ -46,7 +46,10 @@ def createConfig():
 # VALIDATION
 def validate(input):
     if input.isdigit():
-        return True
+        if int(input) < 60:
+            return True
+        else:
+            return False
 
     elif input == "":
         return True
