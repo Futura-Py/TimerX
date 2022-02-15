@@ -22,25 +22,23 @@ def loadConfig(current_version):
 
 def saveConfig(config):
     with open("config.json", "w") as config_file:
-        json.dump(config, config_file)
+        json.dump(config, config_file, indent=2)
 
 
 def createConfig():
-    with open("config.json", "w") as config_file:
-        json.dump(
-            {
-                "theme": "Light",
-                "notify": False,
-                "ontop": False,
-                "transperency": 0.99,
-                "sound": True,
-                "default_minutes": 0,
-                "default_hours": 0,
-                "default_seconds": 5,
-                "sound_path": r".\assets\sounds\sound1.wav",
-            },
-            config_file,
-        )
+    saveConfig(
+        {
+            "theme": "Light",
+            "notify": False,
+            "ontop": False,
+            "transperency": 0.99,
+            "sound": True,
+            "default_minutes": 0,
+            "default_hours": 0,
+            "default_seconds": 5,
+            "sound_path": "assets/sounds/sound1.wav",
+        }
+    )
 
 
 # VALIDATION
@@ -62,25 +60,22 @@ def validate(input):
 # From Sun-Valley-Messageboxes
 def popup(parent, title, details, icon, *, buttons):
     dialog = tk.Toplevel()
+    dialog.title(title)
     dialog.attributes("-topmost", True)
 
     try:
         if system() == "darwin":
-            dialog.iconbitmap(r"assets/logo_new.icns")
-            dialog.wm_attributes("-transparent", True)
-            dialog.config(bg="systemTransparent")
+            dialog.iconbitmap("./assets/logo_new.icns")
         elif system() == "Windows":
-            dialog.iconbitmap(r"assets/logo_new.ico")
-            from win10toast_click import ToastNotifier
+            dialog.iconbitmap("./assets/logo_new.ico")
         elif system() == "win":
-            dialog.iconphoto(r"assets/logo_new.ico")
+            dialog.iconphoto("./assets/logo_new.ico")
         else:
-            logo_img = PhotoImage(file="assets/images/logo_new.png")
+            logo_img = PhotoImage(file="./assets/logo_new.png")
             dialog.iconphoto(False, logo_img)
     except TclError:
-        pass
         try:
-            dialog.iconphoto(r"assets/logo.ico")
+            dialog.iconphoto("./assets/logo.ico")
         except TclError:
             pass
 
@@ -173,7 +168,6 @@ def popup(parent, title, details, icon, *, buttons):
     dialog.minsize(320, dialog_height)
 
     dialog.transient(parent)
-    dialog.grab_set()
 
     dialog.wait_window()
     return result
@@ -191,24 +185,19 @@ def createUpdatePopup(title="Title", details="Description", *, parent=None, icon
 
 
 def checkForUpdates(current_version):
-    import webbrowser
-
     import requests
 
     api_response = requests.get(
         "https://api.github.com/repos/Futura-Py/TimerX/releases/latest"
     )
 
-    latest_tag = api_response.json()["tag_name"]
-
-    try:
-        latest_tag = latest_tag.lstrip("v")
-    except:
-        pass
+    latest_tag = api_response.json()["tag_name"].replace("v", "")
 
     if latest_tag != current_version:
         answer = createUpdatePopup(
             title="Update Available", details="Do you want to Update TimerX?"
         )
         if answer:
+            import webbrowser
+
             webbrowser.open(api_response.json()["html_url"])

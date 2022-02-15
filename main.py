@@ -2,46 +2,32 @@
 # IMPORTS
 ver = "1.0"
 
-import ctypes
-import os
 import time
 import tkinter
 import webbrowser
+from pathlib import Path
 from platform import system
-from re import T
 from threading import Thread
-from time import sleep
-from tkinter import DISABLED, Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
-from tkinter.constants import LEFT
+from tkinter import Frame, PhotoImage, Tk, ttk
+from tkinter.constants import DISABLED, LEFT
 
 import darkdetect
 import sv_ttk
-from BlurWindow.blurWindow import *
 from playsound import playsound
 
 from utils import *
 
-# CONFIG
-theme = f"{darkdetect.theme()}"
-
-if not os.path.isfile("./config.json"):
-    from utils import *
-
+if not Path("config.json").exists():
     createConfig()
-    config = loadConfig(ver)
-else:
-    config = loadConfig(ver)
 
+config = loadConfig(ver)
+
+theme = config["theme"]
 if config["theme"] == "System":
-    if darkdetect.theme() == "Dark":
+    if darkdetect.isDark():
         theme = "Dark"
     else:
         theme = "Light"
-elif config["theme"] == "Dark":
-    theme = "Dark"
-else:
-    theme = "Light"
-
 
 # TKINTER WINDOW
 app = Tk()
@@ -49,32 +35,25 @@ app.title("TimerX")
 app.minsize(width=300, height=210)
 
 sv_ttk.set_theme(theme.lower())
-
 bg_color = ttk.Style().lookup(".", "background")
-app.wm_attributes("-transparent", bg_color)
-app.update()
-HWND = ctypes.windll.user32.GetForegroundWindow()
 
 
 # SYSTEM CODE
 try:
     if system() == "darwin":
-        app.iconbitmap(r"assets/logo_new.icns")
-        app.wm_attributes("-transparent", True)
-        app.config(bg="systemTransparent")
+        app.iconbitmap("./assets/logo_new.icns")
     elif system() == "Windows":
-        app.iconbitmap(r"assets/logo_new.ico")
+        app.iconbitmap("./assets/logo_new.ico")
         from win10toast_click import ToastNotifier
     elif system() == "win":
-        app.iconphoto(r"assets/logo_new.ico")
+        app.iconphoto("./assets/logo_new.ico")
     else:
-        logo_img = PhotoImage(file="assets/images/logo_new.png")
+        logo_img = PhotoImage(file="./assets/logo_new.png")
         app.iconphoto(False, logo_img)
-except TclError:
-    pass
+except tkinter.TclError:
     try:
-        app.iconphoto(r"assets/logo.ico")
-    except TclError:
+        app.iconphoto("assets/logo.ico")
+    except tkinter.TclError:
         pass
 
 # VARIABLES
@@ -89,12 +68,12 @@ timer_hours = config["default_hours"]
 
 # FUNCTIONS
 def playBuzzer(config):
-    playsound(config["sound_path"])
+    playsound(Path(config["sound_path"]))
 
 
 def startstopButtonPressed():
     global timer_on, timer_paused, timer_hours, timer_minutes, timer_seconds, last_paused
-    if timer_on and timer_paused == False:
+    if timer_on and not timer_paused:
         timer_on = False
         timer_paused = True
         last_paused = time.time()
@@ -102,7 +81,7 @@ def startstopButtonPressed():
         timer_minutes = minutes_left
         timer_seconds = seconds_left
         play_button.configure(text="Play")
-    elif timer_paused == False and timer_on == False:
+    elif not timer_paused and not timer_on:
         play_button.configure(text="Pause")
         timer_thread = Thread(target=runTimer, daemon=True)
         timer_thread.start()
@@ -157,7 +136,7 @@ def runTimer():
     last_paused = time.time()
 
     while True:
-        if timer_on and timer_paused == False:
+        if timer_on and not timer_paused:
             latest_time = time.time()
 
             time_to_subtract = round((latest_time - last_paused), 3)
@@ -199,11 +178,7 @@ def runTimer():
 
 
 def setAlwaysOnTop(app):
-    global config
-    if config["ontop"] == True:
-        app.attributes("-topmost", True)
-    else:
-        app.attributes("-topmost", False)
+    app.attributes("-topmost", config["ontop"])
 
 
 setAlwaysOnTop(app)
@@ -211,26 +186,25 @@ setAlwaysOnTop(app)
 # WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     global manager_app_window, config
+
     manager_app_window = tkinter.Toplevel()
     manager_app_window.geometry("250x170")
     manager_app_window.title("Edit Timer")
+    manager_app_window.wait_visibility()  # Needed on Linux
     manager_app_window.attributes("-alpha", config["transperency"])
-
     manager_app_window.resizable(False, False)
 
     try:
         if system() == "darwin":
-            manager_app_window.iconbitmap(r"assets/logo_new.icns")
-            manager_app_window.wm_attributes("-transparent", True)
-            manager_app_window.config(bg="systemTransparent")
+            manager_app_window.iconbitmap("./assets/logo_new.icns")
         elif system() == "Windows":
-            manager_app_window.iconbitmap(r"assets/logo_new.ico")
+            manager_app_window.iconbitmap("./assets/logo_new.ico")
         elif system() == "win":
-            manager_app_window.iconphoto(r"assets/logo_new.ico")
+            manager_app_window.iconphoto("./assets/logo_new.ico")
         else:
-            logo_img = PhotoImage(file="assets/images/logo.png")
+            logo_img = PhotoImage(file="./assets/logo.png")
             manager_app_window.iconphoto(False, logo_img)
-    except TclError:
+    except tkinter.TclError:
         pass
 
     # VALIDATION
@@ -282,43 +256,21 @@ def createSettingsWindow():
     settings_window.geometry("500x320")
     settings_window.title("Settings")
     settings_window.resizable(False, False)
+    settings_window.wait_visibility()  # Needed on Linux
     settings_window.attributes("-alpha", config["transperency"])
 
     try:
         if system() == "darwin":
-            settings_window.iconbitmap(r"assets/logo_new.icns")
-            settings_window.wm_attributes("-transparent", True)
-            settings_window.config(bg="systemTransparent")
+            settings_window.iconbitmap("./assets/logo_new.icns")
         elif system() == "Windows":
-            settings_window.iconbitmap(r"assets/logo_new.ico")
+            settings_window.iconbitmap("./assets/logo_new.ico")
         elif system() == "win":
-            settings_window.iconphoto(r"assets/logo_new.ico")
+            settings_window.iconphoto("./assets/logo_new.ico")
         else:
-            logo_img = PhotoImage(file="assets/images/logo_new.png")
+            logo_img = PhotoImage(file="./assets/logo_new.png")
             settings_window.iconphoto(False, logo_img)
-    except TclError:
+    except tkinter.TclError:
         pass
-
-    theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
-    theme_light = PhotoImage(file="./assets/images/light/dark_theme.png")
-
-    transparency_dark = PhotoImage(file="./assets/images/dark/transparency.png")
-    transparency_light = PhotoImage(file="./assets/images/light/transparency.png")
-
-    speaker_dark = PhotoImage(file="./assets/images/dark/speaker.png")
-    speaker_light = PhotoImage(file="./assets/images/light/speaker.png")
-
-    bell_dark = PhotoImage(file="./assets/images/dark/bell.png")
-    bell_light = PhotoImage(file="./assets/images/light/bell.png")
-
-    pin_dark = PhotoImage(file="./assets/images/dark/pin.png")
-    pin_light = PhotoImage(file="./assets/images/light/pin.png")
-
-    github_logo_dark = PhotoImage(file="./assets/images/dark/github.png")
-    github_logo_light = PhotoImage(file="./assets/images/light/github.png")
-
-    globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
-    globe_light = PhotoImage(file="./assets/images/light/globe.png")
 
     tabview = ttk.Notebook(settings_window)
     tabview.pack(fill="both", expand=True)
@@ -364,11 +316,13 @@ def createSettingsWindow():
     bell_label.place(x=23, y=73)
 
     pin_label = ttk.Label(
-        tab_1, text="  Keep app always on top", image=pin_dark, compound=LEFT
+        tab_1,
+        text="  Keep app always on top",
+        image=pin_dark,
+        compound=LEFT,
     )
     pin_label.place(x=23, y=123)
 
-    logo = PhotoImage(file="./assets/logo_new_150x150.png")
     logo_label = ttk.Label(tab_3, image=logo)
     logo_label.place(x=50, y=30)
 
@@ -397,13 +351,6 @@ def createSettingsWindow():
     website_btn.place(x=250, y=200)
 
     if theme == "Dark":
-        github_btn.configure(image=github_logo_dark)
-        website_btn.configure(image=globe_dark)
-    elif theme == "Light":
-        github_btn.configure(image=github_logo_light)
-        website_btn.configure(image=globe_light)
-
-    if theme == "Dark":
         theme_label.configure(image=theme_dark)
         transparency_label.configure(image=transparency_dark)
         speaker_label.configure(image=speaker_dark)
@@ -420,90 +367,69 @@ def createSettingsWindow():
         github_btn.configure(image=github_logo_light)
         website_btn.configure(image=globe_light)
 
-    box_slider_value = StringVar(settings_window)
-
-    if config["theme"] == "System":
-        box_slider_value.set("System")
-    elif theme == "Dark":
-        box_slider_value.set("Dark")
-    elif theme == "Light":
-        box_slider_value.set("Light")
-
-    theme_combobox = ttk.Spinbox(
+    theme_combobox = ttk.Combobox(
         tab_1,
         state="readonly",
         values=("Dark", "Light", "System"),
-        wrap=True,
-        textvariable=box_slider_value,
     )
+    theme_combobox.set(config["theme"])
     theme_combobox.place(x=275, y=20)
 
-    slider_value = tkinter.DoubleVar()
-
-    didsliderload = False
-
-    def slider_value():
-        return ".{:.0f}".format(slider.get())
-
-    def slider_changed(event):
-        if didsliderload:
-            settings_window.attributes("-alpha", slider_value())
-            app.attributes("-alpha", slider_value())
+    def slider_changed(value):
+        value = float(value) / 100
+        settings_window.attributes("-alpha", value)
+        app.attributes("-alpha", value)
 
     slider = ttk.Scale(
         tab_1,
-        from_=25,
+        from_=40,
         to=99,
         orient="horizontal",
         command=slider_changed,
-        variable=slider_value,
     )
-    slider.set(str(config["transperency"]).lstrip("."))
+    slider.set(float(config["transperency"] * 100))
     slider.place(x=325, y=75)
 
-    didsliderload = True
-
     sound_button = ttk.Checkbutton(tab_2, style="Switch.TCheckbutton")
-    if config["sound"] == True:
+    if config["sound"]:
         sound_button.state(["!alternate", "selected"])
-    elif config["sound"] == False:
+    else:
         sound_button.state(["!alternate"])
     sound_button.place(x=360, y=25)
 
     notify_button = ttk.Checkbutton(tab_2, style="Switch.TCheckbutton")
-    if config["notify"] == True:
+    if config["notify"]:
         notify_button.state(["!alternate", "selected"])
-    elif config["notify"] == False:
+    else:
         notify_button.state(["!alternate"])
     notify_button.place(x=360, y=75)
 
-    ###
-
     ontop_button = ttk.Checkbutton(tab_1, style="Switch.TCheckbutton")
-    if config["ontop"] == True:
+    if config["ontop"]:
         ontop_button.state(["!alternate", "selected"])
-    elif config["ontop"] == False:
+    else:
         ontop_button.state(["!alternate"])
     ontop_button.place(x=360, y=125)
 
     def ApplyChanges():
         global theme
 
-        config["theme"] = theme_combobox.get()
-        if config["theme"] == "System":
+        config["theme"] = theme = theme_combobox.get()
+        if theme == "System":
             if darkdetect.isDark():
                 theme = "Dark"
             else:
                 theme = "Light"
-        else:
-            theme = config["theme"]
-        config["transperency"] = slider_value()
+
+        config["transperency"] = float(slider.get()) / 100
         config["sound"] = sound_button.instate(["selected"])
         config["notify"] = notify_button.instate(["selected"])
         config["ontop"] = ontop_button.instate(["selected"])
-        setAlwaysOnTop(app)
 
+        setAlwaysOnTop(app)
         saveConfig(config)
+
+        sv_ttk.set_theme(theme.lower())
 
         if theme == "Dark":
             settings_btn.configure(image=settings_image_dark)
@@ -513,8 +439,6 @@ def createSettingsWindow():
             settings_btn.configure(image=settings_image_light)
             time_display.configure(fg="black")
             time_selected_display.configure(fg="black")
-
-        sv_ttk.set_theme(theme.lower())
 
         settings_window.destroy()
 
@@ -544,25 +468,20 @@ def createSettingsWindow():
     )
     cancelbtn_2.place(x=125, y=230)
 
-    if system() != "Windows" or system() != "win":
+    if system() not in {"Windows", "win"}:
         notify_button.configure(state=DISABLED)
 
-    settings_window.mainloop()
-
-
-# APP TRANSPERENCY
-app.attributes("-alpha", config["transperency"])
 
 # KEYBINDS
-app.bind("key-space", startstopButtonPressed)
+app.bind("<KeyPress-space>", startstopButtonPressed)
 
-Grid.rowconfigure(app, 0, weight=1)
-Grid.columnconfigure(app, 1, weight=1)
-Grid.rowconfigure(app, 2, weight=1)
+app.grid_rowconfigure(0, weight=1)
+app.grid_rowconfigure(2, weight=1)
+app.grid_columnconfigure(1, weight=1)
 
 # IMAGES
-settings_image_light = PhotoImage(file=f"./assets/images/light/settings.png")
-settings_image_dark = PhotoImage(file=f"./assets/images/dark/settings.png")
+settings_image_light = PhotoImage(file="./assets/images/light/settings.png")
+settings_image_dark = PhotoImage(file="./assets/images/dark/settings.png")
 
 # WINDOW FRAME
 window = Frame(app)
@@ -670,22 +589,62 @@ def sizechanged(e):
     manager_button.configure(width=int(app.winfo_width() / 12))
 
 
-# THEMED IMAGES
+def make_windows_blur(window):
+    from ctypes import windll
+
+    from BlurWindow.blurWindow import GlobalBlur
+
+    GlobalBlur(
+        windll.user32.GetParent(window.winfo_id()),
+        Acrylic=True,
+        Dark=(theme == "Dark"),
+        hexColor=bg_color,
+    )
+
+
+# LOAD IMAGES
+theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
+theme_light = PhotoImage(file="./assets/images/light/dark_theme.png")
+
+transparency_dark = PhotoImage(file="./assets/images/dark/transparency.png")
+transparency_light = PhotoImage(file="./assets/images/light/transparency.png")
+
+speaker_dark = PhotoImage(file="./assets/images/dark/speaker.png")
+speaker_light = PhotoImage(file="./assets/images/light/speaker.png")
+
+bell_dark = PhotoImage(file="./assets/images/dark/bell.png")
+bell_light = PhotoImage(file="./assets/images/light/bell.png")
+
+pin_dark = PhotoImage(file="./assets/images/dark/pin.png")
+pin_light = PhotoImage(file="./assets/images/light/pin.png")
+
+github_logo_dark = PhotoImage(file="./assets/images/dark/github.png")
+github_logo_light = PhotoImage(file="./assets/images/light/github.png")
+
+globe_dark = PhotoImage(file="./assets/images/dark/globe.png")
+globe_light = PhotoImage(file="./assets/images/light/globe.png")
+
+logo = PhotoImage(file="./assets/logo_new_150x150.png")
+
 
 if theme == "Dark":
     settings_btn.configure(image=settings_image_dark)
-    GlobalBlur(HWND, Acrylic=True, Dark=True)
 elif theme == "Light":
     settings_btn.configure(image=settings_image_light)
-    GlobalBlur(HWND, Acrylic=True, hexColor=f"{bg_color}")
     time_display.configure(fg="black")
     time_selected_display.configure(fg="black")
 
+if system() == "Windows":
+    make_windows_blur(app)
 
 app.bind("<Configure>", sizechanged)
+app.wait_visibility()  # Needed on Linux
+app.attributes("-alpha", config["transperency"])
 
 # UPDATE
-checkForUpdates(ver)
+app.after(
+    500, Thread(target=checkForUpdates, args=(ver,)).start
+)  # Doesn't freeze the GUI while checking for updates
 
 # TKINTER MAINLOOP
 app.mainloop()
