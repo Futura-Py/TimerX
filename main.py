@@ -863,7 +863,7 @@ elif theme == "Light":
 app.bind("<Configure>", sizechanged)
 
 # UPDATE
-#checkForUpdates(ver)
+checkForUpdates(ver)
 
 # TKINTER MAINLOOP
 app.mainloop()
