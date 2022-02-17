@@ -10,8 +10,9 @@ from unittest.loader import VALID_MODULE_NAME
 import webbrowser
 from platform import system
 from threading import Thread
-from tkinter import DISABLED, Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
+from tkinter import DISABLED, END, Frame, Grid, PhotoImage, StringVar, TclError, Tk, ttk
 from tkinter.constants import LEFT
+from tkinter.filedialog import askopenfile
 
 import darkdetect
 import sv_ttk
@@ -490,9 +491,20 @@ def createSettingsWindow():
         ontop_button.state(["!alternate"])
     ontop_button.place(x=360, y=125)
 
-    sound_path_entry = ttk.Entry(tab_2, width=45)
+    def browse():
+        filedialog = askopenfile(mode="r", filetypes=[("Audio Files", ["*.mp3", "*.wav"])])
+        if not filedialog == None:
+            sound_path_entry.delete(0, END)
+            sound_path_entry.insert(1, filedialog.name)
+
+    sound_path_entry = ttk.Entry(tab_2, width=35)
     sound_path_entry.insert(1, config["sound_path"])
-    sound_path_entry.place(x=145, y=115)
+    sound_path_entry.place(x=130, y=115)
+    spe_error_lbl = tkinter.Label(tab_2, fg="red", font=("", 10), text="")
+    spe_error_lbl.place(x=130, y=150)
+
+    browse_btn = ttk.Button(tab_2, text="Browse", command=lambda: browse())
+    browse_btn.place(x=410, y=115)
 
     default_secs_entry = ttk.Entry(tab_3)
     default_secs_entry.insert(1, config["default_seconds"])
@@ -530,7 +542,9 @@ def createSettingsWindow():
         config["default_seconds"] = default_secs_entry.get()
         config["default_minutes"] = default_mins_entry.get()
         config["default_hours"] = default_hours_entry.get()
+        print(sp)
         config["sound_path"] = sp
+        print(config["sound_path"])
         setAlwaysOnTop(app)
         saveTimer(config["default_seconds"], config["default_minutes"], config["default_hours"], None)
 
@@ -586,7 +600,8 @@ def createSettingsWindow():
                 dhe_error_lbl.configure(text="Enter a number above -1")
 
         def ErrorSoundPath():
-            sound_path_entry.state(["invalid"])                
+            sound_path_entry.state(["invalid"])
+            dse_error_lbl.configure(text="This file doesnt exist.")                
 
         validated = True
 
@@ -626,15 +641,8 @@ def createSettingsWindow():
             ErrorDefaultHours("not_int")
             validated = False
 
-        #get correct path by replacing \ with \\
         sp = sound_path_entry.get()
-        sp = sp.replace("\a", "\\")
-        sp = sp.replace("\b", "\\")
-        sp = sp.replace("\f", "\\")
-        sp = sp.replace("\n", "\\")
-        sp = sp.replace("\r", "\\")
-        sp = sp.replace("\t", "\\")
-        sp = sp.replace("\v", "\\")
+        sp = sp.replace("\\", "/")
 
         if not os.path.isfile(sp):
             ErrorSoundPath()
@@ -697,6 +705,10 @@ def createSettingsWindow():
         default_hours_entry.state(["!invalid"])
         dhe_error_lbl.configure(text="")
 
+    def reset_spe(e):
+        sound_path_entry.state(["!invalid"])
+        spe_error_lbl.configure(text="")
+
     default_secs_entry.bind("<FocusOut>", reset_dse)
     default_secs_entry.bind("<FocusIn>", reset_dse)
     default_secs_entry.bind("<KeyRelease>", reset_dse)
@@ -708,6 +720,10 @@ def createSettingsWindow():
     default_hours_entry.bind("<FocusOut>", reset_dhe)
     default_hours_entry.bind("<FocusIn>", reset_dhe)
     default_hours_entry.bind("<KeyRelease>", reset_dhe)
+
+    sound_path_entry.bind("<FocusOut>", reset_spe)
+    sound_path_entry.bind("<FocusIn>", reset_spe)
+    sound_path_entry.bind("<KeyRelease>", reset_spe)
 
     settings_window.mainloop()
 
@@ -847,7 +863,7 @@ elif theme == "Light":
 app.bind("<Configure>", sizechanged)
 
 # UPDATE
-checkForUpdates(ver)
+#checkForUpdates(ver)
 
 # TKINTER MAINLOOP
 app.mainloop()
