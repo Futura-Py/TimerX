@@ -530,9 +530,7 @@ def createSettingsWindow():
         config["default_seconds"] = default_secs_entry.get()
         config["default_minutes"] = default_mins_entry.get()
         config["default_hours"] = default_hours_entry.get()
-        print(sp)
         config["sound_path"] = sp
-        print(config["sound_path"])
         setAlwaysOnTop(app)
         saveTimer(config["default_seconds"], config["default_minutes"], config["default_hours"], None)
 
