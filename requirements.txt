@@ -1,4 +1,4 @@
-playsound
+playsound==1.2.2
 darkdetect
 tk
 BlurWindow
