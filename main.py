@@ -524,7 +524,7 @@ def createSettingsWindow():
         def ErrorDefaultHours(reason):
             if reason == "wv":
                 default_hours_entry.state(["invalid"])
-                dhe_error_lbl.configure(text="Enter a number below 60")
+                dhe_error_lbl.configure(text="Enter a number below 24")
             elif reason == "not_int":
                 default_hours_entry.state(["invalid"])
                 dhe_error_lbl.configure(text="Enter a number")
