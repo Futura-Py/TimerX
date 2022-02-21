@@ -8,10 +8,12 @@ import webbrowser
 from pathlib import Path
 from platform import system
 from threading import Thread
-from tkinter import Frame, PhotoImage, Tk, ttk
-from tkinter.constants import DISABLED, LEFT
+from tkinter import Frame, PhotoImage, Tk, ttk, StringVar
+from tkinter.constants import DISABLED, LEFT, END
+from tkinter.filedialog import askopenfile
 
 import darkdetect
+from isort import file
 import sv_ttk
 from playsound import playsound
 
@@ -37,7 +39,6 @@ app.minsize(width=300, height=210)
 sv_ttk.set_theme(theme.lower())
 bg_color = ttk.Style().lookup(".", "background")
 
-
 # SYSTEM CODE
 try:
     if system() == "darwin":
@@ -62,18 +63,18 @@ app_on = True
 timer_on = False
 timer_paused = False
 
-timer_seconds = config["default_seconds"]
-timer_minutes = config["default_minutes"]
-timer_hours = config["default_hours"]
+timer_seconds = int(config["default_seconds"])
+timer_minutes = int(config["default_minutes"])
+timer_hours = int(config["default_hours"])
 
 # FUNCTIONS
-def playBuzzer(config):
-    playsound(Path(config["sound_path"]))
+def playBuzzer():
+    playsound(config["sound_path"])
 
 
 def startstopButtonPressed(*_):
     global timer_on, timer_paused, timer_hours, timer_minutes, timer_seconds, last_paused
-    
+
     if timer_on and not timer_paused:
         timer_on = False
         timer_paused = True
@@ -92,20 +93,20 @@ def startstopButtonPressed(*_):
         play_button.configure(text="Pause")
 
 
-def saveTimer(timer_sec_input, timer_min_input, timer_hr_input, manager_app_window):
+def saveTimer(secs, mins, hours, manager_app_window):
     global timer_seconds, timer_minutes, timer_hours
 
-    timer_seconds = int(timer_sec_input.get())
-    timer_minutes = int(timer_min_input.get())
-    timer_hours = int(timer_hr_input.get())
-    config["default_seconds"] = timer_seconds
-    config["default_minutes"] = timer_minutes
-    config["default_hours"] = timer_hours
+    timer_seconds = int(secs)
+    timer_minutes = int(mins)
+    timer_hours = int(hours)
+
     time_selected_display.configure(
-        text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds"
+        text=f"{hours} Hours, {mins} Minutes, {secs} Seconds"
     )
-    time_display.configure(text=f"{timer_hours} : {timer_minutes} : {timer_seconds}")
-    manager_app_window.destroy()
+    time_display.configure(text=f"{hours} : {mins} : {secs}")
+
+    if not manager_app_window == None:
+        manager_app_window.destroy()
 
 
 def showNotification():
@@ -149,9 +150,9 @@ def runTimer():
 
             milliseconds_left -= int(split_time[1])
             split_fmt_time = formatted_time.split(":")
-            hours_left = timer_hours - int(split_fmt_time[0])
-            minutes_left = timer_minutes - int(split_fmt_time[1])
-            seconds_left = timer_seconds - int(split_fmt_time[2])
+            hours_left = int(timer_hours) - int(split_fmt_time[0])
+            minutes_left = int(timer_minutes) - int(split_fmt_time[1])
+            seconds_left = int(timer_seconds) - int(split_fmt_time[2])
 
             if seconds_left < 0 and minutes_left == 0 and hours_left == 0:
                 break
@@ -175,7 +176,7 @@ def runTimer():
     if config["notify"]:
         showNotification()
     if config["sound"]:
-        playBuzzer(config)
+        playBuzzer()
 
 
 def setAlwaysOnTop(app):
@@ -191,7 +192,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     manager_app_window = tkinter.Toplevel()
     manager_app_window.geometry("250x170")
     manager_app_window.title("Edit Timer")
-    manager_app_window.wait_visibility()  # Needed on Linux
+    manager_app_window.wait_visibility()
     manager_app_window.attributes("-alpha", config["transperency"])
     manager_app_window.resizable(False, False)
 
@@ -243,7 +244,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
         manager_window,
         text="Ok!",
         command=lambda: saveTimer(
-            timer_sec_input, timer_min_input, timer_hr_input, manager_app_window
+            timer_sec_input.get(), timer_min_input.get(), timer_hr_input.get(), manager_app_window
         ),
         style="Accent.TButton",
     )
@@ -251,13 +252,13 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
 
 
 def createSettingsWindow():
-    global theme, config, settings_window
+    global theme, config, sp
 
     settings_window = tkinter.Toplevel()
     settings_window.geometry("500x320")
     settings_window.title("Settings")
     settings_window.resizable(False, False)
-    settings_window.wait_visibility()  # Needed on Linux
+    settings_window.wait_visibility()
     settings_window.attributes("-alpha", config["transperency"])
 
     try:
@@ -279,10 +280,12 @@ def createSettingsWindow():
     tab_1 = ttk.Frame(tabview)
     tab_2 = ttk.Frame(tabview)
     tab_3 = ttk.Frame(tabview)
+    tab_4 = ttk.Frame(tabview)
 
     tabview.add(tab_1, text="Appearence")
     tabview.add(tab_2, text="Notifications & Sound")
-    tabview.add(tab_3, text="About")
+    tabview.add(tab_3, text="Timer Defaults")
+    tabview.add(tab_4, text="About")
 
     theme_label = ttk.Label(
         tab_1,
@@ -300,6 +303,14 @@ def createSettingsWindow():
     )
     transparency_label.place(x=23, y=73)
 
+    pin_label = ttk.Label(
+        tab_1, 
+        text="  Keep app always on top", 
+        image=pin_dark, 
+        compound=LEFT
+    )
+    pin_label.place(x=23, y=123)
+
     speaker_label = ttk.Label(
         tab_2,
         text="  Play sound when timer ends",
@@ -316,25 +327,29 @@ def createSettingsWindow():
     )
     bell_label.place(x=23, y=73)
 
-    pin_label = ttk.Label(
-        tab_1,
-        text="  Keep app always on top",
-        image=pin_dark,
-        compound=LEFT,
-    )
-    pin_label.place(x=23, y=123)
+    sound_path_label = ttk.Label(tab_2, text="Default Sound:")
+    sound_path_label.place(x=23, y=123)
 
-    logo_label = ttk.Label(tab_3, image=logo)
+    default_secs_label = ttk.Label(tab_3, text="    Default Seconds:")
+    default_secs_label.place(x=23, y=23)
+
+    default_mins_label = ttk.Label(tab_3, text="    Default Minutes:")
+    default_mins_label.place(x=23, y=93)
+
+    default_hours_label = ttk.Label(tab_3, text="    Default Hours:")
+    default_hours_label.place(x=23, y=163)
+
+    logo_label = ttk.Label(tab_4, image=logo)
     logo_label.place(x=50, y=30)
 
-    TimerX_Label = ttk.Label(tab_3, text="TimerX", font=("Arial Rounded MT Bold", 50))
+    TimerX_Label = ttk.Label(tab_4, text="TimerX", font=("Arial Rounded MT Bold", 50))
     TimerX_Label.place(x=210, y=40)
 
-    version_Label = ttk.Label(tab_3, text=f"Version: {ver}", font=("Segoe UI", "20"))
+    version_Label = ttk.Label(tab_4, text=f"Version: {ver}", font=("Segoe UI", "20"))
     version_Label.place(x=220, y=120)
 
     github_btn = ttk.Button(
-        tab_3,
+        tab_4,
         text=" Fork on Github",
         image=github_logo_dark,
         compound=LEFT,
@@ -343,7 +358,7 @@ def createSettingsWindow():
     github_btn.place(x=50, y=200)
 
     website_btn = ttk.Button(
-        tab_3,
+        tab_4,
         text=" Check out our Website!",
         image=globe_dark,
         compound=LEFT,
@@ -368,13 +383,14 @@ def createSettingsWindow():
         github_btn.configure(image=github_logo_light)
         website_btn.configure(image=globe_light)
 
-    theme_combobox = ttk.Combobox(
+    theme_combobox = ttk.Spinbox(
         tab_1,
         state="readonly",
         values=("Dark", "Light", "System"),
+        wrap=True,
     )
-    theme_combobox.set(config["theme"])
     theme_combobox.place(x=275, y=20)
+    theme_combobox.set(config["theme"])
 
     def slider_changed(value):
         value = float(value) / 100
@@ -388,7 +404,7 @@ def createSettingsWindow():
         orient="horizontal",
         command=slider_changed,
     )
-    slider.set(float(config["transperency"] * 100))
+    slider.set(float(config["transperency"]) * 100)
     slider.place(x=325, y=75)
 
     sound_button = ttk.Checkbutton(tab_2, style="Switch.TCheckbutton")
@@ -412,6 +428,39 @@ def createSettingsWindow():
         ontop_button.state(["!alternate"])
     ontop_button.place(x=360, y=125)
 
+    def browse():
+        filedialog = askopenfile(mode="r", filetypes=[("Audio Files", ["*.mp3", "*.wav"])])
+        if not filedialog == None:
+            sound_path_entry.delete(0, END)
+            sound_path_entry.insert(1, filedialog.name)
+
+    sound_path_entry = ttk.Entry(tab_2, width=35)
+    sound_path_entry.insert(1, config["sound_path"])
+    sound_path_entry.place(x=130, y=115)
+    spe_error_lbl = tkinter.Label(tab_2, fg="red", font=("", 10), text="")
+    spe_error_lbl.place(x=130, y=150)
+
+    browse_btn = ttk.Button(tab_2, text="Browse", command=lambda: browse())
+    browse_btn.place(x=410, y=115)
+
+    default_secs_entry = ttk.Entry(tab_3)
+    default_secs_entry.insert(1, config["default_seconds"])
+    default_secs_entry.place(x=280, y=15)
+    dse_error_lbl = tkinter.Label(tab_3, fg="red", font=("", 10), text="")
+    dse_error_lbl.place(x=280, y=50)
+
+    default_mins_entry = ttk.Entry(tab_3)
+    default_mins_entry.insert(1, config["default_minutes"])
+    default_mins_entry.place(x=280, y=85)
+    dme_error_lbl = tkinter.Label(tab_3, fg="red", font=("", 10), text="")
+    dme_error_lbl.place(x=280, y=120)
+
+    default_hours_entry = ttk.Entry(tab_3)
+    default_hours_entry.insert(1, config["default_hours"])
+    default_hours_entry.place(x=280, y=155)
+    dhe_error_lbl = tkinter.Label(tab_3, fg="red", font=("", 10), text="")
+    dhe_error_lbl.place(x=280, y=190)
+
     def ApplyChanges():
         global theme
 
@@ -426,8 +475,14 @@ def createSettingsWindow():
         config["sound"] = sound_button.instate(["selected"])
         config["notify"] = notify_button.instate(["selected"])
         config["ontop"] = ontop_button.instate(["selected"])
+        config["default_seconds"] = default_secs_entry.get()
+        config["default_minutes"] = default_mins_entry.get()
+        config["default_hours"] = default_hours_entry.get()
+        config["sound_path"] = sp
 
         setAlwaysOnTop(app)
+        saveTimer(config["default_seconds"], config["default_minutes"], config["default_hours"], None)
+
         saveConfig(config)
 
         sv_ttk.set_theme(theme.lower())
@@ -435,18 +490,104 @@ def createSettingsWindow():
         if theme == "Dark":
             settings_btn.configure(image=settings_image_dark)
             time_display.configure(fg="white")
-            time_selected_display.configure(fg="white")
-        elif theme == "Light":
+        else:
             settings_btn.configure(image=settings_image_light)
             time_display.configure(fg="black")
-            time_selected_display.configure(fg="black")
 
         settings_window.destroy()
+
+    def VerifyEntrys():
+        global sp
+
+        def ErrorDefaultSecs(reason):
+            if reason == "wv":
+                default_secs_entry.state(["invalid"])
+                dse_error_lbl.configure(text="Enter a number below 60")
+            elif reason == "not_int":
+                default_secs_entry.state(["invalid"])
+                dse_error_lbl.configure(text="Enter a number")
+            elif reason == "wv-":
+                default_secs_entry.state(["invalid"])
+                dse_error_lbl.configure(text="Enter a number above 0")
+
+        def ErrorDefaultMins(reason):
+            if reason == "wv":
+                default_mins_entry.state(["invalid"])
+                dme_error_lbl.configure(text="Enter a number below 60")
+            elif reason == "not_int":
+                default_mins_entry.state(["invalid"])
+                dme_error_lbl.configure(text="Enter a number")
+            elif reason == "wv-":
+                default_mins_entry.state(["invalid"])
+                dme_error_lbl.configure(text="Enter a number above -1")
+
+        def ErrorDefaultHours(reason):
+            if reason == "wv":
+                default_hours_entry.state(["invalid"])
+                dhe_error_lbl.configure(text="Enter a number below 24")
+            elif reason == "not_int":
+                default_hours_entry.state(["invalid"])
+                dhe_error_lbl.configure(text="Enter a number")
+            elif reason == "wv-":
+                default_hours_entry.state(["invalid"])
+                dhe_error_lbl.configure(text="Enter a number above -1")
+
+        def ErrorSoundPath():
+            sound_path_entry.state(["invalid"])
+            dse_error_lbl.configure(text="This file doesnt exist.")                
+
+        validated = True
+
+        try:
+            void = int(default_secs_entry.get())
+            if not void <= 60:               
+                validated = False
+                ErrorDefaultSecs("wv")
+            if not void > 0:
+                validated = False
+                ErrorDefaultSecs("wv-")
+        except ValueError:
+            ErrorDefaultSecs("not_int")
+            validated = False
+
+        try:
+            void = int(default_mins_entry.get())
+            if not void <= 60:
+                validated = False
+                ErrorDefaultMins("wv")
+            if not void > -1:
+                validated = False
+                ErrorDefaultMins("wv-")
+        except ValueError:
+            ErrorDefaultMins("not_int")
+            validated = False
+
+        try:
+            void = int(default_hours_entry.get())
+            if not void <= 24:
+                validated = False
+                ErrorDefaultHours("wv")
+            if not void > -1:
+                validated = False
+                ErrorDefaultHours("wv-")
+        except ValueError:
+            ErrorDefaultHours("not_int")
+            validated = False
+
+        sp = sound_path_entry.get()
+        sp = sp.replace("\\", "/")
+
+        if not Path(sp).exists():
+            ErrorSoundPath()
+            validated = False
+
+        if validated == True:
+            ApplyChanges()
 
     okbtn = ttk.Button(
         tab_1,
         text="Apply Changes",
-        command=lambda: ApplyChanges(),
+        command=lambda: VerifyEntrys(),
         style="Accent.TButton",
     )
     okbtn.place(x=250, y=230)
@@ -459,7 +600,7 @@ def createSettingsWindow():
     okbtn_2 = ttk.Button(
         tab_2,
         text="Apply Changes",
-        command=lambda: ApplyChanges(),
+        command=lambda: VerifyEntrys(),
         style="Accent.TButton",
     )
     okbtn_2.place(x=250, y=230)
@@ -469,12 +610,56 @@ def createSettingsWindow():
     )
     cancelbtn_2.place(x=125, y=230)
 
-    if system() not in {"Windows", "win"}:
+    okbtn_3 = ttk.Button(
+        tab_3,
+        text="Apply Changes",
+        command=lambda: VerifyEntrys(),
+        style="Accent.TButton",
+    )
+    okbtn_3.place(x=250, y=230)
+
+    cancelbtn_3 = ttk.Button(
+        tab_3, text="Cancel", command=lambda: settings_window.destroy()
+    )
+    cancelbtn_3.place(x=125, y=230)
+
+    if not system() == "Windows" or system() == "win":
         notify_button.configure(state=DISABLED)
 
+    def reset_dse(e):
+        default_secs_entry.state(["!invalid"])
+        dse_error_lbl.configure(text="")
+
+    def reset_dme(e):
+        default_mins_entry.state(["!invalid"])
+        dme_error_lbl.configure(text="")
+
+    def reset_dhe(e):
+        default_hours_entry.state(["!invalid"])
+        dhe_error_lbl.configure(text="")
+
+    def reset_spe(e):
+        sound_path_entry.state(["!invalid"])
+        spe_error_lbl.configure(text="")
+
+    default_secs_entry.bind("<FocusOut>", reset_dse)
+    default_secs_entry.bind("<FocusIn>", reset_dse)
+    default_secs_entry.bind("<KeyRelease>", reset_dse)
+
+    default_mins_entry.bind("<FocusOut>", reset_dme)
+    default_mins_entry.bind("<FocusIn>", reset_dme)
+    default_mins_entry.bind("<KeyRelease>", reset_dme)
+
+    default_hours_entry.bind("<FocusOut>", reset_dhe)
+    default_hours_entry.bind("<FocusIn>", reset_dhe)
+    default_hours_entry.bind("<KeyRelease>", reset_dhe)
+
+    sound_path_entry.bind("<FocusOut>", reset_spe)
+    sound_path_entry.bind("<FocusIn>", reset_spe)
+    sound_path_entry.bind("<KeyRelease>", reset_spe)
 
 # KEYBINDS
-app.bind("<KeyPress-space>", startstopButtonPressed)
+app.bind("key-space", startstopButtonPressed)
 
 app.grid_rowconfigure(0, weight=1)
 app.grid_rowconfigure(2, weight=1)
@@ -589,19 +774,18 @@ def sizechanged(e):
     play_button.configure(width=int(app.winfo_width() / 12))
     manager_button.configure(width=int(app.winfo_width() / 12))
 
-
-def makeWindowsBlur(window):
+def makeWindowsBlur():
     from ctypes import windll
 
     from BlurWindow.blurWindow import GlobalBlur
 
-    GlobalBlur(
-        windll.user32.GetParent(window.winfo_id()),
-        Acrylic=True,
-        Dark=(theme == "Dark"),
-        hexColor=bg_color,
-    )
-
+    if theme == "Dark":
+        GlobalBlur(
+            windll.user32.GetParent(app.winfo_id()),
+            Acrylic=True,
+            Dark=True,
+            hexColor="#1c1c1c"
+        )
 
 # LOAD IMAGES
 theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
@@ -627,7 +811,6 @@ globe_light = PhotoImage(file="./assets/images/light/globe.png")
 
 logo = PhotoImage(file="./assets/logo_new_150x150.png")
 
-
 if theme == "Dark":
     settings_btn.configure(image=settings_image_dark)
 elif theme == "Light":
@@ -636,16 +819,16 @@ elif theme == "Light":
     time_selected_display.configure(fg="black")
 
 if system() == "Windows":
-    makeWindowsBlur(app)
+    makeWindowsBlur()
 
 app.bind("<Configure>", sizechanged)
-app.wait_visibility()  # Needed on Linux
+app.wait_visibility()
 app.attributes("-alpha", config["transperency"])
 
 # UPDATE
 app.after(
     500, Thread(target=checkForUpdates, args=(ver,)).start
-)  # Doesn't freeze the GUI while checking for updates
+)
 
 # TKINTER MAINLOOP
 app.mainloop()
