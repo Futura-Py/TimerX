@@ -8,14 +8,15 @@ import webbrowser
 from pathlib import Path
 from platform import system
 from threading import Thread
-from tkinter import Frame, PhotoImage, Tk, ttk, StringVar
+from tkinter import Frame, PhotoImage, Tk, ttk
 from tkinter.constants import DISABLED, LEFT, END
 from tkinter.filedialog import askopenfile
 
 import darkdetect
-from isort import file
 import sv_ttk
 from playsound import playsound
+if system() == "Windows":
+    from win10toast_click import ToastNotifier
 
 from utils import *
 
@@ -37,25 +38,24 @@ app.title("TimerX")
 app.minsize(width=300, height=210)
 
 sv_ttk.set_theme(theme.lower())
-bg_color = ttk.Style().lookup(".", "background")
 
 # SYSTEM CODE
-try:
-    if system() == "darwin":
-        app.iconbitmap("./assets/logo_new.icns")
-    elif system() == "Windows":
-        app.iconbitmap("./assets/logo_new.ico")
-        from win10toast_click import ToastNotifier
-    elif system() == "win":
-        app.iconphoto("./assets/logo_new.ico")
-    else:
-        logo_img = PhotoImage(file="./assets/logo_new.png")
-        app.iconphoto(False, logo_img)
-except tkinter.TclError:
+def seticon(win):
     try:
-        app.iconphoto("assets/logo.ico")
+        if system() == "darwin":
+            win.iconbitmap("./assets/logo_new.icns")
+        elif system() == "Windows":
+            win.iconbitmap("./assets/logo_new.ico")
+        else:
+            logo_img = PhotoImage(file="./assets/logo_new.png")
+            win.iconphoto(False, logo_img)
     except tkinter.TclError:
-        pass
+        try:
+            win.iconphoto("assets/logo.ico")
+        except tkinter.TclError:
+            pass
+
+seticon(app)
 
 # VARIABLES
 app_on = True
@@ -179,11 +179,11 @@ def runTimer():
         playBuzzer()
 
 
-def setAlwaysOnTop(app):
+def setAlwaysOnTop():
     app.attributes("-topmost", config["ontop"])
 
 
-setAlwaysOnTop(app)
+setAlwaysOnTop()
 
 # WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
@@ -196,18 +196,7 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
     manager_app_window.attributes("-alpha", config["transperency"])
     manager_app_window.resizable(False, False)
 
-    try:
-        if system() == "darwin":
-            manager_app_window.iconbitmap("./assets/logo_new.icns")
-        elif system() == "Windows":
-            manager_app_window.iconbitmap("./assets/logo_new.ico")
-        elif system() == "win":
-            manager_app_window.iconphoto("./assets/logo_new.ico")
-        else:
-            logo_img = PhotoImage(file="./assets/logo.png")
-            manager_app_window.iconphoto(False, logo_img)
-    except tkinter.TclError:
-        pass
+    seticon(manager_app_window)
 
     # VALIDATION
     validate_command = manager_app_window.register(validate)
@@ -261,18 +250,7 @@ def createSettingsWindow():
     settings_window.wait_visibility()
     settings_window.attributes("-alpha", config["transperency"])
 
-    try:
-        if system() == "darwin":
-            settings_window.iconbitmap("./assets/logo_new.icns")
-        elif system() == "Windows":
-            settings_window.iconbitmap("./assets/logo_new.ico")
-        elif system() == "win":
-            settings_window.iconphoto("./assets/logo_new.ico")
-        else:
-            logo_img = PhotoImage(file="./assets/logo_new.png")
-            settings_window.iconphoto(False, logo_img)
-    except tkinter.TclError:
-        pass
+    seticon(settings_window)
 
     tabview = ttk.Notebook(settings_window)
     tabview.pack(fill="both", expand=True)
@@ -327,26 +305,14 @@ def createSettingsWindow():
     )
     bell_label.place(x=23, y=73)
 
-    sound_path_label = ttk.Label(tab_2, text="Default Sound:")
-    sound_path_label.place(x=23, y=123)
+    sound_path_label = ttk.Label(tab_2, text="Default Sound:").place(x=23, y=123)
+    default_secs_label = ttk.Label(tab_3, text="    Default Seconds:").place(x=23, y=23)
+    default_mins_label = ttk.Label(tab_3, text="    Default Minutes:").place(x=23, y=93)
+    default_hours_label = ttk.Label(tab_3, text="    Default Hours:").place(x=23, y=163)
 
-    default_secs_label = ttk.Label(tab_3, text="    Default Seconds:")
-    default_secs_label.place(x=23, y=23)
-
-    default_mins_label = ttk.Label(tab_3, text="    Default Minutes:")
-    default_mins_label.place(x=23, y=93)
-
-    default_hours_label = ttk.Label(tab_3, text="    Default Hours:")
-    default_hours_label.place(x=23, y=163)
-
-    logo_label = ttk.Label(tab_4, image=logo)
-    logo_label.place(x=50, y=30)
-
-    TimerX_Label = ttk.Label(tab_4, text="TimerX", font=("Arial Rounded MT Bold", 50))
-    TimerX_Label.place(x=210, y=40)
-
-    version_Label = ttk.Label(tab_4, text=f"Version: {ver}", font=("Segoe UI", "20"))
-    version_Label.place(x=220, y=120)
+    logo_label = ttk.Label(tab_4, image=logo).place(x=50, y=30)
+    TimerX_Label = ttk.Label(tab_4, text="TimerX", font=("Arial Rounded MT Bold", 50)).place(x=210, y=40)
+    version_Label = ttk.Label(tab_4, text=f"Version: {ver}", font=("Segoe UI", "20")).place(x=220, y=120)
 
     github_btn = ttk.Button(
         tab_4,
@@ -499,129 +465,85 @@ def createSettingsWindow():
     def VerifyEntrys():
         global sp
 
-        def ErrorDefaultSecs(reason):
+        def Error(reason, entry, label):
             if reason == "wv":
-                default_secs_entry.state(["invalid"])
-                dse_error_lbl.configure(text="Enter a number below 60")
+                entry.state(["invalid"])
+                label.configure(text="Enter a number below 60")
+            elif reason == "wv2":
+                entry.state(["invalid"])
+                label.configure(text="Enter a number below 24")
             elif reason == "not_int":
-                default_secs_entry.state(["invalid"])
-                dse_error_lbl.configure(text="Enter a number")
+                entry.state(["invalid"])
+                label.configure(text="Enter a number")
             elif reason == "wv-":
-                default_secs_entry.state(["invalid"])
-                dse_error_lbl.configure(text="Enter a number above 0")
-
-        def ErrorDefaultMins(reason):
-            if reason == "wv":
-                default_mins_entry.state(["invalid"])
-                dme_error_lbl.configure(text="Enter a number below 60")
-            elif reason == "not_int":
-                default_mins_entry.state(["invalid"])
-                dme_error_lbl.configure(text="Enter a number")
-            elif reason == "wv-":
-                default_mins_entry.state(["invalid"])
-                dme_error_lbl.configure(text="Enter a number above -1")
-
-        def ErrorDefaultHours(reason):
-            if reason == "wv":
-                default_hours_entry.state(["invalid"])
-                dhe_error_lbl.configure(text="Enter a number below 24")
-            elif reason == "not_int":
-                default_hours_entry.state(["invalid"])
-                dhe_error_lbl.configure(text="Enter a number")
-            elif reason == "wv-":
-                default_hours_entry.state(["invalid"])
-                dhe_error_lbl.configure(text="Enter a number above -1")
-
-        def ErrorSoundPath():
-            sound_path_entry.state(["invalid"])
-            dse_error_lbl.configure(text="This file doesnt exist.")                
+                entry.state(["invalid"])
+                label.configure(text="Enter a number above 0")
+            elif reason == "wv-2":
+                entry.state(["invalid"])
+                label.configure(text="Enter a number above -1")
+            elif reason == "sound":
+                entry.state(["invalid"])
+                label.configure(text="This file doesnt exist.")                
 
         validated = True
 
         try:
             void = int(default_secs_entry.get())
-            if not void <= 60:               
+            if not void < 60:               
                 validated = False
-                ErrorDefaultSecs("wv")
+                Error("wv", default_secs_entry, dse_error_lbl)
             if not void > 0:
                 validated = False
-                ErrorDefaultSecs("wv-")
+                Error("wv-", default_secs_entry, dse_error_lbl)
         except ValueError:
-            ErrorDefaultSecs("not_int")
+            Error("not_int", default_secs_entry, dse_error_lbl)
             validated = False
 
         try:
             void = int(default_mins_entry.get())
-            if not void <= 60:
+            if not void < 60:
                 validated = False
-                ErrorDefaultMins("wv")
+                Error("wv", default_mins_entry, dme_error_lbl)
             if not void > -1:
                 validated = False
-                ErrorDefaultMins("wv-")
+                Error("wv-2", default_mins_entry, dme_error_lbl)
         except ValueError:
-            ErrorDefaultMins("not_int")
+            Error("not_int", default_mins_entry, dme_error_lbl)
             validated = False
 
         try:
             void = int(default_hours_entry.get())
             if not void <= 24:
                 validated = False
-                ErrorDefaultHours("wv")
+                Error("wv2", default_hours_entry, dhe_error_lbl)
             if not void > -1:
                 validated = False
-                ErrorDefaultHours("wv-")
+                Error("wv-2", default_hours_entry, dhe_error_lbl)
         except ValueError:
-            ErrorDefaultHours("not_int")
+            Error("not_int", default_hours_entry, dhe_error_lbl)
             validated = False
 
         sp = sound_path_entry.get()
         sp = sp.replace("\\", "/")
 
         if not Path(sp).exists():
-            ErrorSoundPath()
+            Error("sound", sound_path_entry, spe_error_lbl)
             validated = False
 
         if validated == True:
             ApplyChanges()
 
-    okbtn = ttk.Button(
-        tab_1,
-        text="Apply Changes",
-        command=lambda: VerifyEntrys(),
-        style="Accent.TButton",
-    )
-    okbtn.place(x=250, y=230)
+    for index in [tab_1, tab_2, tab_3]:
+        ttk.Button(
+            index,
+            text="Apply Changes",
+            command=lambda: VerifyEntrys(),
+            style="Accent.TButton",
+        ).place(x=250, y=230)
 
-    cancelbtn = ttk.Button(
-        tab_1, text="Cancel", command=lambda: settings_window.destroy()
-    )
-    cancelbtn.place(x=125, y=230)
-
-    okbtn_2 = ttk.Button(
-        tab_2,
-        text="Apply Changes",
-        command=lambda: VerifyEntrys(),
-        style="Accent.TButton",
-    )
-    okbtn_2.place(x=250, y=230)
-
-    cancelbtn_2 = ttk.Button(
-        tab_2, text="Cancel", command=lambda: settings_window.destroy()
-    )
-    cancelbtn_2.place(x=125, y=230)
-
-    okbtn_3 = ttk.Button(
-        tab_3,
-        text="Apply Changes",
-        command=lambda: VerifyEntrys(),
-        style="Accent.TButton",
-    )
-    okbtn_3.place(x=250, y=230)
-
-    cancelbtn_3 = ttk.Button(
-        tab_3, text="Cancel", command=lambda: settings_window.destroy()
-    )
-    cancelbtn_3.place(x=125, y=230)
+        ttk.Button(
+            index, text="Cancel", command=lambda: settings_window.destroy()
+        ).place(x=125, y=230)
 
     if not system() == "Windows" or system() == "win":
         notify_button.configure(state=DISABLED)
@@ -677,7 +599,6 @@ time_selected_display = tkinter.Label(
     master=app,
     text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds",
     font=("Segoe UI Variable", 10),
-    bg=bg_color,
     fg="white",
 )
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
@@ -686,7 +607,6 @@ time_display = tkinter.Label(
     master=app,
     text=f"{timer_hours} : {timer_minutes} : {timer_seconds}",
     font=("Segoe UI Variable", 30),
-    bg=bg_color,
     fg="white",
 )
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
