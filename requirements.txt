@@ -3,3 +3,4 @@ darkdetect
 tk
 BlurWindow
 sv-ttk
+win32mica
