@@ -11,6 +11,7 @@ from threading import Thread
 from tkinter import Frame, PhotoImage, Tk, ttk
 from tkinter.constants import DISABLED, LEFT, END
 from tkinter.filedialog import askopenfile
+from dialogs import *
 
 import darkdetect
 import sv_ttk
@@ -19,6 +20,10 @@ if system() == "Windows":
     from win10toast_click import ToastNotifier
 
 from utils import *
+
+def destroy():
+        app.destroy()
+
 
 if not Path("config.json").exists():
     createConfig()
@@ -39,15 +44,26 @@ app.minsize(width=300, height=210)
 prev_state = app.state()
 
 sv_ttk.set_theme(theme.lower())
+# Refer utils.py for extra usage details
+# From Sun-Valley-Messageboxes
+def appPopup(title="Title", details="Description", *, parent=None, icon=None):
+    return popup(
+        parent,
+        title,
+        details,
+        icon,
+        buttons=[("Exit", True, "accent")],
+    )
 try:
     if system() == "Windows":
         bg_color = ttk.Style().lookup(".", "background")
         app.wm_attributes("-transparent", bg_color)
-        
     else:
         pass
 except tkinter.TclError:
-    app.destroy()
+     blurError = popup(title="Module unavailable", details="Your system seems to be incompatible while running TimerX. Try updating or opening an issue at our GitHub.")
+     if blurError:
+        destroy()
 
 # SYSTEM CODE
 def seticon(win):
