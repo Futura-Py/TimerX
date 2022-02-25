@@ -784,18 +784,18 @@ def makeWindowsBlur():
             ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK)
         else:
             ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT)
-    else:
-        from BlurWindow.blurWindow import GlobalBlur
-        if theme == "Dark":
-            GlobalBlur(
-                windll.user32.GetParent(app.winfo_id()),
-                Acrylic=True,
-                Dark=True)
-        else:
-            GlobalBlur(
-                windll.user32.GetParent(app.winfo_id()),
-                Acrylic=True,
-                Dark=False,)
+#     else:
+#         from BlurWindow.blurWindow import GlobalBlur
+#         if theme == "Dark":
+#             GlobalBlur(
+#                 windll.user32.GetParent(app.winfo_id()),
+#                 Acrylic=True,
+#                 Dark=True)
+#         else:
+#             GlobalBlur(
+#                 windll.user32.GetParent(app.winfo_id()),
+#                 Acrylic=True,
+#                 Dark=False,)
 
 # LOAD IMAGES
 theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
