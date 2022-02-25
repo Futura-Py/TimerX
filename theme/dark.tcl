@@ -69,6 +69,22 @@ namespace eval ttk::theme::sun-valley-dark {
             }
         }
 
+        ttk::style layout Titlebar.TButton {
+            TitlebarButton.button -children {
+                TitlebarButton.padding -children {
+                    TitlebarButton.label -side left -expand 1
+                } 
+            }
+        }
+
+        ttk::style layout Close.Titlebar.TButton {
+            CloseButton.button -children {
+                CloseButton.padding -children {
+                    CloseButton.label -side left -expand 1
+                } 
+            }
+        }
+
         ttk::style layout TCheckbutton {
             Checkbutton.button -children {
                 Checkbutton.padding -children {
@@ -151,18 +167,6 @@ namespace eval ttk::theme::sun-valley-dark {
         ttk::style layout Card.TFrame {
             Card.field {
                 Card.padding -expand 1 
-            }
-        }
-
-        ttk::style layout Dialog_info.TFrame {
-            Dialog_info.field {
-                Dialog_info.padding -expand 1 
-            }
-        }
-
-        ttk::style layout Dialog_buttons.TFrame {
-            Dialog_buttons.field {
-                Dialog_buttons.padding -expand 1 
             }
         }
 
@@ -254,6 +258,36 @@ namespace eval ttk::theme::sun-valley-dark {
                 selected $images(button-accent-rest) \
                 pressed $images(button-accent-pressed) \
                 active $images(button-accent-hover) \
+            ] -border 4 -sticky nsew
+
+        # Titlebar.TButton
+        ttk::style configure Titlebar.TButton -padding {8 4} -anchor center -foreground #ffffff
+
+        ttk::style map Titlebar.TButton -foreground \
+            [list disabled #6f6f6f \
+                pressed #d1d1d1 \
+                active #ffffff]
+
+        ttk::style element create TitlebarButton.button image \
+            [list $images(empty) \
+                disabled $images(empty) \
+                pressed $images(button-titlebar-pressed) \
+                active $images(button-titlebar-hover) \
+            ] -border 4 -sticky nsew
+
+        # Close.Titlebar.TButton
+        ttk::style configure Close.Titlebar.TButton -padding {8 4} -anchor center -foreground #ffffff
+
+        ttk::style map Close.Titlebar.TButton -foreground \
+            [list disabled #6f6f6f \
+                pressed #e8bfbb \
+                active #ffffff]
+
+        ttk::style element create CloseButton.button image \
+            [list $images(empty) \
+                disabled $images(empty) \
+                pressed $images(button-close-pressed) \
+                active $images(button-close-hover) \
             ] -border 4 -sticky nsew
 
         # Checkbutton
@@ -389,8 +423,7 @@ namespace eval ttk::theme::sun-valley-dark {
 
         ttk::style configure ComboboxPopdownFrame -borderwidth 1 -relief solid
 
-        ttk::style map TCombobox \
-        -selectbackground [list \
+        ttk::style map TCombobox -selectbackground [list \
             {readonly hover} $colors(-selectbg) \
             {readonly focus} $colors(-selectbg) \
         ] -selectforeground [list \
@@ -440,14 +473,6 @@ namespace eval ttk::theme::sun-valley-dark {
 
         # Card
         ttk::style element create Card.field image $images(card) \
-            -border 10 -padding 4 -sticky nsew
-
-        # Dialog_info
-        ttk::style element create Dialog_info.field image $images(dialog_info) \
-            -border 10 -padding 4 -sticky nsew
-
-        # Dialog_buttons
-        ttk::style element create Dialog_buttons.field image $images(dialog_buttons) \
             -border 10 -padding 4 -sticky nsew
 
         # Labelframe
