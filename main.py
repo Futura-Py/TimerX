@@ -777,14 +777,25 @@ def sizechanged(e):
 
 def makeWindowsBlur():
     from ctypes import windll
-    from win32mica import MICAMODE, ApplyMica
-    # from BlurWindow.blurWindow import GlobalBlur
-
-    if theme == "Dark":
-            print('Mica Comming...')
-            ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=True)
-            # ApplyMica(HWND=app.frame(), ColorMode=True)
-
+    from sys import getwindowsversion
+    if  getwindowsversion().build >= 22000:
+        from win32mica import ApplyMica, MICAMODE
+        if theme == "Dark":
+            ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK)
+        else:
+            ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT)
+    else:
+        from BlurWindow.blurWindow import GlobalBlur
+        if theme == "Dark":
+            GlobalBlur(
+                windll.user32.GetParent(app.winfo_id()),
+                Acrylic=True,
+                Dark=True)
+        else:
+            GlobalBlur(
+                windll.user32.GetParent(app.winfo_id()),
+                Acrylic=True,
+                Dark=False,)
 
 # LOAD IMAGES
 theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
