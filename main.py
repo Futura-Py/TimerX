@@ -39,8 +39,15 @@ app.minsize(width=300, height=210)
 prev_state = app.state()
 
 sv_ttk.set_theme(theme.lower())
-bg_color = ttk.Style().lookup(".", "background")
-app.wm_attributes("-transparent", bg_color)
+try:
+    if system() == "Windows":
+        bg_color = ttk.Style().lookup(".", "background")
+        app.wm_attributes("-transparent", bg_color)
+        
+    else:
+        pass
+except tkinter.TclError:
+    app.destroy()
 
 # SYSTEM CODE
 def seticon(win):
@@ -458,7 +465,7 @@ def createSettingsWindow():
         config["default_hours"] = default_hours_entry.get()
         config["sound_path"] = sp
 
-        setAlwaysOnTop(app)
+        setAlwaysOnTop()
         saveTimer(config["default_seconds"], config["default_minutes"], config["default_hours"], None)
 
         saveConfig(config)
@@ -776,3 +783,4 @@ app.after(
 
 # TKINTER MAINLOOP
 app.mainloop()
+
