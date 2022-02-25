@@ -36,6 +36,7 @@ if config["theme"] == "System":
 app = Tk()
 app.title("TimerX")
 app.minsize(width=300, height=210)
+prev_state = app.state()
 
 sv_ttk.set_theme(theme.lower())
 
@@ -54,6 +55,15 @@ def seticon(win):
             win.iconphoto("assets/logo.ico")
         except tkinter.TclError:
             pass
+
+def fullredraw(e): 
+    global prev_state
+    if prev_state == "zoomed": 
+        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 1) 
+        app.minimize() 
+        app.restore() 
+        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 0) 
+        prev_state = app.state()
 
 seticon(app)
 
@@ -742,6 +752,9 @@ if system() == "Windows":
     makeWindowsBlur()
 
 app.bind("<Configure>", sizechanged)
+
+app.bind("<Expose>", fullredraw) 
+
 app.wait_visibility()
 app.attributes("-alpha", config["transperency"])
 
