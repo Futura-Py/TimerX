@@ -38,6 +38,7 @@ app.minsize(width=300, height=210)
 
 sv_ttk.set_theme(theme.lower())
 bg_color = ttk.Style().lookup(".", "background")
+app.wm_attributes("-transparent", bg_color)
 
 # SYSTEM CODE
 try:
@@ -777,11 +778,12 @@ def sizechanged(e):
 def makeWindowsBlur():
     from ctypes import windll
     from win32mica import MICAMODE, ApplyMica
-    from BlurWindow.blurWindow import GlobalBlur
+    # from BlurWindow.blurWindow import GlobalBlur
 
     if theme == "Dark":
+            print('Mica Comming...')
             ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=True)
-            # ApplyMica(HWND=window, ColorMode=True)
+            # ApplyMica(HWND=app.frame(), ColorMode=True)
 
 
 # LOAD IMAGES
