@@ -62,7 +62,14 @@ upgradeid = (
 build_exe_options = {
     "include_msvcr": True,
     "include_files": (r"./utils.py", r"./assets"),
-    "includes": ["tkinter", "platform", "threading", "BlurWindow", "darkdetect", "sv_ttk"],
+    "includes": [
+        "tkinter",
+        "platform",
+        "threading",
+        "BlurWindow",
+        "darkdetect",
+        "sv_ttk",
+    ],
 }
 
 bdist_rpm_options = {"icon": icon}
