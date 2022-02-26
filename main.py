@@ -9,12 +9,13 @@ from pathlib import Path
 from platform import system
 from threading import Thread
 from tkinter import Frame, PhotoImage, Tk, ttk
-from tkinter.constants import DISABLED, LEFT, END
+from tkinter.constants import DISABLED, END, LEFT
 from tkinter.filedialog import askopenfile
 
 import darkdetect
 import sv_ttk
 from playsound import playsound
+
 if system() == "Windows":
     from win10toast_click import ToastNotifier
 
@@ -57,14 +58,16 @@ def seticon(win):
         except tkinter.TclError:
             pass
 
-def fullredraw(e): 
+
+def fullredraw(e):
     global prev_state
-    if prev_state == "zoomed": 
-        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 1) 
-        app.minimize() 
-        app.restore() 
-        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 0) 
+    if prev_state == "zoomed":
+        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 1)
+        app.minimize()
+        app.restore()
+        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 0)
         prev_state = app.state()
+
 
 seticon(app)
 
@@ -244,7 +247,10 @@ def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
         manager_window,
         text="Ok!",
         command=lambda: saveTimer(
-            timer_sec_input.get(), timer_min_input.get(), timer_hr_input.get(), manager_app_window
+            timer_sec_input.get(),
+            timer_min_input.get(),
+            timer_hr_input.get(),
+            manager_app_window,
         ),
         style="Accent.TButton",
     )
@@ -293,10 +299,7 @@ def createSettingsWindow():
     transparency_label.place(x=23, y=73)
 
     pin_label = ttk.Label(
-        tab_1, 
-        text="  Keep app always on top", 
-        image=pin_dark, 
-        compound=LEFT
+        tab_1, text="  Keep app always on top", image=pin_dark, compound=LEFT
     )
     pin_label.place(x=23, y=123)
 
@@ -322,8 +325,12 @@ def createSettingsWindow():
     default_hours_label = ttk.Label(tab_3, text="    Default Hours:").place(x=23, y=163)
 
     logo_label = ttk.Label(tab_4, image=logo).place(x=50, y=30)
-    TimerX_Label = ttk.Label(tab_4, text="TimerX", font=("Arial Rounded MT Bold", 50)).place(x=210, y=40)
-    version_Label = ttk.Label(tab_4, text=f"Version: {ver}", font=("Segoe UI", "20")).place(x=220, y=120)
+    TimerX_Label = ttk.Label(
+        tab_4, text="TimerX", font=("Arial Rounded MT Bold", 50)
+    ).place(x=210, y=40)
+    version_Label = ttk.Label(
+        tab_4, text=f"Version: {ver}", font=("Segoe UI", "20")
+    ).place(x=220, y=120)
 
     github_btn = ttk.Button(
         tab_4,
@@ -406,7 +413,9 @@ def createSettingsWindow():
     ontop_button.place(x=360, y=125)
 
     def browse():
-        filedialog = askopenfile(mode="r", filetypes=[("Audio Files", ["*.mp3", "*.wav"])])
+        filedialog = askopenfile(
+            mode="r", filetypes=[("Audio Files", ["*.mp3", "*.wav"])]
+        )
         if not filedialog == None:
             sound_path_entry.delete(0, END)
             sound_path_entry.insert(1, filedialog.name)
@@ -458,6 +467,14 @@ def createSettingsWindow():
         config["sound_path"] = sp
 
         setAlwaysOnTop()
+
+        saveTimer(
+            config["default_seconds"],
+            config["default_minutes"],
+            config["default_hours"],
+            None,
+        )
+
         saveTimer(config["default_seconds"], config["default_minutes"], config["default_hours"], None)
 
         saveConfig(config)
@@ -494,13 +511,13 @@ def createSettingsWindow():
                 label.configure(text="Enter a number above -1")
             elif reason == "sound":
                 entry.state(["invalid"])
-                label.configure(text="This file doesnt exist.")                
+                label.configure(text="This file doesnt exist.")
 
         validated = True
 
         try:
             void = int(default_secs_entry.get())
-            if not void < 60:               
+            if not void < 60:
                 validated = False
                 Error("wv", default_secs_entry, dse_error_lbl)
             if not void > 0:
@@ -590,6 +607,7 @@ def createSettingsWindow():
     sound_path_entry.bind("<FocusOut>", reset_spe)
     sound_path_entry.bind("<FocusIn>", reset_spe)
     sound_path_entry.bind("<KeyRelease>", reset_spe)
+
 
 # KEYBINDS
 app.bind("key-space", startstopButtonPressed)
@@ -705,29 +723,38 @@ def sizechanged(e):
     play_button.configure(width=int(app.winfo_width() / 12))
     manager_button.configure(width=int(app.winfo_width() / 12))
 
+
 def makeWindowsBlur():
     from ctypes import windll
     from sys import getwindowsversion
-    if  getwindowsversion().build >= 22000:
-        from win32mica import ApplyMica, MICAMODE
+
+    if getwindowsversion().build >= 22000:
+        from win32mica import MICAMODE, ApplyMica
+
         app.wm_attributes("-transparent", bg_color)
         app.update()
         if theme == "Dark":
-            ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK)
+            ApplyMica(
+                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
+            )
         else:
-            ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT)
+            ApplyMica(
+                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT
+            )
     else:
         from BlurWindow.blurWindow import GlobalBlur
+
         if theme == "Dark":
             GlobalBlur(
                 windll.user32.GetParent(app.winfo_id()),
                 Acrylic=True,
                 hexColor="#1c1c1c",
-                Dark=True
+                Dark=True,
             )
         else:
             pass
-            
+
+
 # LOAD IMAGES
 theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
 theme_light = PhotoImage(file="./assets/images/light/dark_theme.png")
@@ -764,15 +791,13 @@ if system() == "Windows":
 
 app.bind("<Configure>", sizechanged)
 
-app.bind("<Expose>", fullredraw) 
+app.bind("<Expose>", fullredraw)
 
 app.wait_visibility()
 app.attributes("-alpha", config["transperency"])
 
 # UPDATE
-app.after(
-    500, Thread(target=checkForUpdates, args=(ver,)).start
-)
+app.after(500, Thread(target=checkForUpdates, args=(ver,)).start)
 
 # TKINTER MAINLOOP
 app.mainloop()
