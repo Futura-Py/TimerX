@@ -40,7 +40,6 @@ prev_state = app.state()
 
 sv_ttk.set_theme(theme.lower())
 bg_color = ttk.Style().lookup(".", "background")
-app.wm_attributes("-transparent", bg_color)
 
 # SYSTEM CODE
 def seticon(win):
@@ -711,6 +710,8 @@ def makeWindowsBlur():
     from sys import getwindowsversion
     if  getwindowsversion().build >= 22000:
         from win32mica import ApplyMica, MICAMODE
+        app.wm_attributes("-transparent", bg_color)
+        app.update()
         if theme == "Dark":
             ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK)
         else:
