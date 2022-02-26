@@ -39,6 +39,7 @@ app.minsize(width=300, height=210)
 prev_state = app.state()
 
 sv_ttk.set_theme(theme.lower())
+bg_color = ttk.Style().lookup(".", "background")
 
 # SYSTEM CODE
 def seticon(win):
@@ -706,17 +707,27 @@ def sizechanged(e):
 
 def makeWindowsBlur():
     from ctypes import windll
-
-    from BlurWindow.blurWindow import GlobalBlur
-
-    if theme == "Dark":
-        GlobalBlur(
-            windll.user32.GetParent(app.winfo_id()),
-            Acrylic=True,
-            Dark=True,
-            hexColor="#1c1c1c"
-        )
-
+    from sys import getwindowsversion
+    if  getwindowsversion().build >= 22000:
+        from win32mica import ApplyMica, MICAMODE
+        app.wm_attributes("-transparent", bg_color)
+        app.update()
+        if theme == "Dark":
+            ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK)
+        else:
+            ApplyMica(HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT)
+    else:
+        from BlurWindow.blurWindow import GlobalBlur
+        if theme == "Dark":
+            GlobalBlur(
+                windll.user32.GetParent(app.winfo_id()),
+                Acrylic=True,
+                hexColor="#1c1c1c",
+                Dark=True
+            )
+        else:
+            pass
+            
 # LOAD IMAGES
 theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
 theme_light = PhotoImage(file="./assets/images/light/dark_theme.png")
