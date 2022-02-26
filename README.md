@@ -1,3 +1,4 @@
+
 <p align="center">
     <img alt="TimerX Logo" src="./assets/logo_new.png" width="100px" />
     <h1 align="center">TimerX</h1>
@@ -21,6 +22,9 @@
     </a>
     <a style="text-decoration:none" href="https://repl.it">
         <img src="https://img.shields.io/badge/Repl.it-%230D101E.svg?style=for-the-badge&logo=replit&logoColor=white" alt="Repl.it" />
+    </a>
+    <a style="text-decoration:none" href="https://discord.gg/dd64cjC8">
+        <img src="https://badgen.net/badge/icon/discord?icon=discord&label" alt="Discord" width="117px" />
     </a>
 </p>
 
