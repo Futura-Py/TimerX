@@ -467,12 +467,15 @@ def createSettingsWindow():
         config["sound_path"] = sp
 
         setAlwaysOnTop()
+
         saveTimer(
             config["default_seconds"],
             config["default_minutes"],
             config["default_hours"],
             None,
         )
+
+        saveTimer(config["default_seconds"], config["default_minutes"], config["default_hours"], None)
 
         saveConfig(config)
 
