@@ -26,7 +26,7 @@
 
 ### A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's [Sun Valley TTk Theme](https://github.com/rdbende/Sun-Valley-TTk-Theme)
 
-![img](./assets/readme/screenshot)
+![img](https://github.com/Futura-Py/TimerX/blob/master/assets/readme/Screenshot.png?raw=true)
 
 > Believe it or not, this is made 100% in Python🐍
 
