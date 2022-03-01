@@ -732,8 +732,7 @@ def makeWindowsBlur():
         from win32mica import MICAMODE, ApplyMica
 
         app.wm_attributes("-transparent", bg_color)
-        app.update()
-        app.bind("<Expose>", fullredraw)
+        app.update()        
         if theme == "Dark":
             ApplyMica(
                 HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
@@ -792,6 +791,8 @@ if system() == "Windows":
     makeWindowsBlur()
 
 app.bind("<Configure>", sizechanged)
+
+app.bind("<Expose>", fullredraw)
 
 app.wait_visibility()
 app.attributes("-alpha", config["transperency"])
