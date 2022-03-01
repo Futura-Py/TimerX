@@ -733,6 +733,7 @@ def makeWindowsBlur():
 
         app.wm_attributes("-transparent", bg_color)
         app.update()
+        app.bind("<Expose>", fullredraw)
         if theme == "Dark":
             ApplyMica(
                 HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
@@ -743,7 +744,8 @@ def makeWindowsBlur():
             )
     else:
         from BlurWindow.blurWindow import GlobalBlur
-
+        app.wm_attributes("-transparent", bg_color)
+        app.bind("<Expose>", fullredraw)
         if theme == "Dark":
             GlobalBlur(
                 windll.user32.GetParent(app.winfo_id()),
@@ -790,8 +792,6 @@ if system() == "Windows":
     makeWindowsBlur()
 
 app.bind("<Configure>", sizechanged)
-
-app.bind("<Expose>", fullredraw)
 
 app.wait_visibility()
 app.attributes("-alpha", config["transperency"])
