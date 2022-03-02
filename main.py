@@ -2,6 +2,7 @@
 # IMPORTS
 ver = "1.0"
 
+import re
 import time
 import tkinter
 import webbrowser
@@ -33,14 +34,38 @@ if config["theme"] == "System":
     else:
         theme = "Light"
 
-# TKINTER WINDOW
-app = Tk()
-app.title("TimerX")
-app.minsize(width=300, height=210)
-prev_state = app.state()
+# BASE CLASS
+class BaseApp:
+    def __init__(self, resizable_height:bool=True, resizable_width:bool=True, title:str="TimerX", minwidth:int=None, minheight:int=None) -> None:
+        self.app = Tk()
+        self.app.title(title)
+        self.app.minsize(width=minwidth, height=minheight)
+        self.app.resizable(resizable_height, resizable_width)
+        
+        self.prev_state = self.app.state()
 
-sv_ttk.set_theme(theme.lower())
-bg_color = ttk.Style().lookup(".", "background")
+        sv_ttk.set_theme(theme.lower())
+        self.bg_color = ttk.Style().lookup(".", "background")
+
+        try:
+            if system() == "darwin":
+                self.app.iconbitmap("./assets/logo_new.icns")
+            elif system() == "Windows":
+                self.app.iconbitmap("./assets/logo_new.ico")
+            else:
+                logo_img = PhotoImage(file="./assets/logo_new.png")
+                self.app.iconphoto(False, logo_img)
+        except tkinter.TclError:
+            try:
+                self.app.iconphoto("assets/logo.ico")
+            except tkinter.TclError:
+                pass
+
+        self.app.mainloop()
+
+# TKINTER WINDOW
+base_app = BaseApp(minwidth=300, minheight=210)
+prev_state = base_app.app.state()
 
 # SYSTEM CODE
 def seticon(win):
@@ -67,9 +92,6 @@ def fullredraw(e):
         app.restore()
         app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 0)
         prev_state = app.state()
-
-
-seticon(app)
 
 # VARIABLES
 app_on = True
@@ -194,7 +216,7 @@ def runTimer():
 
 
 def setAlwaysOnTop():
-    app.attributes("-topmost", config["ontop"])
+    base_app.app.attributes("-topmost", config["ontop"])
 
 
 setAlwaysOnTop()
@@ -379,7 +401,7 @@ def createSettingsWindow():
     def slider_changed(value):
         value = float(value) / 100
         settings_window.attributes("-alpha", value)
-        app.attributes("-alpha", value)
+        base_app.app.attributes("-alpha", value)
 
     slider = ttk.Scale(
         tab_1,
@@ -610,22 +632,22 @@ def createSettingsWindow():
 
 
 # KEYBINDS
-app.bind("key-space", startstopButtonPressed)
+base_app.app.bind("key-space", startstopButtonPressed)
 
-app.grid_rowconfigure(0, weight=1)
-app.grid_rowconfigure(2, weight=1)
-app.grid_columnconfigure(1, weight=1)
+base_app.app.grid_rowconfigure(0, weight=1)
+base_app.app.grid_rowconfigure(2, weight=1)
+base_app.app.grid_columnconfigure(1, weight=1)
 
 # IMAGES
 settings_image_light = PhotoImage(file="./assets/images/light/settings.png")
 settings_image_dark = PhotoImage(file="./assets/images/dark/settings.png")
 
 # WINDOW FRAME
-window = Frame(app)
+window = Frame(base_app.app)
 
 # WINDOW ELEMENTS
 time_selected_display = tkinter.Label(
-    master=app,
+    master=base_app.app,
     text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds",
     font=("Segoe UI Variable", 10),
     fg="white",
@@ -633,7 +655,7 @@ time_selected_display = tkinter.Label(
 time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
 time_display = tkinter.Label(
-    master=app,
+    master=base_app.app,
     text=f"{timer_hours} : {timer_minutes} : {timer_seconds}",
     font=("Segoe UI Variable", 30),
     fg="white",
@@ -641,7 +663,7 @@ time_display = tkinter.Label(
 time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
 play_button = ttk.Button(
-    master=app,
+    master=base_app.app,
     text="Play",
     width=25,
     command=startstopButtonPressed,
@@ -650,7 +672,7 @@ play_button = ttk.Button(
 play_button.grid(column=1, row=0, sticky="S", rowspan=2)
 
 manager_button = ttk.Button(
-    master=app,
+    master=base_app.app,
     text="Edit Timer",
     command=lambda: createManagerWindow(
         saveTimer, timer_minutes, timer_seconds, timer_hours
@@ -660,7 +682,7 @@ manager_button = ttk.Button(
 manager_button.grid(column=1, row=2, sticky="N", pady=10)
 
 settings_btn = ttk.Button(
-    master=app,
+    master=base_app.app,
     image=settings_image_dark,
     command=lambda: createSettingsWindow(),
     style="Toolbutton",
@@ -668,16 +690,16 @@ settings_btn = ttk.Button(
 
 
 def sizechanged(e):
-    settings_btn.place(x=5, y=app.winfo_height() - 45)
-    if app.winfo_height() >= 220:
-        if app.winfo_height() > 250:
-            if app.winfo_height() > 270:
-                if app.winfo_height() > 290:
-                    if app.winfo_height() > 330:
-                        if app.winfo_height() > 350:
-                            if app.winfo_height() > 370:
-                                if app.winfo_height() > 390:
-                                    if app.winfo_width() > 420:
+    settings_btn.place(x=5, y=base_app.app.winfo_height() - 45)
+    if base_app.app.winfo_height() >= 220:
+        if base_app.app.winfo_height() > 250:
+            if base_app.app.winfo_height() > 270:
+                if base_app.app.winfo_height() > 290:
+                    if base_app.app.winfo_height() > 330:
+                        if base_app.app.winfo_height() > 350:
+                            if base_app.app.winfo_height() > 370:
+                                if base_app.app.winfo_height() > 390:
+                                    if base_app.app.winfo_width() > 420:
                                         time_display.configure(
                                             font=("Segoe UI Variable", 100)
                                         )
@@ -685,7 +707,7 @@ def sizechanged(e):
                                             font=("Segoe UI Variable", 25)
                                         )
                             else:
-                                if app.winfo_width() > 420:
+                                if base_app.app.winfo_width() > 420:
                                     time_display.configure(
                                         font=("Segoe UI Variable", 90)
                                     )
@@ -693,35 +715,35 @@ def sizechanged(e):
                                         font=("Segoe UI Variable", 25)
                                     )
                         else:
-                            if app.winfo_width() > 400:
+                            if base_app.app.winfo_width() > 400:
                                 time_display.configure(font=("Segoe UI Variable", 80))
                                 time_selected_display.configure(
                                     font=("Segoe UI Variable", 25)
                                 )
                     else:
-                        if app.winfo_width() > 360:
+                        if base_app.app.winfo_width() > 360:
                             time_display.configure(font=("Segoe UI Variable", 70))
                             time_selected_display.configure(
                                 font=("Segoe UI Variable", 23)
                             )
                 else:
-                    if app.winfo_width() > 360:
+                    if base_app.app.winfo_width() > 360:
                         time_display.configure(font=("Segoe UI Variable", 60))
                         time_selected_display.configure(font=("Segoe UI Variable", 20))
             else:
-                if app.winfo_width() >= 300:
+                if base_app.app.winfo_width() >= 300:
                     time_display.configure(font=("Segoe UI Variable", 50))
                     time_selected_display.configure(font=("Segoe UI Variable", 17))
         else:
-            if app.winfo_width() >= 300:
+            if base_app.app.winfo_width() >= 300:
                 time_display.configure(font=("Segoe UI Variable", 40))
                 time_selected_display.configure(font=("Segoe UI Variable", 13))
     else:
         time_display.configure(font=("Segoe UI Variable", 30))
         time_selected_display.configure(font=("Segoe UI Variable", 10))
 
-    play_button.configure(width=int(app.winfo_width() / 12))
-    manager_button.configure(width=int(app.winfo_width() / 12))
+    play_button.configure(width=int(base_app.app.winfo_width() / 12))
+    manager_button.configure(width=int(base_app.app.winfo_width() / 12))
 
 
 def makeWindowsBlur():
@@ -731,23 +753,23 @@ def makeWindowsBlur():
     if getwindowsversion().build >= 22000:
         from win32mica import MICAMODE, ApplyMica
 
-        app.wm_attributes("-transparent", bg_color)
-        app.update()        
+        base_app.app.wm_attributes("-transparent", base_app.bg_color)
+        base_app.app.update()        
         if theme == "Dark":
-            ApplyMica(
-                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
+            base_app.applyMica(
+                HWND=windll.user32.GetParent(base_app.app.winfo_id()), ColorMode=MICAMODE.DARK
             )
         else:
-            ApplyMica(
-                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT
+            base_app.applyMica(
+                HWND=windll.user32.GetParent(base_app.app.winfo_id()), ColorMode=MICAMODE.LIGHT
             )
     else:
         from BlurWindow.blurWindow import GlobalBlur
-        app.wm_attributes("-transparent", bg_color)
-        app.bind("<Expose>", fullredraw)
+        base_app.app.wm_attributes("-transparent", base_app.bg_color)
+        base_app.app.bind("<Expose>", fullredraw)
         if theme == "Dark":
             GlobalBlur(
-                windll.user32.GetParent(app.winfo_id()),
+                windll.user32.GetParent(base_app.app.winfo_id()),
                 Acrylic=True,
                 hexColor="#1c1c1c",
                 Dark=True,
@@ -790,15 +812,15 @@ elif theme == "Light":
 if system() == "Windows":
     makeWindowsBlur()
 
-app.bind("<Configure>", sizechanged)
+base_app.app.bind("<Configure>", sizechanged)
 
-app.bind("<Expose>", fullredraw)
+base_app.app.bind("<Expose>", fullredraw)
 
-app.wait_visibility()
-app.attributes("-alpha", config["transperency"])
+base_app.app.wait_visibility()
+base_app.app.attributes("-alpha", config["transperency"])
 
 # UPDATE
-app.after(500, Thread(target=checkForUpdates, args=(ver,)).start)
+base_app.app.after(500, Thread(target=checkForUpdates, args=(ver,)).start)
 
 # TKINTER MAINLOOP
-app.mainloop()
+base_app.app.update()
