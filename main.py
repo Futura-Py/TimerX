@@ -33,14 +33,49 @@ if config["theme"] == "System":
     else:
         theme = "Light"
 
-# TKINTER WINDOW
-app = Tk()
-app.title("TimerX")
-app.minsize(width=300, height=210)
-prev_state = app.state()
+# BASE CLASS
+class BaseApp:
+    def __init__(self, resizable_height:bool=True, resizable_width:bool=True, title:str="TimerX", minwidth:int=None, minheight:int=None) -> None:
+        self.app = Tk()
+        self.app.title(title)
+        self.app.minsize(width=minwidth, height=minheight)
+        self.app.resizable(resizable_height, resizable_width)
+        
+        self.prev_state = self.app.state()
 
-sv_ttk.set_theme(theme.lower())
-bg_color = ttk.Style().lookup(".", "background")
+        sv_ttk.set_theme(theme.lower())
+        self.bg_color = ttk.Style().lookup(".", "background")
+
+        try:
+            if system() == "darwin":
+                self.app.iconbitmap("./assets/logo_new.icns")
+            elif system() == "Windows":
+                self.app.iconbitmap("./assets/logo_new.ico")
+            else:
+                logo_img = PhotoImage(file="./assets/logo_new.png")
+                self.app.iconphoto(False, logo_img)
+        except tkinter.TclError:
+            try:
+                self.app.iconphoto("assets/logo.ico")
+            except tkinter.TclError:
+                pass
+
+    def getApp(self) -> Tk:
+        return self.app
+
+class MainApp(BaseApp):
+    def __init__(self, resizable_height: bool = True, resizable_width: bool = True, title: str = "TimerX", minwidth: int = None, minheight: int = None) -> None:
+        super().__init__(resizable_height, resizable_width, title, minwidth, minheight)
+        self.app = super().getApp()
+        self.app.title("Wooloo")
+        self.app.mainloop()
+
+test = MainApp()
+
+# TKINTER WINDOW
+base_app = BaseApp(minwidth=300, minheight=210)
+app = base_app.getApp()
+prev_state = app.state()
 
 # SYSTEM CODE
 def seticon(win):
@@ -67,9 +102,6 @@ def fullredraw(e):
         app.restore()
         app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 0)
         prev_state = app.state()
-
-
-seticon(app)
 
 # VARIABLES
 app_on = True
@@ -731,19 +763,19 @@ def makeWindowsBlur():
     if getwindowsversion().build >= 22000:
         from win32mica import MICAMODE, ApplyMica
 
-        app.wm_attributes("-transparent", bg_color)
+        app.wm_attributes("-transparent", base_app.bg_color)
         app.update()        
         if theme == "Dark":
-            ApplyMica(
+            applyMica(
                 HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
             )
         else:
-            ApplyMica(
+            applyMica(
                 HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT
             )
     else:
         from BlurWindow.blurWindow import GlobalBlur
-        app.wm_attributes("-transparent", bg_color)
+        app.wm_attributes("-transparent", base_app.bg_color)
         app.bind("<Expose>", fullredraw)
         if theme == "Dark":
             GlobalBlur(
@@ -797,8 +829,8 @@ app.bind("<Expose>", fullredraw)
 app.wait_visibility()
 app.attributes("-alpha", config["transperency"])
 
+# TKINTER MAINLOOP
+app.update()
+
 # UPDATE
 app.after(500, Thread(target=checkForUpdates, args=(ver,)).start)
-
-# TKINTER MAINLOOP
-app.mainloop()
