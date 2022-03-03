@@ -22,10 +22,6 @@
     </a>
     <a style="text-decoration:none" href="https://repl.it">
         <img src="https://img.shields.io/badge/Repl.it-%230D101E.svg?style=for-the-badge&logo=replit&logoColor=white" alt="Repl.it" />
-    </a>
-    <a style="text-decoration:none" href="https://discord.gg/dd64cjC8">
-        <img src="https://badgen.net/badge/icon/discord?icon=discord&label" alt="Discord" width="117px" />
-    </a>
 </p>
 
 ### A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's [Sun Valley TTk Theme](https://github.com/rdbende/Sun-Valley-TTk-Theme)
@@ -35,6 +31,8 @@
 > Believe it or not, this is made 100% in Python🐍
 
 # 🌏Deployed with [Netlify](netlify.app)
+    
+# 😎 Join our Discord over [here](https://discord.gg/dd64cjC8)
 
 # 🎯TODO
 See our [roadmap](https://github.com/orgs/Futura-Py/projects/1)!
