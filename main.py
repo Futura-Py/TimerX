@@ -33,9 +33,136 @@ if config["theme"] == "System":
     else:
         theme = "Light"
 
-# BASE CLASS
+#CLASSES
+# Timer Class, controls the timer
+class Timer:
+    def __init__(self) -> None:
+        pass
+
+# VARIABLES
+app_on = True
+
+timer_on = False
+timer_paused = False
+
+timer_seconds = int(config["default_seconds"])
+timer_minutes = int(config["default_minutes"])
+timer_hours = int(config["default_hours"])
+
+# FUNCTIONS
+def playBuzzer():
+    playsound(config["sound_path"])
+
+
+def startstopButtonPressed(*_):
+    global timer_on, timer_paused, timer_hours, timer_minutes, timer_seconds, last_paused
+
+    if timer_on and not timer_paused:
+        timer_on = False
+        timer_paused = True
+        last_paused = time.time()
+        timer_hours = hours_left
+        timer_minutes = minutes_left
+        timer_seconds = seconds_left
+        play_button.configure(text="Play")
+    elif not timer_paused and not timer_on:
+        play_button.configure(text="Pause")
+        timer_thread = Thread(target=runTimer, daemon=True)
+        timer_thread.start()
+    else:
+        timer_paused = False
+        timer_on = True
+        play_button.configure(text="Pause")
+
+
+def saveTimer(secs, mins, hours, manager_app_window):
+    global timer_seconds, timer_minutes, timer_hours
+
+    timer_seconds = int(secs)
+    timer_minutes = int(mins)
+    timer_hours = int(hours)
+
+    time_selected_display.configure(
+        text=f"{hours} Hours, {mins} Minutes, {secs} Seconds"
+    )
+    time_display.configure(text=f"{hours} : {mins} : {secs}")
+
+    if not manager_app_window == None:
+        manager_app_window.destroy()
+
+
+def showNotification():
+    if system() == "Windows":
+        notification = ToastNotifier()
+        notification.show_toast(
+            "TimerX",
+            "Time's up!",
+            icon_path="./assets/logo_new.ico",
+            duration="None",
+            threaded=True,
+            callback_on_click=app.focus_force(),
+        )
+
+
+def runTimer():
+    global timer_seconds, timer_minutes, timer_hours, timer_on, app, config, last_paused, seconds_left, minutes_left, hours_left
+
+    timer_seconds = config["default_seconds"]
+    timer_minutes = config["default_minutes"]
+    timer_hours = config["default_hours"]
+
+    seconds_left = timer_seconds
+    minutes_left = timer_minutes
+    hours_left = timer_hours
+    milliseconds_left = 99
+    timer_on = True
+
+    last_paused = time.time()
+
+    while True:
+        if timer_on and not timer_paused:
+            latest_time = time.time()
+
+            time_to_subtract = round((latest_time - last_paused), 3)
+
+            split_time = str(time_to_subtract).split(".")
+
+            ty_res = time.gmtime(int(split_time[0]))
+            formatted_time = time.strftime(f"%H:%M:%S:{split_time[1]}", ty_res)
+
+            milliseconds_left -= int(split_time[1])
+            split_fmt_time = formatted_time.split(":")
+            hours_left = int(timer_hours) - int(split_fmt_time[0])
+            minutes_left = int(timer_minutes) - int(split_fmt_time[1])
+            seconds_left = int(timer_seconds) - int(split_fmt_time[2])
+
+            if seconds_left < 0 and minutes_left == 0 and hours_left == 0:
+                break
+
+            if seconds_left < 0:
+                subtract_secs = abs(seconds_left)
+                seconds_left = 60 - subtract_secs
+                minutes_left -= 1
+            if minutes_left < 0:
+                subtract_mins = abs(minutes_left)
+                minutes_left = 60 - subtract_mins
+                hours_left -= 1
+
+            time_display.configure(
+                text=f"{hours_left} : {minutes_left} : {seconds_left}"
+            )
+
+    timer_on = False
+    play_button.config(text="Play")
+
+    if config["notify"]:
+        showNotification()
+    if config["sound"]:
+        playBuzzer()
+
+# Base Class - All Windows inherit from this, not intended to be used by itself
 class BaseApp:
-    def __init__(self, resizable_height:bool=True, resizable_width:bool=True, title:str="TimerX", minwidth:int=None, minheight:int=None) -> None:
+    def __init__(self, resizable_height:bool=True, resizable_width:bool=True, title:str="TimerX", minwidth:int=None, minheight:int=None, apply_mica:bool=False) -> None:
         self.app = Tk()
         self.app.title(title)
         self.app.minsize(width=minwidth, height=minheight)
@@ -63,11 +190,102 @@ class BaseApp:
     def getApp(self) -> Tk:
         return self.app
 
+    def makeWindowsBlur(self):
+        from ctypes import windll
+        from sys import getwindowsversion
+
+        if getwindowsversion().build >= 22000:
+            from win32mica import MICAMODE, ApplyMica
+
+            self.app.wm_attributes("-transparent", self.bg_color)
+            self.app.update()        
+            if theme == "Dark":
+                ApplyMica(
+                    HWND=windll.user32.GetParent(self.app.winfo_id()), ColorMode=MICAMODE.DARK
+                )
+            else:
+                ApplyMica(
+                    HWND=windll.user32.GetParent(self.app.winfo_id()), ColorMode=MICAMODE.LIGHT
+                )
+        else:
+            from BlurWindow.blurWindow import GlobalBlur
+            app.wm_attributes("-transparent", self.bg_color)
+            app.bind("<Expose>", fullredraw)
+            if theme == "Dark":
+                GlobalBlur(
+                    windll.user32.GetParent(self.app.winfo_id()),
+                    Acrylic=True,
+                    hexColor="#1c1c1c",
+                    Dark=True,
+                )
+            else:
+                pass
+
 class MainApp(BaseApp):
-    def __init__(self, resizable_height: bool = True, resizable_width: bool = True, title: str = "TimerX", minwidth: int = None, minheight: int = None) -> None:
-        super().__init__(resizable_height, resizable_width, title, minwidth, minheight)
+    def __init__(self) -> None:
+        super().__init__(minwidth=300, minheight=210)
         self.app = super().getApp()
-        self.app.title("Wooloo")
+
+        # KEYBINDS
+        self.app.bind("key-space", startstopButtonPressed)
+
+        self.app.grid_rowconfigure(0, weight=1)
+        self.app.grid_rowconfigure(2, weight=1)
+        self.app.grid_columnconfigure(1, weight=1)
+
+        # IMAGES
+        settings_image_light = PhotoImage(file="./assets/images/light/settings.png")
+        settings_image_dark = PhotoImage(file="./assets/images/dark/settings.png")
+
+        # WINDOW FRAME
+        window = Frame(self.app)
+
+        # WINDOW ELEMENTS
+        time_selected_display = tkinter.Label(
+            master=self.app,
+            text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds",
+            font=("Segoe UI Variable", 10),
+            fg="white",
+        )
+        time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
+
+        time_display = tkinter.Label(
+            master=self.app,
+            text=f"{timer_hours} : {timer_minutes} : {timer_seconds}",
+            font=("Segoe UI Variable", 30),
+            fg="white",
+        )
+        time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
+
+        play_button = ttk.Button(
+            master=self.app,
+            text="Play",
+            width=25,
+            command=startstopButtonPressed,
+            style="Accent.TButton",
+        )
+        play_button.grid(column=1, row=0, sticky="S", rowspan=2)
+
+        manager_button = ttk.Button(
+            master=self.app,
+            text="Edit Timer",
+            command=lambda: createManagerWindow(
+                saveTimer, timer_minutes, timer_seconds, timer_hours
+            ),
+            width=25,
+        )
+        manager_button.grid(column=1, row=2, sticky="N", pady=10)
+
+        settings_btn = ttk.Button(
+            master=self.app,
+            image=settings_image_dark,
+            command=lambda: createSettingsWindow(),
+            style="Toolbutton",
+        )
+
+        if system() == "Windows":
+            super().makeWindowsBlur()
+
         self.app.mainloop()
 
 test = MainApp()
@@ -754,39 +972,6 @@ def sizechanged(e):
 
     play_button.configure(width=int(app.winfo_width() / 12))
     manager_button.configure(width=int(app.winfo_width() / 12))
-
-
-def makeWindowsBlur():
-    from ctypes import windll
-    from sys import getwindowsversion
-
-    if getwindowsversion().build >= 22000:
-        from win32mica import MICAMODE, ApplyMica
-
-        app.wm_attributes("-transparent", base_app.bg_color)
-        app.update()        
-        if theme == "Dark":
-            applyMica(
-                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
-            )
-        else:
-            applyMica(
-                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT
-            )
-    else:
-        from BlurWindow.blurWindow import GlobalBlur
-        app.wm_attributes("-transparent", base_app.bg_color)
-        app.bind("<Expose>", fullredraw)
-        if theme == "Dark":
-            GlobalBlur(
-                windll.user32.GetParent(app.winfo_id()),
-                Acrylic=True,
-                hexColor="#1c1c1c",
-                Dark=True,
-            )
-        else:
-            pass
-
 
 # LOAD IMAGES
 theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
