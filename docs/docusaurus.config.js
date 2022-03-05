@@ -121,9 +121,21 @@ const config = {
           lightIconStyle: {
             marginLeft: "1px",
           },
+          
         },
       },
     }),
 };
 
-module.exports = config;
+module.exports = config, {
+  themeConfig: {
+    announcementBar: {
+      id: 'v1.1',
+      content:
+        'v1.1 is released! Get it <a href="https://github.com/Futura-Py/TimerX/releases/latest">here</a>!',
+      backgroundColor: '#fafbfc',
+      textColor: '#091E42',
+      isCloseable: false,
+    },
+  },
+};

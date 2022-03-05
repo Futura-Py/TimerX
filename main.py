@@ -1,6 +1,6 @@
 # TimerX v1.1
 # IMPORTS
-ver = "1.0"
+ver = "1.1"
 
 import time
 import tkinter
