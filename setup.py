@@ -69,6 +69,13 @@ build_exe_options = {
         "BlurWindow",
         "darkdetect",
         "sv_ttk",
+        "win32mica",
+        "webbrowser",
+        "ctypes",
+        "time",
+        "pathlib",
+        "platform",
+        "playsound"
     ],
 }
 
