@@ -18,6 +18,7 @@ from playsound import playsound
 
 if system() == "Windows":
     from win10toast_click import ToastNotifier
+    import ctypes
 
 from utils import *
 
@@ -37,7 +38,6 @@ if config["theme"] == "System":
 app = Tk()
 app.title("TimerX")
 app.minsize(width=300, height=210)
-prev_state = app.state()
 
 sv_ttk.set_theme(theme.lower())
 bg_color = ttk.Style().lookup(".", "background")
@@ -58,16 +58,21 @@ def seticon(win):
         except tkinter.TclError:
             pass
 
+def fullredraw(e): 
+    global prev_state 
+    print(prev_state)
+    if prev_state == "zoomed": 
+        print("this")
+        true_value = ctypes.c_int(1)
+        ctypes.windll.dwmapi.DwmSetWindowAttribute(app.wm_frame(), 3, ctypes.byref(true_value), ctypes.sizeof(true_value))
 
-def fullredraw(e):
-    global prev_state
-    if prev_state == "zoomed":
-        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 1)
-        app.minimize()
-        app.restore()
-        app._dwm_set_window_attribute(app.DWMWA_TRANSITIONS_FORCEDISABLED, 0)
-        prev_state = app.state()
+        app.iconify()
+        app.deiconify()
 
+        false_value = ctypes.c_int(0)
+        ctypes.windll.dwmapi.DwmSetWindowAttribute(app.wm_frame(), 3, ctypes.byref(false_value), ctypes.sizeof(false_value))
+
+    prev_state = app.state()
 
 seticon(app)
 
@@ -730,7 +735,6 @@ def sizechanged(e):
 
 
 def makeWindowsBlur():
-    from ctypes import windll
     from sys import getwindowsversion
 
     if getwindowsversion().build >= 22000:
@@ -740,20 +744,19 @@ def makeWindowsBlur():
         app.update()
         if theme == "Dark":
             ApplyMica(
-                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
+                HWND=ctypes.windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
             )
         else:
             ApplyMica(
-                HWND=windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT
+                HWND=ctypes.windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT
             )
     else:
         from BlurWindow.blurWindow import GlobalBlur
 
         app.wm_attributes("-transparent", bg_color)
-        app.bind("<Expose>", fullredraw)
         if theme == "Dark":
             GlobalBlur(
-                windll.user32.GetParent(app.winfo_id()),
+                ctypes.windll.user32.GetParent(app.winfo_id()),
                 Acrylic=True,
                 hexColor="#1c1c1c",
                 Dark=True,
@@ -795,10 +798,11 @@ elif theme == "Light":
 
 if system() == "Windows":
     makeWindowsBlur()
+    prev_state = app.state()
+    print(prev_state)
+    # app.bind("<Expose>", fullredraw)
 
 app.bind("<Configure>", sizechanged)
-
-app.bind("<Expose>", fullredraw)
 
 app.wait_visibility()
 app.attributes("-alpha", config["transperency"])
