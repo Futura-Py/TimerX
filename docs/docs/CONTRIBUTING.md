@@ -1,4 +1,4 @@
-Futura-Py---
+---
 sidebar_position: 2
 id: contributing
 title: Contributing to TimerX
@@ -17,7 +17,7 @@ python3 -m pip install -r windows-requirements.txt
 ```
 
 After following the series of commands, open your favourite text editor. We recommend that you use [Visual Studio Code](https://code.visualstudio.com). Make your changes and before committing, go to the status bar. There will be a place showing branches and the text `master`. Click that, click `New branch` and name your branch, such as `patch-1` or so. Make sure it correlates to your feature, if it's a patch, name it as a patch, if it's a feature, name the feature. Next, go to the Version Control tab from the sidebar and commit the file, _semantically_. We recommend you to use semantic commits since that is more concise.
-Commit your changes to that new branch, [open a pull request](https://github.com/sumeshir26/TimerX/compare) (click `Compare across forks`) and someone will review it ASAP.
+Commit your changes to that new branch, [open a pull request](https://github.com/Futura-Py/TimerX/compare) (click `Compare across forks`) and someone will review it ASAP.
 
 ### Gitpod - Ready to code
 
@@ -25,7 +25,7 @@ We support Gitpod - a ready-to-code environment customised for TimerX. You could
 
 #### 1. Click the link
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/sumeshir26/TimerX)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/Futura-Py/TimerX)
 
 #### 2. Log in with GitHub
 
@@ -56,11 +56,11 @@ It will ask you what type of change it is, the scope(just hit enter) and the com
 git push
 ```
 
-After that, you can open a PR [here](https://github.com/sumeshir26/TimerX/pulls/new). Choose your branch and open it and a reviewer will review it soon.
+After that, you can open a PR [here](https://github.com/Futura-Py/TimerX/pulls/new). Choose your branch and open it and a reviewer will review it soon.
 
 ### [Repl.it](https://repl.it)
 
-Go to the Repl.it homepage and click `Create a repl`. On the top right corner, there is a `Import from GitHub` button. Click that and in the place of the URL, type `github.com/sumeshir26/TimerX`. Create the repl and go to it.
+Go to the Repl.it homepage and click `Create a repl`. On the top right corner, there is a `Import from GitHub` button. Click that and in the place of the URL, type `github.com/Futura-Py/TimerX`. Create the repl and go to it.
 
 The repl will be booted and ready to use.
 
