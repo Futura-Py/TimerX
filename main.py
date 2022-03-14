@@ -241,32 +241,32 @@ class MainApp(BaseApp):
         window = Frame(self.app)
 
         # WINDOW ELEMENTS
-        time_selected_display = tkinter.Label(
+        self.time_selected_display = tkinter.Label(
             master=self.app,
             text=f"{timer_hours} Hours, {timer_minutes} Minutes, {timer_seconds} Seconds",
             font=("Segoe UI Variable", 10),
             fg="white",
         )
-        time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
+        self.time_selected_display.grid(column=1, row=0, sticky="N", pady=10)
 
-        time_display = tkinter.Label(
+        self.time_display = tkinter.Label(
             master=self.app,
             text=f"{timer_hours} : {timer_minutes} : {timer_seconds}",
             font=("Segoe UI Variable", 30),
             fg="white",
         )
-        time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
+        self.time_display.grid(column=1, row=0, sticky="", rowspan=2, pady=20)
 
-        play_button = ttk.Button(
+        self.play_button = ttk.Button(
             master=self.app,
             text="Play",
             width=25,
             command=startstopButtonPressed,
             style="Accent.TButton",
         )
-        play_button.grid(column=1, row=0, sticky="S", rowspan=2)
+        self.play_button.grid(column=1, row=0, sticky="S", rowspan=2)
 
-        manager_button = ttk.Button(
+        self.manager_button = ttk.Button(
             master=self.app,
             text="Edit Timer",
             command=lambda: createManagerWindow(
@@ -274,19 +274,81 @@ class MainApp(BaseApp):
             ),
             width=25,
         )
-        manager_button.grid(column=1, row=2, sticky="N", pady=10)
+        self.manager_button.grid(column=1, row=2, sticky="N", pady=10)
 
-        settings_btn = ttk.Button(
+        self.settings_btn = ttk.Button(
             master=self.app,
             image=settings_image_dark,
             command=lambda: createSettingsWindow(),
             style="Toolbutton",
         )
 
+        self.settings_btn.place(x=5, y=self.app.winfo_height() - 45)
+
         if system() == "Windows":
             super().makeWindowsBlur()
 
+        self.app.bind("<Configure>", self.sizechanged)
+
         self.app.mainloop()
+
+    def sizechanged(self, e):
+        self.settings_btn.place(x=5, y=self.app.winfo_height() - 45)
+        if self.app.winfo_height() >= 220:
+            if self.app.winfo_height() > 250:
+                if self.app.winfo_height() > 270:
+                    if self.app.winfo_height() > 290:
+                        if self.app.winfo_height() > 330:
+                            if self.app.winfo_height() > 350:
+                                if self.app.winfo_height() > 370:
+                                    if self.app.winfo_height() > 390:
+                                        if self.app.winfo_width() > 420:
+                                            self.time_display.configure(
+                                                font=("Segoe UI Variable", 100)
+                                            )
+                                            self.time_selected_display.configure(
+                                                font=("Segoe UI Variable", 25)
+                                            )
+                                else:
+                                    if self.app.winfo_width() > 420:
+                                        self.time_display.configure(
+                                            font=("Segoe UI Variable", 90)
+                                        )
+                                        self.time_selected_display.configure(
+                                            font=("Segoe UI Variable", 25)
+                                        )
+                            else:
+                                if self.app.winfo_width() > 400:
+                                    self.time_display.configure(font=("Segoe UI Variable", 80))
+                                    self.time_selected_display.configure(
+                                        font=("Segoe UI Variable", 25)
+                                    )
+                        else:
+                            if self.app.winfo_width() > 360:
+                                self.time_display.configure(font=("Segoe UI Variable", 70))
+                                self.time_selected_display.configure(
+                                    font=("Segoe UI Variable", 23)
+                                )
+                    else:
+                        if self.app.winfo_width() > 360:
+                            self.time_display.configure(font=("Segoe UI Variable", 60))
+                            self.time_selected_display.configure(font=("Segoe UI Variable", 20))
+                else:
+                    if self.app.winfo_width() >= 300:
+                        self.time_display.configure(font=("Segoe UI Variable", 50))
+                        self.time_selected_display.configure(font=("Segoe UI Variable", 17))
+            else:
+                if self.app.winfo_width() >= 300:
+                    self.time_display.configure(font=("Segoe UI Variable", 40))
+                    self.time_selected_display.configure(font=("Segoe UI Variable", 13))
+        else:
+            self.time_display.configure(font=("Segoe UI Variable", 30))
+            self.time_selected_display.configure(font=("Segoe UI Variable", 10))
+
+        self.play_button.configure(width=int(self.app.winfo_width() / 12))
+        self.manager_button.configure(width=int(self.app.winfo_width() / 12))
+
+        self.app.update()
 
 test = MainApp()
 
@@ -917,61 +979,7 @@ settings_btn = ttk.Button(
 )
 
 
-def sizechanged(e):
-    settings_btn.place(x=5, y=app.winfo_height() - 45)
-    if app.winfo_height() >= 220:
-        if app.winfo_height() > 250:
-            if app.winfo_height() > 270:
-                if app.winfo_height() > 290:
-                    if app.winfo_height() > 330:
-                        if app.winfo_height() > 350:
-                            if app.winfo_height() > 370:
-                                if app.winfo_height() > 390:
-                                    if app.winfo_width() > 420:
-                                        time_display.configure(
-                                            font=("Segoe UI Variable", 100)
-                                        )
-                                        time_selected_display.configure(
-                                            font=("Segoe UI Variable", 25)
-                                        )
-                            else:
-                                if app.winfo_width() > 420:
-                                    time_display.configure(
-                                        font=("Segoe UI Variable", 90)
-                                    )
-                                    time_selected_display.configure(
-                                        font=("Segoe UI Variable", 25)
-                                    )
-                        else:
-                            if app.winfo_width() > 400:
-                                time_display.configure(font=("Segoe UI Variable", 80))
-                                time_selected_display.configure(
-                                    font=("Segoe UI Variable", 25)
-                                )
-                    else:
-                        if app.winfo_width() > 360:
-                            time_display.configure(font=("Segoe UI Variable", 70))
-                            time_selected_display.configure(
-                                font=("Segoe UI Variable", 23)
-                            )
-                else:
-                    if app.winfo_width() > 360:
-                        time_display.configure(font=("Segoe UI Variable", 60))
-                        time_selected_display.configure(font=("Segoe UI Variable", 20))
-            else:
-                if app.winfo_width() >= 300:
-                    time_display.configure(font=("Segoe UI Variable", 50))
-                    time_selected_display.configure(font=("Segoe UI Variable", 17))
-        else:
-            if app.winfo_width() >= 300:
-                time_display.configure(font=("Segoe UI Variable", 40))
-                time_selected_display.configure(font=("Segoe UI Variable", 13))
-    else:
-        time_display.configure(font=("Segoe UI Variable", 30))
-        time_selected_display.configure(font=("Segoe UI Variable", 10))
 
-    play_button.configure(width=int(app.winfo_width() / 12))
-    manager_button.configure(width=int(app.winfo_width() / 12))
 
 # LOAD IMAGES
 theme_dark = PhotoImage(file="./assets/images/dark/dark_theme.png")
@@ -1004,10 +1012,10 @@ elif theme == "Light":
     time_display.configure(fg="black")
     time_selected_display.configure(fg="black")
 
-if system() == "Windows":
-    makeWindowsBlur()
+# if system() == "Windows":
+#     makeWindowsBlur()
 
-app.bind("<Configure>", sizechanged)
+# app.bind("<Configure>", sizechanged)
 
 app.bind("<Expose>", fullredraw)
 
