@@ -9,12 +9,12 @@ const FeatureList = [
     Svg: require("../../static/img/icons8-windows-11.svg").default,
     description: (
       <>
-        Uses{" "}
+        Supports{" "}
         <Link to="https://github.com/rdbende/Sun-Valley-TTk-Theme">
           {" "}
-          @rdbende's Sun Valley TTk Theme
+          Fluent Design Themeing
         </Link>
-        . Feels modern!
+        and Mica. Feels modern!
       </>
     ),
   },
@@ -22,7 +22,7 @@ const FeatureList = [
     title: "Built on Python",
     Svg: require("../../static/img/icons8-python.svg").default,
     description: (
-      <>TimerX is built on top of Python and uses Tkinter TTk for the GUI.</>
+      <>TimerX is built with Python</>
     ),
   },
   {

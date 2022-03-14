@@ -1,7 +1,6 @@
 Futura-Py---
 sidebar_position: 3
 slug: compile
-title: Compiling TimerX
 ---
 
 # Compiling TimerX from source

@@ -30,7 +30,7 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Welcome To ${siteConfig.title}`}
+      title={`TimerX - The Python based Fluent Timer App`}
       description="Description will go into a meta tag in <head />"
     >
       <HomepageHeader />

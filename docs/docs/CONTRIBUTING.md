@@ -4,8 +4,6 @@ id: contributing
 title: Contributing to TimerX
 ---
 
-# Contributing to TimerX
-
 TimerX is written in **Python**, so you have to install it if you want to contribute.
 You can download the latest version from [here](https://www.python.org/downloads/).
 Make sure to check `Add Python 3.10 to PATH` when installing it.
