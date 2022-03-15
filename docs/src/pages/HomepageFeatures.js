@@ -12,9 +12,9 @@ const FeatureList = [
         Uses{" "}
         <Link to="https://github.com/rdbende/Sun-Valley-TTk-Theme">
           {" "}
-          @rdbende's Sun Valley TTk Theme
+          Fluent Design Themeing
         </Link>
-        Feels modern!
+         and Mica, Feels modern!
       </>
     ),
   },
