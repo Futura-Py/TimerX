@@ -58,21 +58,27 @@ def seticon(win):
         except tkinter.TclError:
             pass
 
-def fullredraw(e): 
-    global prev_state 
+
+def fullredraw(e):
+    global prev_state
     print(prev_state)
-    if prev_state == "zoomed": 
+    if prev_state == "zoomed":
         print("this")
         true_value = ctypes.c_int(1)
-        ctypes.windll.dwmapi.DwmSetWindowAttribute(app.wm_frame(), 3, ctypes.byref(true_value), ctypes.sizeof(true_value))
+        ctypes.windll.dwmapi.DwmSetWindowAttribute(
+            app.wm_frame(), 3, ctypes.byref(true_value), ctypes.sizeof(true_value)
+        )
 
         app.iconify()
         app.deiconify()
 
         false_value = ctypes.c_int(0)
-        ctypes.windll.dwmapi.DwmSetWindowAttribute(app.wm_frame(), 3, ctypes.byref(false_value), ctypes.sizeof(false_value))
+        ctypes.windll.dwmapi.DwmSetWindowAttribute(
+            app.wm_frame(), 3, ctypes.byref(false_value), ctypes.sizeof(false_value)
+        )
 
     prev_state = app.state()
+
 
 seticon(app)
 
@@ -744,11 +750,13 @@ def makeWindowsBlur():
         app.update()
         if theme == "Dark":
             ApplyMica(
-                HWND=ctypes.windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.DARK
+                HWND=ctypes.windll.user32.GetParent(app.winfo_id()),
+                ColorMode=MICAMODE.DARK,
             )
         else:
             ApplyMica(
-                HWND=ctypes.windll.user32.GetParent(app.winfo_id()), ColorMode=MICAMODE.LIGHT
+                HWND=ctypes.windll.user32.GetParent(app.winfo_id()),
+                ColorMode=MICAMODE.LIGHT,
             )
     else:
         from BlurWindow.blurWindow import GlobalBlur

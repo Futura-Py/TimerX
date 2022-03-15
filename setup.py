@@ -55,7 +55,9 @@ else:
 # }
 import uuid
 
-upgradeid = "{" + str(uuid.uuid3(uuid.NAMESPACE_DNS, "TimerX-App.TimerX.org")).upper() + "}"
+upgradeid = (
+    "{" + str(uuid.uuid3(uuid.NAMESPACE_DNS, "TimerX-App.TimerX.org")).upper() + "}"
+)
 
 build_exe_options = {
     "include_msvcr": True,
@@ -73,7 +75,7 @@ build_exe_options = {
         "time",
         "pathlib",
         "platform",
-        "playsound"
+        "playsound",
     ],
 }
 

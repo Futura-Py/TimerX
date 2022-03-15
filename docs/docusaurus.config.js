@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
   title: "TimerX",
   tagline:
-    "A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's Sun Valley TTk Theme",
+      "A fluent Timer App, made completely in Python",
   url: "https://timerx.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "warn",
@@ -121,21 +121,21 @@ const config = {
           lightIconStyle: {
             marginLeft: "1px",
           },
-          
         },
       },
     }),
 };
 
-module.exports = config, {
-  themeConfig: {
-    announcementBar: {
-      id: 'v1.1',
-      content:
-        'v1.1 is released! Get it <a href="https://github.com/Futura-Py/TimerX/releases/latest">here</a>!',
-      backgroundColor: '#fafbfc',
-      textColor: '#091E42',
-      isCloseable: false,
+(module.exports = config),
+  {
+    themeConfig: {
+      announcementBar: {
+        id: "v1.1",
+        content:
+          'v1.1 is released! Get it <a href="https://github.com/Futura-Py/TimerX/releases/latest">here</a>!',
+        backgroundColor: "#fafbfc",
+        textColor: "#091E42",
+        isCloseable: false,
+      },
     },
-  },
-};
+  };
