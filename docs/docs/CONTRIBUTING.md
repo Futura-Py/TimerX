@@ -2,7 +2,6 @@
 sidebar_position: 2
 id: contributing
 title: Contributing to TimerX
-
 ---
 
 TimerX is written in **Python**, so you have to install it if you want to contribute.
