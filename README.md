@@ -32,7 +32,7 @@
 
 # 🌏Deployed with [Netlify](netlify.app)
     
-# 😎 Join our Discord over [here](https://discord.gg/dd64cjC8)
+# 😎 Join our Discord over [here](https://discord.gg/TCmtVGwufB)
 
 # 🎯TODO
 See our [roadmap](https://github.com/orgs/Futura-Py/projects/1)!
