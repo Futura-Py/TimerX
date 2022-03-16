@@ -1,4 +1,4 @@
-Futura-Py---
+---
 sidebar_position: 2
 id: contributing
 title: Contributing to TimerX
