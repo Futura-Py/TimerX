@@ -126,8 +126,13 @@ const config = {
     }),
 };
 
-(module.exports = config),
+module.exports = config,
   {
+    presets: [
+      {
+        customCss: [require.resolve('./src/css/custom.css')],
+      },
+    ],
     themeConfig: {
       announcementBar: {
         id: "v1.1",
