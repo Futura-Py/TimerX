@@ -15,11 +15,14 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
+            className="btn margin--sm download--btn"
             to="https://github.com/Futura-Py/TimerX/releases/latest"
           >
             Download TimerX
           </Link>
+          <Link to="/docs/intro" className="margin--sm explore--docs--link btn">
+						Read documentation
+					</Link>
         </div>
       </div>
     </header>
