@@ -5,6 +5,7 @@ from cx_Freeze import Executable, setup
 base = None
 if sys.platform == "win32":
     base = "Win32GUI"
+    includes= ["tkinter","platform","threading","BlurWindow","darkdetect","sv_ttk","win32mica","webbrowser","ctypes","time","pathlib","platform","playsound"]
     icon = "./assets/logo_new.ico"
     executables = [
         Executable(
@@ -17,6 +18,7 @@ if sys.platform == "win32":
         )
     ]
 elif sys.platform == "darwin":
+    includes= ["tkinter","platform","threading","darkdetect","sv_ttk","webbrowser","ctypes","time","pathlib","platform","playsound"],
     icon = "./assets/logo_new.icns"
     executables = [
         Executable(
@@ -29,6 +31,7 @@ elif sys.platform == "darwin":
     ]
 else:
     icon = "./assets/logo_new.png"
+    includes= ["tkinter","platform","threading","darkdetect","sv_ttk","webbrowser","ctypes","time","pathlib","platform","playsound"]
     executables = [
         Executable(
             "main.py",
@@ -62,21 +65,7 @@ upgradeid = (
 build_exe_options = {
     "include_msvcr": True,
     "include_files": (r"./utils.py", r"./assets"),
-    "includes": [
-        "tkinter",
-        "platform",
-        "threading",
-        "BlurWindow",
-        "darkdetect",
-        "sv_ttk",
-        "win32mica",
-        "webbrowser",
-        "ctypes",
-        "time",
-        "pathlib",
-        "platform",
-        "playsound",
-    ],
+    "includes": includes,
 }
 
 bdist_rpm_options = {"icon": icon}
