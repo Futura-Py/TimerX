@@ -5,7 +5,7 @@ from cx_Freeze import Executable, setup
 base = None
 if sys.platform == "win32":
     base = "Win32GUI"
-    includes= ["tkinter","platform","threading","BlurWindow","darkdetect","sv_ttk","win32mica","webbrowser","ctypes","time","pathlib","platform","playsound"]
+    includes= ["tkinter","platform","threading","BlurWindow","darkdetect","sv_ttk","win32mica","webbrowser","ctypes","time","pathlib","platform","playsound", "win10toast-click"]
     icon = "./assets/logo_new.ico"
     executables = [
         Executable(
