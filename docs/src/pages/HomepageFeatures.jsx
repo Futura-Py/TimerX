@@ -12,9 +12,9 @@ const FeatureList = [
         Uses{" "}
         <Link to="https://github.com/rdbende/Sun-Valley-TTk-Theme">
           {" "}
-          @rdbende's Sun Valley TTk Theme
+          Fluent Design Themeing
         </Link>
-        . Feels modern!
+         and Mica, feels modern!
       </>
     ),
   },
@@ -32,7 +32,7 @@ const FeatureList = [
       <>
         TimerX is open-source, meaning the code is available for everyone to see{" "}
         <i>and</i> modify at the{" "}
-        <Link to="https://github.com/sumeshir26/TimerX">GitHub repo</Link>.
+        <Link to="https://github.com/Futura-Py/TimerX">GitHub repo</Link>.
       </>
     ),
   },

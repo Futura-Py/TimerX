@@ -13,7 +13,7 @@ Make sure Python is added to your PATH while installing.
 
 ## Step 1 {#repoclone}
 
-Open your terminal and head to the TimerX folder; if you have Git, clone it with `git clone https://github.com/sumeshir26/TimerX.git` or download the ZIP file from [here](https://github.com/sumeshir26/TimerX/archive/refs/heads/master.zip).
+Open your terminal and head to the TimerX folder; if you have Git, clone it with `git clone https://github.com/Futura-Py/TimerX.git` or download the ZIP file from [here](https://github.com/Futura-Py/TimerX/archive/refs/heads/master.zip).
 
 ## Step 2 {#packages}
 
