@@ -1,4 +1,11 @@
-playsound
+playsound==1.2.2
 darkdetect
 tk
-BlurWindow
+sv-ttk
+BlurWindow; sys_platform == 'win32'
+win32mica; sys_platform == 'win32'
+win10toast_click; sys_platform == 'win32'
+#DEV
+cx_Freeze
+commitizen
+pre-commit

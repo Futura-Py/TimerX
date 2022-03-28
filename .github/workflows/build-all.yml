@@ -1,0 +1,68 @@
+name: Build Workflow
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+      - name: Test cx_Freeze
+        run: |
+          python setup.py bdist_msi
+
+  build-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+      - name: Run cx_freeze
+        continue-on-error: true
+        run: |
+          python setup.py bdist_rpm
+      - name: Run alien
+        continue-on-error: true
+        run: |
+          cd dist
+          sudo apt install alien
+          sudo alien -d TimerX-*.tar.gz --version=1.0
+          sudo alien -r TimerX-*.tar.gz
+
+  # build-macos:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
+  #     - name: Install Python
+  #       uses: actions/setup-python@v1
+  #       with:
+  #         python-version: '3.10'
+  #         architecture: 'x64'
+  #     - name: Install requirements
+  #       run: |
+  #         pip install -r requirements-dev.txt
+  #     - name: Run cx_freeze
+  #       run: |
+  #         python setup.py bdist_dmg

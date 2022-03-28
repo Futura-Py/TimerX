@@ -23,7 +23,6 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
-          pip install -r requirements-dev.txt
 
       - name: Run cx_freeze
         continue-on-error: true
@@ -64,8 +63,6 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
-          pip install -r requirements-windows.txt
-          pip install -r requirements-dev.txt
       - name: Run cx_freeze
         run: |
           python setup.py bdist_msi
@@ -88,7 +85,6 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
-          pip install -r requirements-dev.txt
       - name: Run cx_freeze
         run: |
           python setup.py bdist_dmg
