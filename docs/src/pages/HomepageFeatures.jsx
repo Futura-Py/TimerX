@@ -14,7 +14,7 @@ const FeatureList = [
           {" "}
           Fluent Design Themeing
         </Link>
-         and Mica, feels modern!
+        and Mica, feels modern!
       </>
     ),
   },

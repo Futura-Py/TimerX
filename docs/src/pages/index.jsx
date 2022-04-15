@@ -21,8 +21,8 @@ function HomepageHeader() {
             Download TimerX
           </Link>
           <Link to="/docs/intro" className="margin--sm explore--docs--link btn">
-						Read documentation
-					</Link>
+            Read documentation
+          </Link>
         </div>
       </div>
     </header>

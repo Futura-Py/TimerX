@@ -7,8 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "TimerX",
-  tagline:
-      "A fluent Timer App, made completely in Python",
+  tagline: "A fluent Timer App, made completely in Python",
   url: "https://timerx.netlify.app",
   baseUrl: "/",
   onBrokenLinks: "warn",
@@ -126,11 +125,11 @@ const config = {
     }),
 };
 
-module.exports = config,
+(module.exports = config),
   {
     presets: [
       {
-        customCss: [require.resolve('./src/css/custom.css')],
+        customCss: [require.resolve("./src/css/custom.css")],
       },
     ],
     themeConfig: {
