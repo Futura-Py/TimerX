@@ -36,7 +36,7 @@ if config["theme"] == "System":
 
 # TKINTER WINDOW
 app = Tk()
-app.title("TimerX")
+#app.title("TimerX")
 app.minsize(width=300, height=210)
 
 sv_ttk.set_theme(theme.lower())
