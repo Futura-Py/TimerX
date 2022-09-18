@@ -1,0 +1,39 @@
+name: Test Formatting
+
+on:
+  schedule: 
+  - cron: 30 05 15 * *
+  workflow_dispatch:
+
+
+jobs:
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Code Formatting (App)
+        run: |
+          pip install isort black
+          isort main.py
+          isort setup.py
+          isort utils.py
+          black main.py
+          black setup.py
+          black utils.py
+      - name: Code Formatting (website)
+        run: |
+          npm i -g prettier
+          cd docs
+          npx prettier --write .
+      - uses: fregante/setup-git-user@v1
+      - name: Commit
+        run: |
+          git add .
+          git commit -m "style: Code Formatting Workflow" -m "Either triggered by cron or workflow_dispatch"
+          git push --force
