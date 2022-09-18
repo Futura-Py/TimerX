@@ -30,6 +30,11 @@
 
 > Believe it or not, this is made 100% in Python🐍
 
+# 👋🏽 This app is no longer in development, cuz its kinda complete and there's not much to do anymore. All of the devs have moved on to other things... Check out [FluXCalc](https://github.com/Futura-Py/FluxCalc) and [txt2](https://github.com/not-nef/txt2)
+
+
+***
+
 # 🌏Deployed with [Netlify](netlify.app)
     
 # 😎 Join our Discord over [here](https://discord.gg/TCmtVGwufB)
