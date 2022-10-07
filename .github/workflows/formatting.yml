@@ -1,10 +1,9 @@
 name: Test Formatting
 
 on:
-  schedule: 
-  - cron: 30 05 15 * *
+  schedule:
+    - cron: 30 05 15 * *
   workflow_dispatch:
-
 
 jobs:
   formatting:
@@ -16,7 +15,7 @@ jobs:
           python-version: 3.8
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: "14"
       - name: Code Formatting (App)
         run: |
           pip install isort black

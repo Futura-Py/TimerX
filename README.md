@@ -1,4 +1,3 @@
-
 <p align="center">
     <img alt="TimerX Logo" src="./assets/logo_new.png" width="100px" />
     <h1 align="center">TimerX</h1>
@@ -34,14 +33,14 @@
 
 # 👋🏽 This app is no longer in development, cuz its kinda complete and there's not much to do anymore. All of the devs have moved on to other things... Check out [FluXCalc](https://github.com/Futura-Py/FluxCalc) and [txt2](https://github.com/not-nef/txt2)
 
-
-***
+---
 
 # 🌏Deployed with [Netlify](netlify.app)
-    
+
 # 😎 Join our Discord over [here](https://discord.gg/TCmtVGwufB)
 
 # 🎯TODO
+
 See our [roadmap](https://github.com/orgs/Futura-Py/projects/1)!
 
 # 💻Supported Platforms
