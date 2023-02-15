@@ -42,6 +42,7 @@ app.minsize(width=300, height=210)
 sv_ttk.set_theme(theme.lower())
 bg_color = ttk.Style().lookup(".", "background")
 
+
 # SYSTEM CODE
 def seticon(win):
     try:
@@ -91,6 +92,7 @@ timer_paused = False
 timer_seconds = int(config["default_seconds"])
 timer_minutes = int(config["default_minutes"])
 timer_hours = int(config["default_hours"])
+
 
 # FUNCTIONS
 def playBuzzer():
@@ -209,6 +211,7 @@ def setAlwaysOnTop():
 
 
 setAlwaysOnTop()
+
 
 # WINDOWS
 def createManagerWindow(saveTimer, current_mins, current_secs, current_hrs):
