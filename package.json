@@ -1,28 +1,26 @@
 {
-    "name": "timerx",
-    "product-name": "TimerX",
-    "version": "1.0.0",
-    "description": "A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's Sun Valley TTk Theme",
-    "scripts": {
-        "docs-install": "npm install | cd docs",
-        "docs-start": "cd docs && npm run start",
-        "docs-build": "cd docs && npm run build",
-        "docs-swizzle": "cd docs && npm run swizzle",
-        "docs-deploy": "cd docs && npm run deploy",
-        "docs-clear": "cd docs && npm run clear",
-        "docs-serve": "cd docs && npm run serve",
-        "docs-write-translations": "cd docs && npm run write-translations",
-        "docs-write-heading-ids": "cd docs && npm run write-heading-ids",
-        "docs-fmt": "cd docs && npm run fmt",
-        "global-fmt": "npx prettier --write .",
-        "timerx-py": "python main.py",
-        "timer-deps-py": "pip install -r requirements.txt",
-        "timerx-py3": "python3 main.py",
-        "timerx-deps-py": "pip3 install -r requirements.txt",
-        "timerx-build-py-win": "python setup.py bdist_msi",
-        "timerx-build-py3-win": "python3 setup.py bdist_msi"
-    },
-    "dependencies": {
-        "prettier": "^2.5.1"
-    }
+  "name": "timerx",
+  "product-name": "TimerX",
+  "version": "1.0.1",
+  "description": "A simple, lightweight, & beautiful timer app built in Python and tkinter.ttk using rdbende's Sun Valley TTk Theme",
+  "scripts": {
+    "docs-install": "cd docs && npm install",
+    "docs-start": "cd docs && npm run start",
+    "docs-build": "cd docs && npm run build",
+    "docs-swizzle": "cd docs && npm run swizzle",
+    "docs-deploy": "cd docs && npm run deploy",
+    "docs-clear": "cd docs && npm run clear",
+    "docs-serve": "cd docs && npm run serve",
+    "docs-write-translations": "cd docs && npm run write-translations",
+    "docs-write-heading-ids": "cd docs && npm run write-heading-ids",
+    "docs-fmt": "cd docs && npm run fmt",
+    "global-fmt": "npx prettier --write .",
+    "app-py": "python main.py",
+    "app-deps-py": "pip install -r requirements.txt",
+    "app-py3": "python3 main.py",
+    "app-deps-py3": "pip3 install -r requirements.txt"
+  },
+  "dependencies": {
+    "prettier": "^2.5.1"
+  }
 }
