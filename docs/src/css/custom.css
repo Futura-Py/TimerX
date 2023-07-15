@@ -147,7 +147,9 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 }
 
 .explore--docs--link:hover {
-  box-shadow: 0 0 0 2px var(--dark), inset 0 0 0 1px #fff;
+  box-shadow:
+    0 0 0 2px var(--dark),
+    inset 0 0 0 1px #fff;
 }
 .btn {
   font-family: "Inter", sans-serif;
@@ -224,7 +226,9 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   background: var(--white);
 }
 [data-theme="dark"] .download--btn:hover {
-  box-shadow: 0 0 0 2px #fff, inset 0 0 0 1px #000;
+  box-shadow:
+    0 0 0 2px #fff,
+    inset 0 0 0 1px #000;
   background: transparent;
 }
 
@@ -483,7 +487,9 @@ label[for="email-input-field"] {
 
 [data-theme="dark"] .submit-newsletter-btn:hover {
   background: transparent;
-  box-shadow: 0 0 0 2px #fff, inset 0 0 0 1px #000;
+  box-shadow:
+    0 0 0 2px #fff,
+    inset 0 0 0 1px #000;
 }
 [data-theme="light"] .submit-newsletter-btn:hover {
   background: var(--white);
@@ -514,7 +520,9 @@ label[for="email-input-field"] {
     #0160ee 304.32deg,
     #0d14e8 473.23deg
   );
-  text-shadow: 0px 0px 20px #fff, 0px 0px 20px #2a5ded;
+  text-shadow:
+    0px 0px 20px #fff,
+    0px 0px 20px #2a5ded;
 }
 
 .subscribe-error {
@@ -572,8 +580,11 @@ label[for="email-input-field"] {
   flex-direction: row;
   align-items: center;
   position: relative;
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 10%), 0 3px 2px rgb(0 0 0 / 4%),
-    0 7px 5px rgb(0 0 0 / 2%), 0 13px 10px rgb(0 0 0 / 2%),
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 10%),
+    0 3px 2px rgb(0 0 0 / 4%),
+    0 7px 5px rgb(0 0 0 / 2%),
+    0 13px 10px rgb(0 0 0 / 2%),
     0 22px 17px rgb(0 0 0 / 2%) !important;
   border-radius: 10px;
   transition: 0.5s;
